@@ -10,7 +10,6 @@ const initialRegActive = {
     nombre: '',
     apepa: '',
     apema: '',
-    correo: '',
     img: '',
     admin: '',
     activo: '',

@@ -13,7 +13,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
 
     const dispatch = useAppDispatch();
     
-    const { id, rol, descripcion, activo } = item;
+    const { id_rol, rol, descripcion, activo } = item;
 
     const handleSetWindow = ( idDelete : number, readOnly = false ) => { 
         dispatch( startProfileActive( idDelete ) );
@@ -58,7 +58,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
         <>
             <th scope="row">
                 <strong>
-                    { id }
+                    { id_rol }
                 </strong>
             </th>
             <td>{ rol }</td>
@@ -75,7 +75,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2 mt-1"
                     title="Ver"
-                    onClick={ () =>{ handleSetWindow( id, true ) } }    
+                    onClick={ () =>{ handleSetWindow( id_rol, true ) } }    
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -85,7 +85,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id, typeBa )}}
+                        onClick={ () =>{ handleDeleteReg( id_rol, typeBa )}}
                         >
                         <FontAwesomeIcon icon={ icoba } />
                     </button> 
@@ -96,7 +96,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2 mt-1"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_rol, false ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
@@ -107,7 +107,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
                         type="button"
                         className="btn btn-outline-danger btn-sm me-2 mt-1"
                         title="Eliminar Registro"
-                        onClick={ () =>{ handleDeleteReg( id, 2 )}}
+                        onClick={ () =>{ handleDeleteReg( id_rol, 2 )}}
                         >
                         <FontAwesomeIcon icon={ faTrashAlt } />
                     </button>

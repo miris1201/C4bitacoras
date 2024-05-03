@@ -15,10 +15,9 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
         id_usuario: '',
         usuario: '',
         nombre: '',
-        correo: '',
     });
 
-    const { id_usuario, usuario, nombre, correo } = formValues;
+    const { id_usuario, usuario, nombre } = formValues;
     
     const handleSubmitSearch = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -66,19 +65,6 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                                 name="nombre"
                                 id="nombre"
                                 value={ nombre }
-                                onChange={ handleInputChange }
-                            />
-                        </div>
-                        <div className="col-6">
-                            <label htmlFor="correo">
-                                Correo
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="correo"
-                                id="correo"
-                                value={ correo }
                                 onChange={ handleInputChange }
                             />
                         </div>

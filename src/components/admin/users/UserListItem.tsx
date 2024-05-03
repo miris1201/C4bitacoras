@@ -17,7 +17,7 @@ export const UserListItem = ({ item, edit, elim }: dataItem) => {
     const dispatch = useAppDispatch();
     
     const [ showModalChangePass, setShowModalChangePass ] = useState(false);
-    const { id_usuario, usuario, nombre, correo, activo } = item;
+    const { id_usuario, usuario, nombre,  activo } = item;
 
     const handleSetWindow = ( id : number, readOnly = false ) => { 
         dispatch( startUserActive( id ) );
@@ -67,7 +67,6 @@ export const UserListItem = ({ item, edit, elim }: dataItem) => {
             </th>
             <td>{ usuario }</td>
             <td>{ nombre }</td>
-            <td>{ correo }</td>
             <td>
                 { 
                     ( Number(activo) === 1 ) 

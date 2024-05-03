@@ -137,8 +137,8 @@ export const UserList: FC = (): JSX.Element => {
                                 <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Usuario</th>
+                                    <th scope="col">No. empleado</th>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Correo</th>
                                     <th scope="col">Estatus</th>
                                     <th 
                                         scope="col"

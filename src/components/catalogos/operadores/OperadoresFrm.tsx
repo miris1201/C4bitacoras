@@ -22,7 +22,6 @@ export const OperadoresFrm: FC = () => {
         nombre: dNombre,
         apepa: dApepa,
         apema: dApema,
-        email: dCorreo,
         password: dPassword,
 	} = rActive;
 
@@ -32,11 +31,10 @@ export const OperadoresFrm: FC = () => {
         apepa: dApepa || '',
         apema: dApema || '',
         password: dPassword,
-        email: dCorreo || ''
     });
 
     //Variables que van para el formulario
-    const { nombre, apepa, apema, email, password } = formValues;
+    const { nombre, apepa, apema, password } = formValues;
 
 	const hanbleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -125,19 +123,6 @@ export const OperadoresFrm: FC = () => {
                                 autoComplete="off"
                                 required={readOnly}
                                 readOnly={readOnly}
-                                />
-                        </div>
-                        <div className="col-6 col-lg-4 col-xl-4">
-                            <label htmlFor="email">Correo electrónico</label>
-                                <input
-                                type="email"
-                                className="form-control"
-                                name="email"
-                                value={email}
-                                readOnly={readOnly}
-                                onChange={ handleInputChange }
-                                id="email"
-                                autoComplete="off"
                                 />
                         </div>
                     </div>

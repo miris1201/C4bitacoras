@@ -16,15 +16,14 @@ export interface UserTemplateState {
 
 export interface FilterS {
 	sNombre:  string;
-	sCorreo:  string;
 	sUsuario: string;
+	sZona: number
 }
 
 export interface ItemUser{
 	id_usuario: number;
 	usuario: string;
 	nombre: string;
-	correo: string;
 	activo: number;
 }
 export interface dataItem{

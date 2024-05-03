@@ -3,7 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface UserActive {
   sNombre: string,
-  sCorreo: string,
   sUsuario: string,
 }
 export interface transactionState {
@@ -33,7 +32,6 @@ export interface transactionState {
 
 const initialUserActive = {
   sNombre: '',
-  sCorreo: '',
   sUsuario: '',
 }
 

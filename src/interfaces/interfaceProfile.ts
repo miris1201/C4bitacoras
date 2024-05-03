@@ -15,7 +15,7 @@ export interface ProfileTemplateState {
 }
 
 export interface ItemProfile{
-	id: number;
+	id_rol: number;
 	rol: string;
 	descripcion: string;
 	activo: number;

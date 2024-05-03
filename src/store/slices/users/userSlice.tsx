@@ -11,7 +11,6 @@ const initialUserActive = {
     nombre: '',
     apepa: '',
     apema: '',
-    correo: '',
     img: '',
     admin: '',
     activo: '',

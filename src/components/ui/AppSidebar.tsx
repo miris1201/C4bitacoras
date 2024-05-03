@@ -36,7 +36,7 @@ const AppSidebar = () => {
 			}}
 		>
 			<CSidebarBrand className="d-none d-md-flex">
-			<h2 className="base__logo">TEMPLATE</h2>
+			<h2 className="base__logo">C4</h2>
 			</CSidebarBrand>
 			<CSidebarNav>
 				<SimpleBar>
