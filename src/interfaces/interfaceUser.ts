@@ -42,3 +42,8 @@ export interface dataProfileCheck {
     handleCheckBoxChange: any;
     handleCheckBoxChangeChild: any;
 }
+
+export interface dataAccountParams {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}

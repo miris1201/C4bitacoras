@@ -69,6 +69,9 @@ export const userSlice = createSlice({
 		setSearchUser: (state, action: PayloadAction<{}> ) =>{
 			state.filterSearch = action.payload;
 		},
+		setMyAccount: (state, action: PayloadAction<[]>) => {
+			state.uActive = action.payload;
+		},
 	}
 })
 
@@ -81,4 +84,5 @@ export const {
 	unSetActiveUser,
 	setComboProfile,
 	setSearchUser,
+	setMyAccount,
 } = userSlice.actions;
