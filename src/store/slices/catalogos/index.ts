@@ -1,2 +1,2 @@
-export * from './sliceOperadores';
-export * from './thunksOperadores';
+export * from './sliceColonias';
+export * from './thunksColonias';

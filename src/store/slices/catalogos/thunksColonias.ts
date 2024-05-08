@@ -7,28 +7,28 @@ import axios, { AxiosError } from 'axios';
 import { AppDispatch, GetState } from '../../store';
 import { AppState } from '../../../interfaces';
 
-import { setListOperadores, setOperadorActive, setIdOperadorActive } from './sliceOperadores';
 import { setShowList, setLoadingState } from '../transaction';
 
 import { exportFile } from "../../../components/helpers/exportGeneric";
+import { setColoniasActive, setIdColoniasActive, setListColonias } from "./sliceColonias";
 
-export const startGetRegOperadores = () => async( dispatch: AppDispatch, getState: GetState) => {
+export const startGetRegColonias = () => async( dispatch: AppDispatch, getState: GetState) => {
     try {
-        const { operadores } = getState() as AppState;
+        const { colonias } = getState() as AppState;
         
         dispatch( setLoadingState( true) ) ;
-        const regIni = operadores.page * recordsPerPage;
+        const regIni = colonias.page * recordsPerPage;
         
         const dataSend = {
             limite: 0,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: operadores.filterSearch
+            filtroB: colonias.filterSearch
         }
 
         const token = localStorage.getItem('token') || '';
 
-        const resp = await axios.post(`${ baseUrl }/catalogos/operadores/list`, dataSend, 
+        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/list`, dataSend, 
             { headers: 
                 {
                     'Authorization': `Bearer ${token}` 
@@ -36,7 +36,7 @@ export const startGetRegOperadores = () => async( dispatch: AppDispatch, getStat
             } 
         );
 
-        dispatch( setListOperadores( resp.data ) ) ;
+        dispatch( setListColonias( resp.data ) ) ;
         dispatch( setLoadingState( false ) ) ;
 
     } catch (error) {
@@ -47,27 +47,27 @@ export const startGetRegOperadores = () => async( dispatch: AppDispatch, getStat
     }
 } 
 
-export const exportDataOperadores = ( setLoadingExport: React.Dispatch<React.SetStateAction<boolean>>) => async(dispatch: AppDispatch, getState: GetState) => {
+export const exportDataColonias = ( setLoadingExport: React.Dispatch<React.SetStateAction<boolean>>) => async(dispatch: AppDispatch, getState: GetState) => {
     try {
         
-        const { users } = getState() as AppState;
+        const { colonias } = getState() as AppState;
         
         setLoadingExport( true);
 
-        const regIni = users.page * recordsPerPage;
+        const regIni = colonias.page * recordsPerPage;
         
         const dataSend = {
             limite: 1,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: users.filterSearch,
+            filtroB: colonias.filterSearch,
             isExport: 1
         }
 
         
         const token = localStorage.getItem('token') || '';
 
-        const resp = await axios.post(`${ baseUrl }/catalogos/operadores/list`, dataSend,
+        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/list`, dataSend,
             { 
                 headers: 
                 {
@@ -77,7 +77,7 @@ export const exportDataOperadores = ( setLoadingExport: React.Dispatch<React.Set
         );
         
         //setDataExport ( resp.data.rows );
-        await exportFile ( 'rptOperadorData',  resp.data.rows );
+        await exportFile ( 'rptColoniasData',  resp.data.rows );
         setLoadingExport( false );
 
     } catch (error) {
@@ -88,12 +88,12 @@ export const exportDataOperadores = ( setLoadingExport: React.Dispatch<React.Set
     }
 } 
 
-export const startOperadorActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
+export const startColoniasActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
     try {
        
         const token = localStorage.getItem('token') || '';
         
-        const resp = await axios.post(`${ baseUrl }/catalogos/operadores/show`, { idShow },
+        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/show`, { idShow },
             { 
                 headers: 
                 {
@@ -106,8 +106,8 @@ export const startOperadorActive = ( idShow: number ) => async( dispatch: AppDis
 
         if( done ){
 
-            dispatch( setOperadorActive( rows) );
-            dispatch( setIdOperadorActive( idShow ) ) ;
+            dispatch( setColoniasActive( rows) );
+            dispatch( setIdColoniasActive( idShow ) ) ;
             dispatch( setShowList( false ));
             dispatch( setLoadingState( false ) ) ;
 
@@ -127,7 +127,7 @@ export const startInsertReg = ( data: {}, setLoadingBtn: React.Dispatch<React.Se
 
         const token = localStorage.getItem('token') || '';
     
-        const body = await axios.post(`${ baseUrl }/catalogos/operadores/insertupdate`, data,
+        const body = await axios.post(`${ baseUrl }/catalogos/colonias/insertupdate`, data,
             { 
                 headers: 
                 {
@@ -171,7 +171,7 @@ export const startRegDelete = ( iTipo: number, id_delete: number ) => async( dis
     
         const token = localStorage.getItem('token') || '';
 
-        const body = await axios.post(`${ baseUrl }/catalogos/operadores/delete`, { iTipo, id_delete },
+        const body = await axios.post(`${ baseUrl }/catalogos/colonias/delete`, { iTipo, id_delete },
             { 
                 headers: 
                 {
@@ -184,7 +184,7 @@ export const startRegDelete = ( iTipo: number, id_delete: number ) => async( dis
 
         if( done ){
             await Swal.fire("¡Correcto!", msg, "success").then( () =>{
-                dispatch( startGetRegOperadores() );
+                dispatch( startGetRegColonias() );
             });
         }else{
             Swal.fire("Error", msg, "error");
