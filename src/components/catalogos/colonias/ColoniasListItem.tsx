@@ -4,29 +4,25 @@ import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/fr
 
 import { useAppDispatch } from '../../../store/hooks';
 
-import { startOperadorActive, startRegDelete } from '../../../store/slices/catalogos/';
+import { startColoniaDelete, startColoniasActive } from '../../../store/slices/catalogos/';
 
-import { dataItemOperador } from '../../../interfaces/interfaceOperador';
 import { setReadOnly } from '../../../store/slices/transaction';
+import { dataItemColonias } from '../../../interfaces';
 
-export const OperadoresListItem = ({ item, edit, elim }: dataItemOperador) => {
+export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
 
     const dispatch = useAppDispatch();
     
     const { 
-		id,
+		id_colonia,
 		nombre, 
-		apellido_paterno, 
-		apellido_materno, 
-		email, 
-		password, 
-		id_user_flotilla, 
-		id_tarjeta, 
-		created_at
-	} = item;
+		tipo, 
+		region, 
+		sector	
+    } = item;
 
 	const handleSetWindow = ( id : number, readOnly = false ) => { 
-        dispatch( startOperadorActive( id ) );
+        dispatch( startColoniasActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }
 
@@ -52,7 +48,7 @@ export const OperadoresListItem = ({ item, edit, elim }: dataItemOperador) => {
         }).then(( result ) => {
             
             if (result.isConfirmed) {
-                dispatch( startRegDelete( type, id ) );
+                dispatch( startColoniaDelete( type, id ) );
             }
         });
     }
@@ -61,18 +57,17 @@ export const OperadoresListItem = ({ item, edit, elim }: dataItemOperador) => {
 		<>
 			<th scope="row">
                 <strong>
-                    { id }
+                    { id_colonia }
                 </strong>
             </th>
-            <td>{ nombre + ' ' + apellido_materno + ' ' + apellido_paterno }</td>
-            <td>{ email }</td>
-            <td>{ id_tarjeta }</td>
+            <td>{ nombre }</td>
+            <td>{ tipo }</td>
             <td className="text-center">
                 <button 
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2"
                     title="Ver"
-                    onClick={ () =>{ handleSetWindow( id, true ) } }    
+                    onClick={ () =>{ handleSetWindow( id_colonia, true ) } }    
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -83,7 +78,7 @@ export const OperadoresListItem = ({ item, edit, elim }: dataItemOperador) => {
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_colonia, false ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
@@ -95,7 +90,7 @@ export const OperadoresListItem = ({ item, edit, elim }: dataItemOperador) => {
                         type="button"
                         className="btn btn-outline-danger btn-sm me-2"
                         title="Eliminar Registro"
-                        onClick={ () =>{ handleDeleteReg( id, 2 )}}
+                        onClick={ () =>{ handleDeleteReg( id_colonia, 2 )}}
                         >
                         <FontAwesomeIcon icon={ faTrashAlt } />
                     </button>

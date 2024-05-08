@@ -1,7 +1,7 @@
 const recordsPerPage = import.meta.env.VITE_APP_RECORSPP;
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ListasTemplate, ResponseData } from '../../../interfaces';
+import { ColoniaTemplate, ListasTemplate, ResponseData } from '../../../interfaces';
 
 const initialColoniasActive = {
 	id_colonia: '',
@@ -9,17 +9,22 @@ const initialColoniasActive = {
     tipo: '',
     sector: '',
     region: '',
+	activo: '',
 }
 
-const initialState: ListasTemplate = {
+const initialState: ColoniaTemplate = {
 	windowActive: 1, //1 list, 2 create, 3 edit, 4 view
     idActive: 0,
+	loading: false,
     rActive: initialColoniasActive,
+	readOnly: false,
     page: 0,
     totalRows: 0,
     totalPages: 0,
     filterSearch: {},
     list: [],
+	comboColonias: [],
+	comboTipo: [],
 }
 
 export const sliceColonias = createSlice({
@@ -51,6 +56,12 @@ export const sliceColonias = createSlice({
 		setSearchColonias: (state, action: PayloadAction<{}> ) =>{
 			state.filterSearch = action.payload;
 		},
+		setComboColonias: (state, action: PayloadAction<[]> ) =>{
+			state.comboColonias = action.payload;
+		},
+		setComboTipo: (state, action: PayloadAction<[]> ) =>{
+			state.comboTipo = action.payload;
+		},
 	}
 })
 
@@ -60,5 +71,7 @@ export const {
 	setPageNumberColonias,
 	setIdColoniasActive,
 	unSetActiveColonias,
-	setSearchColonias
+	setSearchColonias,
+	setComboColonias,
+    setComboTipo,
 } = sliceColonias.actions;

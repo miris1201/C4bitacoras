@@ -4,7 +4,7 @@ import { setShowList } from '../../store/slices/transaction';
 import { ColoniasList } from '../../components/catalogos/colonias/ColoniasList';
 import { ColoniasFrm } from '../../components/catalogos/colonias/ColoniasFrm';
 
-export const Colonias: FC = () : JSX.Element=> {
+const Colonias: FC = () : JSX.Element=> {
 
     const { showList } = useAppSelector((state) => state.transaction);
     const dispatch = useAppDispatch();
@@ -19,3 +19,5 @@ export const Colonias: FC = () : JSX.Element=> {
         : <ColoniasFrm />
     )
 }
+
+export default Colonias;

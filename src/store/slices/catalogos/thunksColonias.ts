@@ -10,7 +10,8 @@ import { AppState } from '../../../interfaces';
 import { setShowList, setLoadingState } from '../transaction';
 
 import { exportFile } from "../../../components/helpers/exportGeneric";
-import { setColoniasActive, setIdColoniasActive, setListColonias } from "./sliceColonias";
+import { setColoniasActive, setComboColonias, setComboTipo, setIdColoniasActive, setListColonias } from "./sliceColonias";
+import coloniasApi from "../../../api/colonias";
 
 export const startGetRegColonias = () => async( dispatch: AppDispatch, getState: GetState) => {
     try {
@@ -26,15 +27,7 @@ export const startGetRegColonias = () => async( dispatch: AppDispatch, getState:
             filtroB: colonias.filterSearch
         }
 
-        const token = localStorage.getItem('token') || '';
-
-        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/list`, dataSend, 
-            { headers: 
-                {
-                    'Authorization': `Bearer ${token}` 
-                } 
-            } 
-        );
+        const resp = await coloniasApi.post(`/list`, dataSend);
 
         dispatch( setListColonias( resp.data ) ) ;
         dispatch( setLoadingState( false ) ) ;
@@ -64,17 +57,7 @@ export const exportDataColonias = ( setLoadingExport: React.Dispatch<React.SetSt
             isExport: 1
         }
 
-        
-        const token = localStorage.getItem('token') || '';
-
-        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/list`, dataSend,
-            { 
-                headers: 
-                {
-                    'Authorization': `Bearer ${token}` 
-                } 
-            } 
-        );
+        const resp = await coloniasApi.post(`/list`, dataSend);
         
         //setDataExport ( resp.data.rows );
         await exportFile ( 'rptColoniasData',  resp.data.rows );
@@ -91,18 +74,9 @@ export const exportDataColonias = ( setLoadingExport: React.Dispatch<React.SetSt
 export const startColoniasActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
     try {
        
-        const token = localStorage.getItem('token') || '';
+        const body = await coloniasApi.post(`/show`, { idShow });
         
-        const resp = await axios.post(`${ baseUrl }/catalogos/colonias/show`, { idShow },
-            { 
-                headers: 
-                {
-                    'Authorization': `Bearer ${token}` 
-                } 
-            } 
-        );
-        
-        const { done, rows } = resp.data;
+        const { done, rows  } = body.data;
 
         if( done ){
 
@@ -121,20 +95,11 @@ export const startColoniasActive = ( idShow: number ) => async( dispatch: AppDis
     }
 } 
 
-export const startInsertReg = ( data: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) => 
+export const startInsertColonia = ( data: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) => 
 {
     try {
 
-        const token = localStorage.getItem('token') || '';
-    
-        const body = await axios.post(`${ baseUrl }/catalogos/colonias/insertupdate`, data,
-            { 
-                headers: 
-                {
-                    'Authorization': `Bearer ${token}` 
-                } 
-            } 
-        );
+        const body = await coloniasApi.post(`/insertupdate`, data);
 
         const { done, msg } = body.data;
 
@@ -165,21 +130,12 @@ export const startInsertReg = ( data: {}, setLoadingBtn: React.Dispatch<React.Se
     }
 } 
 
-export const startRegDelete = ( iTipo: number, id_delete: number ) => async( dispatch: AppDispatch ) => 
+export const startColoniaDelete = ( iTipo: number, id_delete: number ) => async( dispatch: AppDispatch ) => 
 {
     try {
     
-        const token = localStorage.getItem('token') || '';
-
-        const body = await axios.post(`${ baseUrl }/catalogos/colonias/delete`, { iTipo, id_delete },
-            { 
-                headers: 
-                {
-                    'Authorization': `Bearer ${token}` 
-                } 
-            } 
-        );
-
+        const body = await coloniasApi.post(`/delete`, { iTipo, id_delete });
+            
         const { done, msg } = body.data;
 
         if( done ){
@@ -188,6 +144,44 @@ export const startRegDelete = ( iTipo: number, id_delete: number ) => async( dis
             });
         }else{
             Swal.fire("Error", msg, "error");
+        }
+
+    } catch (error) {
+
+        if ( error instanceof AxiosError ) console.error(error.message);
+        else console.error(error);
+
+    }
+} 
+
+export const startGetCombo = ( ) => async( dispatch: AppDispatch ) => {
+    try {
+
+        const body = await coloniasApi.post(`/combo`, {} );
+
+        const { done, rows } = body.data;
+
+        if( done ){
+            dispatch( setComboColonias( rows ) );
+        }
+
+    } catch (error) {
+
+        if ( error instanceof AxiosError ) console.error(error.message);
+        else console.error(error);
+
+    }
+} 
+
+export const startGetComboTipo = ( ) => async( dispatch: AppDispatch ) => {
+    try {
+
+        const body = await coloniasApi.post(`/comboTipo`, {} );
+
+        const { done, rows } = body.data;
+
+        if( done ){
+            dispatch( setComboTipo( rows ) );
         }
 
     } catch (error) {

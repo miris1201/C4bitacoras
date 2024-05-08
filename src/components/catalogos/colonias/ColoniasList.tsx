@@ -1,9 +1,15 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { startGetRegColonias } from '../../../store/slices/catalogos';
-import { Loading, NoAccess } from '../../ui/UserInterface';
+import { setPageNumberColonias, setSearchColonias, startGetRegColonias, unSetActiveColonias } from '../../../store/slices/catalogos';
+import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
+import { setReadOnly, setShowList } from '../../../store/slices/transaction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { ColoniaInterface } from '../../../interfaces';
+import { ColoniasListItem } from './ColoniasListItem';
+import { ColoniasModalSearch } from './ColoniasModalSearch';
 
 export const ColoniasList: FC = (): JSX.Element => {
 
@@ -28,14 +34,146 @@ export const ColoniasList: FC = (): JSX.Element => {
       return( <Loading/> );
     }
   
-  if(allowed.length === 0){
-      return( <NoAccess/> );
-  }
+    if(allowed.length === 0){
+        return( <NoAccess/> );
+    }
     
+    const { edit, elim, nuevo, exportar } = allowed[0];
 
+    const setChangeWindow = ( ) => {
+        
+      dispatch( unSetActiveColonias() );
+      dispatch( setShowList( false ) );
+      dispatch( setReadOnly( false ) );
 
+    }
 
+    const handleChangePage = ( 
+      type:number , 
+      event: ChangeEvent<HTMLInputElement> | null = null
+  ) => {
 
+      let newPage = null; 
+      
+      if( event === null ){
+          newPage = ( type === 1) ? page + 1 : page - 1 ;
+      }else{
+          newPage = parseInt(event.target.value);
+      }
 
+      dispatch( setPageNumberColonias( newPage ) );
 
+  }
+
+  const setSearchEmpty = () => {
+    dispatch ( setSearchColonias({}) ); 
+  }
+
+    return(
+      <>
+      <div className="card mb-4">
+            <HeaderList
+                title='Colonias'
+                totalRows={ totalRows }
+            />
+          <div className='card-body'>
+              <div className='row'>
+                <div className="col-8">
+                    <ul className="nav nav-pills">
+                        <li className="nav-item">
+                            {
+                                ( nuevo ) && 
+                                <button 
+                                    className="btn btn-success btn-sm me-2"
+                                    onClick={ () => { setChangeWindow() }  }
+                                >
+                                <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
+                                </button> 
+                            }
+                        </li>
+                    </ul>
+                  </div>
+                  <div className="col-4">
+                        {
+                            ( Object.keys(filterSearch).length > 0) ?
+                            <button
+                                className="btn btn-warning btn-sm me-2 float-end"
+                                onClick={() => {
+                                    setSearchEmpty();
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faFilter} /> 
+                            </button>
+                            :
+                            <button
+                                className="btn btn-primary btn-sm me-2 float-end"
+                                onClick={() => {
+                                    setShowModalFilter( true );
+                                }}
+                            >
+                                <FontAwesomeIcon icon={ faMagnifyingGlass } /> 
+                            </button>
+                        } 
+                    </div>
+              </div>
+              <div className="tab-content rounded-bottom mt-2">
+                    <div 
+                        className="table-responsive" 
+                        role="tabpanel">
+                        <table className="table table-hover ">
+                            <thead className="table-light">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Tipo</th>
+                                    <th 
+                                        scope="col"
+                                        className="text-center">
+                                        Funciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    list.map(( item: ColoniaInterface, index )=>(
+                                        <tr key={ index }>
+                                            {<ColoniasListItem
+                                                item={item}
+                                                edit={ edit }
+                                                elim={ elim }/>}
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                            <tfoot>
+                                {
+                                    ( Object.keys(list).length == 0) &&
+                                    <tr>
+                                        <td 
+                                            colSpan={5}
+                                            className="text-center">
+                                            <strong>No se encontraron registros en la base de datos</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <Pager
+                    page={ page }
+                    totalPages={ totalPages }
+                    handleChangePage={ handleChangePage }
+                />
+          </div>
+      </div>
+      {
+        showModalFilter &&
+        <ColoniasModalSearch
+            showModal={ showModalFilter }
+            setShowModal={ setShowModalFilter }
+        />
+     }
+    </>
+    )
 }

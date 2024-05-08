@@ -11,6 +11,7 @@ export interface ColoniaTemplate {
 	list: any[];
 	errors?: any;
 	comboColonias: any[];
+	comboTipo: any[];
 }
 
 export interface ColoniaInterface {
@@ -19,6 +20,7 @@ export interface ColoniaInterface {
 	tipo: string;
 	sector: string;
 	region: string;
+	activo: string;
 }
   
 export interface FilterColonia {

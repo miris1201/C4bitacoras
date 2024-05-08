@@ -8,14 +8,14 @@ import { Loading } from "../components/ui/UserInterface";
 const Users = lazy(() => import('../screens/admin/Users'));
 const Profiles = lazy(() => import('../screens/admin/Profiles'));
 const Home = lazy(() => import('../screens/Home'));
-const Operadores = lazy(() => import('../screens/catalogos/Operadores'));
+const Colonias = lazy(() => import('../screens/catalogos/Colonias'));
 
 const App: FC = (): JSX.Element => {
 	let routes = useRoutes([
 		{ path: "/", element: <Home /> },
 		{ path: "/users", element: <Users /> },
 		{ path: "/rol", element: <Profiles /> },
-		{ path: "/operadores", element: <Operadores /> },
+		{ path: "/colonias", element: <Colonias /> },
 	]);
 	return <>{routes}</>;
 };
