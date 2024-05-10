@@ -2,38 +2,43 @@
 
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { startGetComboTipo, startInsertColonia } from '../../../store/slices/catalogos';
+import { startGetComboSector, startGetComboZona, startInsertColonia } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setShowList } from '../../../store/slices/transaction';
 import { HeaderList } from '../../ui/UserInterface';
 import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import Select from 'react-select';
 
-export const ColoniasFrm: FC = () => {
+export const CuadrantesFrm: FC = () => {
 
     const dispatch = useAppDispatch();
     const [loadingBtn, setloadingBtn] = useState(false);
 
-    const {idActive, rActive, comboTipo} = useAppSelector(state => state.colonias);
+    const {idActive, rActive, comboSector, comboZona} = useAppSelector(state => state.cuadrantes);
     const { readOnly } = useAppSelector(state => state.transaction);
  
     const {
-        nombre: dNombre,
-        tipo: dTipo,
+        id_zona: dId_zona,
         sector: dSector,
-        region: dRegion
+        cuadrante: dCuadrante
     } = rActive;
 
     const { formValues, handleInputChange, setValues } = useForm({
         id_update: idActive,
-        nombre: dNombre,
-        tipo: dTipo,
+        id_zona: dId_zona,
         sector: dSector || '',
-        region: dRegion || '',
+        cuadrante: dCuadrante,
+        id_zona_ref: 0,
+        desc_id_zona: 'Selecciona la zona', 
 
     });
 
-    const { nombre, tipo, sector, region } = formValues;
+    const { id_zona, sector, cuadrante, id_zona_ref, desc_id_zona } = formValues;
+
+    let titleMain = "Nuevo cuadrante";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando cuadrante' : 'Editar cuadrante';
+    titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,15 +48,35 @@ export const ColoniasFrm: FC = () => {
 
     useEffect(() => {
         
-        if (comboTipo.length === 0) {
-            dispatch( startGetComboTipo() );
+        if (id_zona.length > 0) {
+            dispatch( startGetComboSector(id_zona) );
             
         }
-    }, [dispatch, comboTipo])
+    }, [dispatch, comboSector])
 
-    let titleMain = "Nueva colonia";
-    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando colonia' : 'Editar colonia';
-    titleMain = (idActive === 0) ? titleMain : titleHeader;
+    useEffect(() => {
+        
+        if (comboZona.length === 0) {
+            dispatch( startGetComboZona() );
+            
+        }
+    }, [dispatch, comboZona])
+
+    
+    const handleChangeSector = (opcion : any) => {
+        
+        let id_zona = opcion.value; 
+        let txtzona = opcion.label;
+
+        dispatch( startGetComboSector(id_zona) );
+
+        setValues({
+            ...formValues,
+            id_zona: id_zona,
+            ["desc_id_zona"]: txtzona,
+
+        });
+    }
 
     return(
         <>
@@ -72,16 +97,16 @@ export const ColoniasFrm: FC = () => {
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">
-                        <div className="col-6 col-lg-4 col-xl-6">
-                            <label htmlFor="nombre">
-                                Nombre(s)<span className="text-danger">*</span>
+                        <div className="col-6 col-lg-4 col-xl-4">
+                            <label htmlFor="cuadrante">
+                                Cuadrante<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                name="nombre"
-                                id="nombre"
-                                value={nombre}
+                                name="cuadrante"
+                                id="cuadrante"
+                                value={cuadrante}
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={true}
@@ -90,49 +115,37 @@ export const ColoniasFrm: FC = () => {
                             />
                         </div>
                         <div className="col-6 col-lg-4 col-xl-2">
-                            <label htmlFor="sector">
-                                Sector <span className="text-danger">*</span>
+                            <label htmlFor="id_zona">
+                                Zona <span className="text-danger">*</span>
                             </label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                name="sector"
-                                id="sector"
-                                value={sector}
-                                onChange={handleInputChange}
-                                readOnly={readOnly}
-                                autoComplete="off"
-                                min={1}
-                                max={19}
+                            {
+                            (comboZona !== undefined) &&
+                            (comboZona.length > 0) &&
+                            <Select 
                                 required
+                                id='id_zona'
+                                value={ 
+                                    {'value' : id_zona_ref, 'label' : desc_id_zona}   
+                                }
+                                placeholder={ 'Selecciona la zona' }
+                                onChange={ handleChangeSector }
+                                options={ 
+                                    comboZona.map(reg => ({ 
+                                        value: reg.id_zona, label: reg.zona 
+                                    })) 
+                                }
                             />
-                        </div>
+                            }
+                        </div>      
+                                                  
                         <div className="col-6 col-lg-4 col-xl-2">
-                            <label htmlFor="region">
-                                Región <span className="text-danger">*</span>
-                            </label>
-                                <input
-                                type="number"
-                                className="form-control"
-                                name="region"
-                                id="region"
-                                value={region}
-                                readOnly={readOnly}
-                                onChange={handleInputChange}
-                                autoComplete="off"
-                                min={1}
-                                max={4}
-                                required
-                                />
-                        </div>
-                        <div className="col-6 col-lg-4 col-xl-2">
-                            <label htmlFor="tipo">
-                                Tipo: <span className="text-danger">*</span>
+                            <label htmlFor="sector">
+                                Sector: <span className="text-danger">*</span>
                             </label>
                             <select
-                            name="tipo"
-                            id="tipo"
-                            value={tipo}
+                            name="sector"
+                            id="sector"
+                            value={sector}
                             disabled={readOnly}
                             onChange={ handleInputChange }
                             className="form-select"
@@ -140,12 +153,12 @@ export const ColoniasFrm: FC = () => {
                             >
                                 <option value="">Selecciona</option>
                                 {
-                                    (comboTipo.length > 0) &&
-                                    comboTipo.map((item, index) =>(
+                                    (comboSector.length > 0) &&
+                                    comboSector.map((item, index) =>(
                                         <option 
                                             key={ `combo${ index }`} 
-                                            value={ item.tipo }>
-                                            { item.tipo }    
+                                            value={ item.sector }>
+                                            { item.sector }    
                                         </option>
                                     ))
                                 }

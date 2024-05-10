@@ -4,26 +4,25 @@ import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/fr
 
 import { useAppDispatch } from '../../../store/hooks';
 
-import { startColoniaDelete, startColoniasActive } from '../../../store/slices/catalogos/';
 
 import { setReadOnly } from '../../../store/slices/transaction';
-import { dataItemColonias } from '../../../interfaces';
+import {  dataItemCuadrantes } from '../../../interfaces';
+import { startCuadranteDelete, startCuadrantesActive } from '../../../store/slices/catalogos';
 
-export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
+export const CuadrantesListItem = ({ item, edit, elim }: dataItemCuadrantes) => {
 
     const dispatch = useAppDispatch();
     
     const { 
-		id_colonia,
-		nombre, 
-		tipo, 
-		region, 
-		sector,
-        activo	
+		id_cuadrante,
+		id_zona, 
+		sector, 
+        cuadrante,
+        activo
     } = item;
 
 	const handleSetWindow = ( id : number, readOnly = false ) => { 
-        dispatch( startColoniasActive( id ) );
+        dispatch( startCuadrantesActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }
 
@@ -33,7 +32,7 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
         typeBa = 1,
         classStatus = 'badge rounded-pill bg-danger',
         txtStatus = 'Inactivo';
-
+    
     if (Number(activo) === 1) {
         titleba = "Dar de Baja";
         icoba   = faBan;
@@ -60,27 +59,31 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
         }).then(( result ) => {
             
             if (result.isConfirmed) {
-                dispatch( startColoniaDelete( type, id ) );
+                dispatch( startCuadranteDelete( type, id ) );
             }
         });
     }
 
+    let zona = (Number(id_zona) === 1) ? 'PONIENTE': 'ORIENTE';
+
 	return (
 		<>
+            <td>
+                <span className={classStatus}> {txtStatus } </span>
+            </td>
 			<th scope="row">
                 <strong>
-                    { id_colonia }
+                    { cuadrante }
                 </strong>
             </th>
-            <td><span className={classStatus}> {txtStatus } </span></td>
-            <td>{ nombre }</td>
-            <td>{ tipo }</td>
+            <td>{ zona }</td>
+            <td>{ sector }</td>
             <td className="text-center">
                 <button 
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2"
                     title="Ver"
-                    onClick={ () =>{ handleSetWindow( id_colonia, true ) } }    
+                    onClick={ () =>{ handleSetWindow( id_cuadrante, true ) } }    
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -91,7 +94,7 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id_colonia, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_cuadrante, false ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
@@ -103,7 +106,7 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_colonia, typeBa )}}
+                        onClick={ () =>{ handleDeleteReg( id_cuadrante, typeBa )}}
                         >
                         <FontAwesomeIcon icon={ icoba } />
                     </button>
@@ -114,7 +117,7 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_colonia, 2 )}}
+                        onClick={ () =>{ handleDeleteReg( id_cuadrante, 2 )}}
                         >
                         <FontAwesomeIcon icon={ faTrashAlt } />
                     </button>

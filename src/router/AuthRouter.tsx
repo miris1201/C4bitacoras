@@ -9,6 +9,7 @@ const Users = lazy(() => import('../screens/admin/Users'));
 const Profiles = lazy(() => import('../screens/admin/Profiles'));
 const Home = lazy(() => import('../screens/Home'));
 const Colonias = lazy(() => import('../screens/catalogos/Colonias'));
+const Cuadrantes = lazy(() => import('../screens/catalogos/Cuadrantes'));
 
 const App: FC = (): JSX.Element => {
 	let routes = useRoutes([
@@ -16,6 +17,7 @@ const App: FC = (): JSX.Element => {
 		{ path: "/users", element: <Users /> },
 		{ path: "/rol", element: <Profiles /> },
 		{ path: "/colonias", element: <Colonias /> },
+		{ path: "/cuadrantes", element: <Cuadrantes />}
 	]);
 	return <>{routes}</>;
 };

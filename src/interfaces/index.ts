@@ -5,3 +5,4 @@ export * from './interfaceUser';
 export * from './interfaceLogin';
 export * from './interfaceGeneral';
 export * from './interfaceColonias';
+export * from './interfaceCuadrantes';

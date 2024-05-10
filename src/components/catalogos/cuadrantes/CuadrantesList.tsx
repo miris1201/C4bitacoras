@@ -2,22 +2,22 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setPageNumberColonias, setSearchColonias, startGetRegColonias, unSetActiveColonias } from '../../../store/slices/catalogos';
 import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
 import { setReadOnly, setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { ColoniaInterface } from '../../../interfaces';
-import { ColoniasListItem } from './ColoniasListItem';
-import { ColoniasModalSearch } from './ColoniasModalSearch';
+import { CuadrantesInterface } from '../../../interfaces';
+import { CuadrantesListItem } from './CuadrantesListItem';
+import { CuadrantesModalSearch } from './CuadratesModalSearch';
 import { useGetNewPage } from '../../../hooks/useGetNewPage';
+import { setPageNumberCuadrantes, setSearchCuadrantes, startGetCuadrantes, unSetActiveCuadrante } from '../../../store/slices/catalogos';
 
-export const ColoniasList: FC = (): JSX.Element => {
+export const CuadrantesList: FC = (): JSX.Element => {
 
     const { pathname } = useLocation();
     const allowed = usePermission( pathname ) ;
 
-    const { list, page, totalRows, totalPages, filterSearch } = useAppSelector( state => state.colonias);
+    const { list, page, totalRows, totalPages, filterSearch } = useAppSelector( state => state.cuadrantes);
     const { loading } = useAppSelector(state => state.transaction);
 
     const [loadingExport, setLoadingExport] = useState(false);
@@ -26,7 +26,7 @@ export const ColoniasList: FC = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch( startGetRegColonias() );
+        dispatch( startGetCuadrantes() );
     
       
     }, [dispatch, page, filterSearch]);
@@ -43,7 +43,7 @@ export const ColoniasList: FC = (): JSX.Element => {
 
     const setChangeWindow = ( ) => {
         
-      dispatch( unSetActiveColonias() );
+      dispatch( unSetActiveCuadrante() );
       dispatch( setShowList( false ) );
       dispatch( setReadOnly( false ) );
 
@@ -57,19 +57,19 @@ export const ColoniasList: FC = (): JSX.Element => {
 
         const nPage = useGetNewPage( page ,type, event, iniend )
 
-        dispatch( setPageNumberColonias( nPage ) );
+        dispatch( setPageNumberCuadrantes( nPage ) );
 
     }
 
   const setSearchEmpty = () => {
-    dispatch ( setSearchColonias({}) ); 
+    dispatch ( setSearchCuadrantes({}) ); 
   }
 
     return(
       <>
       <div className="card mb-4">
             <HeaderList
-                title='Colonias'
+                title='Cuadrantes'
                 totalRows={ totalRows }
             />
           <div className='card-body'>
@@ -119,10 +119,10 @@ export const ColoniasList: FC = (): JSX.Element => {
                         <table className="table table-hover ">
                             <thead className="table-light">
                                 <tr>
-                                    <th scope="col">Id</th>
                                     <th scope="col">Estatus</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Cuadrantes</th>
+                                    <th scope="col">Zona</th>
+                                    <th scope="col">Sector</th>
                                     <th 
                                         scope="col"
                                         className="text-center">
@@ -132,9 +132,9 @@ export const ColoniasList: FC = (): JSX.Element => {
                             </thead>
                             <tbody>
                                 {
-                                    list.map(( item: ColoniaInterface, index )=>(
+                                    list.map(( item: CuadrantesInterface, index )=>(
                                         <tr key={ index }>
-                                            {<ColoniasListItem
+                                            {<CuadrantesListItem
                                                 item={item}
                                                 edit={ edit }
                                                 elim={ elim }/>}
@@ -169,7 +169,7 @@ export const ColoniasList: FC = (): JSX.Element => {
       </div>
       {
         showModalFilter &&
-        <ColoniasModalSearch
+        <CuadrantesModalSearch
             showModal={ showModalFilter }
             setShowModal={ setShowModalFilter }
         />
