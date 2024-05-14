@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { startGetComboSector, startGetComboZona, startInsertColonia } from '../../../store/slices/catalogos';
+import { startGetComboSector, startGetComboZona, startInsertColonia, startInsertCuadrante } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setShowList } from '../../../store/slices/transaction';
@@ -20,21 +20,21 @@ export const CuadrantesFrm: FC = () => {
  
     const {
         id_zona: dId_zona,
+        zona: dZona,
         sector: dSector,
         cuadrante: dCuadrante
     } = rActive;
 
     const { formValues, handleInputChange, setValues } = useForm({
         id_update: idActive,
-        id_zona: dId_zona,
-        sector: dSector || '',
+        id_zona: dId_zona || 0,
+        zona: (dZona == "") ? 'Selecciona la zona' : dZona,
+        sector: dSector || 0,
         cuadrante: dCuadrante,
-        id_zona_ref: 0,
-        desc_id_zona: 'Selecciona la zona', 
 
     });
 
-    const { id_zona, sector, cuadrante, id_zona_ref, desc_id_zona } = formValues;
+    const { id_zona, zona, sector, cuadrante } = formValues;
 
     let titleMain = "Nuevo cuadrante";
     let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando cuadrante' : 'Editar cuadrante';
@@ -43,37 +43,35 @@ export const CuadrantesFrm: FC = () => {
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setloadingBtn(true);
-        dispatch( startInsertColonia( formValues,  setloadingBtn));
+        dispatch( startInsertCuadrante( formValues,  setloadingBtn));
     }
 
     useEffect(() => {
-        
-        if (id_zona.length > 0) {
-            dispatch( startGetComboSector(id_zona) );
-            
-        }
-    }, [dispatch, comboSector])
-
-    useEffect(() => {
-        
         if (comboZona.length === 0) {
             dispatch( startGetComboZona() );
             
         }
     }, [dispatch, comboZona])
-
     
-    const handleChangeSector = (opcion : any) => {
+    const handleChangeZona = (opcion : any) => {
         
-        let id_zona = opcion.value; 
-        let txtzona = opcion.label;
-
-        dispatch( startGetComboSector(id_zona) );
+        let selectIdZona = opcion.value;
+        dispatch( startGetComboSector(selectIdZona) );
 
         setValues({
             ...formValues,
-            id_zona: id_zona,
-            ["desc_id_zona"]: txtzona,
+            id_zona: selectIdZona
+
+        });
+    }
+
+    const handleChangeSector = (opcion : any) => {
+        
+        let selecSector = opcion.value;
+
+        setValues({
+            ...formValues,
+            sector: selecSector
 
         });
     }
@@ -85,14 +83,14 @@ export const CuadrantesFrm: FC = () => {
             <div className="card-body">
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
-                    <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => {
-                            dispatch(setShowList( true ));
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faStepBackward} /> Regresar
-                    </button>
+                        <button
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={() => {
+                                dispatch(setShowList( true ));
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faStepBackward} /> Regresar
+                        </button>
                     </li>
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
@@ -115,7 +113,7 @@ export const CuadrantesFrm: FC = () => {
                             />
                         </div>
                         <div className="col-6 col-lg-4 col-xl-2">
-                            <label htmlFor="id_zona">
+                           <label htmlFor="id_zona">
                                 Zona <span className="text-danger">*</span>
                             </label>
                             {
@@ -123,12 +121,11 @@ export const CuadrantesFrm: FC = () => {
                             (comboZona.length > 0) &&
                             <Select 
                                 required
-                                id='id_zona'
-                                value={ 
-                                    {'value' : id_zona_ref, 'label' : desc_id_zona}   
-                                }
                                 placeholder={ 'Selecciona la zona' }
-                                onChange={ handleChangeSector }
+                                onChange={ handleChangeZona }
+                                defaultValue={ 
+                                    {'value' : id_zona, 'label' : zona}
+                                }
                                 options={ 
                                     comboZona.map(reg => ({ 
                                         value: reg.id_zona, label: reg.zona 
@@ -136,33 +133,28 @@ export const CuadrantesFrm: FC = () => {
                                 }
                             />
                             }
-                        </div>      
-                                                  
+                        </div>
                         <div className="col-6 col-lg-4 col-xl-2">
                             <label htmlFor="sector">
                                 Sector: <span className="text-danger">*</span>
                             </label>
-                            <select
-                            name="sector"
-                            id="sector"
-                            value={sector}
-                            disabled={readOnly}
-                            onChange={ handleInputChange }
-                            className="form-select"
-                            required
-                            >
-                                <option value="">Selecciona</option>
-                                {
-                                    (comboSector.length > 0) &&
-                                    comboSector.map((item, index) =>(
-                                        <option 
-                                            key={ `combo${ index }`} 
-                                            value={ item.sector }>
-                                            { item.sector }    
-                                        </option>
-                                    ))
+                            {
+                            (comboSector !== undefined) &&
+                            (comboSector.length > 0) &&
+                            <Select 
+                                required
+                                placeholder={ 'Selecciona el sector' }
+                                onChange={ handleChangeSector }
+                                defaultValue={ 
+                                    {'value' : sector, 'label' : sector}
                                 }
-                            </select>
+                                options={ 
+                                    comboSector.map(reg => ({ 
+                                        value: reg.sector, label: reg.sector 
+                                    })) 
+                                }
+                            />
+                            }
                         </div>
                     </div>                    
                     <div className="row mt-4">

@@ -6,6 +6,7 @@ import { CuadrantesTemplate, ListasTemplate, ResponseData } from '../../../inter
 const initialCuadrantesActive = {
 	id_cuadrante: '',
     id_zona: '',
+	zona: '',
     sector: '',
     cuadrante: '',
 	activo: '',

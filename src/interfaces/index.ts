@@ -6,3 +6,4 @@ export * from './interfaceLogin';
 export * from './interfaceGeneral';
 export * from './interfaceColonias';
 export * from './interfaceCuadrantes';
+export * from './interfaceOperativos';

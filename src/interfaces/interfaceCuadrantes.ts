@@ -18,6 +18,7 @@ export interface CuadrantesTemplate {
 export interface CuadrantesInterface {
 	id_cuadrante: number;
 	id_zona: string;
+	zona: string;
 	sector: string;
 	cuadrante: string;
 	activo: string;

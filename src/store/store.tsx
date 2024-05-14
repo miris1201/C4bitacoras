@@ -4,8 +4,7 @@ import { templateSlice } from './slices/template/templateSlice';
 import { loginSlice } from './slices/login';
 import { userSlice } from './slices/users';
 import { profileSlice } from './slices/profiles';
-import { sliceColonias, sliceCuadrantes } from './slices/catalogos';
-import Cuadrantes from '../screens/catalogos/Cuadrantes';
+import { sliceColonias, sliceCuadrantes, sliceOperativos } from './slices/catalogos';
 
 export const store = configureStore({
 	reducer: {
@@ -16,6 +15,7 @@ export const store = configureStore({
 		profiles: profileSlice.reducer,
 		colonias: sliceColonias.reducer,
 		cuadrantes: sliceCuadrantes.reducer,
+		operativos: sliceOperativos.reducer,
 	},
 })
 

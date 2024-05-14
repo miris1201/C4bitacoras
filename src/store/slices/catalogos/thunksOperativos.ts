@@ -10,26 +10,26 @@ import { AppState } from '../../../interfaces';
 import { setShowList, setLoadingState } from '../transaction';
 
 import { exportFile } from "../../../components/helpers/exportGeneric";
-import cuadrantesApi from "../../../api/cuadrantes";
-import { setComboCuadrantes, setComboSector, setComboZona, setCuadranteActive, setIdCuadranteActive, setListCuadrantes } from "./sliceCuadrantes";
+import operativoApi from "../../../api/operativos";
+import { setComboOperativos, setIdOperativoActive, setListOperativos, setOperativosActive } from "./sliceOperativos";
 
-export const startGetCuadrantes = () => async( dispatch: AppDispatch, getState: GetState) => {
+export const startGetRegOperativos = () => async( dispatch: AppDispatch, getState: GetState) => {
     try {
-        const { cuadrantes } = getState() as AppState;
+        const { operativos } = getState() as AppState;
         
         dispatch( setLoadingState( true) ) ;
-        const regIni = cuadrantes.page * recordsPerPage;
+        const regIni = operativos.page * recordsPerPage;
         
         const dataSend = {
             limite: 0,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: cuadrantes.filterSearch
+            filtroB: operativos.filterSearch
         }
 
-        const resp = await cuadrantesApi.post(`/list`, dataSend);
+        const resp = await operativoApi.post(`/list`, dataSend);
 
-        dispatch( setListCuadrantes( resp.data ) ) ;
+        dispatch( setListOperativos( resp.data ) ) ;
         dispatch( setLoadingState( false ) ) ;
 
     } catch (error) {
@@ -40,27 +40,27 @@ export const startGetCuadrantes = () => async( dispatch: AppDispatch, getState: 
     }
 } 
 
-export const exportDataCuadrantes = ( setLoadingExport: React.Dispatch<React.SetStateAction<boolean>>) => async(dispatch: AppDispatch, getState: GetState) => {
+export const exportDataOperativos = ( setLoadingExport: React.Dispatch<React.SetStateAction<boolean>>) => async(dispatch: AppDispatch, getState: GetState) => {
     try {
         
-        const { cuadrantes } = getState() as AppState;
+        const { operativos } = getState() as AppState;
         
         setLoadingExport( true);
 
-        const regIni = cuadrantes.page * recordsPerPage;
+        const regIni = operativos.page * recordsPerPage;
         
         const dataSend = {
             limite: 1,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: cuadrantes.filterSearch,
+            filtroB: operativos.filterSearch,
             isExport: 1
         }
 
-        const resp = await cuadrantesApi.post(`/list`, dataSend);
+        const resp = await operativoApi.post(`/list`, dataSend);
         
         //setDataExport ( resp.data.rows );
-        await exportFile ( 'rptCuadrantesData',  resp.data.rows );
+        await exportFile ( 'rptOperativoData',  resp.data.rows );
         setLoadingExport( false );
 
     } catch (error) {
@@ -71,17 +71,17 @@ export const exportDataCuadrantes = ( setLoadingExport: React.Dispatch<React.Set
     }
 } 
 
-export const startCuadrantesActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
+export const startOperativosActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
     try {
        
-        const body = await cuadrantesApi.post(`/show`, { idShow });
+        const body = await operativoApi.post(`/show`, { idShow });
         
         const { done, rows  } = body.data;
 
         if( done ){
 
-            dispatch( setCuadranteActive( rows) );
-            dispatch( setIdCuadranteActive( idShow ) ) ;
+            dispatch( setOperativosActive( rows) );
+            dispatch( setIdOperativoActive( idShow ) ) ;
             dispatch( setShowList( false ));
             dispatch( setLoadingState( false ) ) ;
 
@@ -95,11 +95,11 @@ export const startCuadrantesActive = ( idShow: number ) => async( dispatch: AppD
     }
 } 
 
-export const startInsertCuadrante = ( data: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) => 
+export const startInsertOperativo = ( data: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) => 
 {
     try {
 
-        const body = await cuadrantesApi.post(`/insertupdate`, data);
+        const body = await operativoApi.post(`/insertupdate`, data);
 
         const { done, msg } = body.data;
 
@@ -130,17 +130,17 @@ export const startInsertCuadrante = ( data: {}, setLoadingBtn: React.Dispatch<Re
     }
 } 
 
-export const startCuadranteDelete = ( iTipo: number, id_delete: number ) => async( dispatch: AppDispatch ) => 
+export const startOperativoDelete = ( iTipo: number, id_delete: number ) => async( dispatch: AppDispatch ) => 
 {
     try {
     
-        const body = await cuadrantesApi.post(`/delete`, { iTipo, id_delete });
+        const body = await operativoApi.post(`/delete`, { iTipo, id_delete });
             
         const { done, msg } = body.data;
 
         if( done ){
             await Swal.fire("¡Correcto!", msg, "success").then( () =>{
-                dispatch( startGetCuadrantes() );
+                dispatch( startGetRegOperativos() );
             });
         }else{
             Swal.fire("Error", msg, "error");
@@ -154,15 +154,15 @@ export const startCuadranteDelete = ( iTipo: number, id_delete: number ) => asyn
     }
 } 
 
-export const startComboCuadrantes = ( ) => async( dispatch: AppDispatch ) => {
+export const startGetComboOperativos = ( ) => async( dispatch: AppDispatch ) => {
     try {
 
-        const body = await cuadrantesApi.post(`/combo`, {} );
+        const body = await operativoApi.post(`/combo`, {} );
 
         const { done, rows } = body.data;
 
         if( done ){
-            dispatch( setComboCuadrantes( rows ) );
+            dispatch( setComboOperativos( rows ) );
         }
 
     } catch (error) {
@@ -172,42 +172,4 @@ export const startComboCuadrantes = ( ) => async( dispatch: AppDispatch ) => {
 
     }
 } 
-
-export const startGetComboSector = ( id_zona: number ) => async( dispatch: AppDispatch ) => {
-    try {
-        const body = await cuadrantesApi.post(`/comboSector`, { id_zona } );
-
-        const { done, rows } = body.data;
-
-        if( done ){
-            dispatch( setComboSector( rows ) );
-        }
-
-    } catch (error) {
-
-        if ( error instanceof AxiosError ) console.error(error.message);
-        else console.error(error);
-
-    }
-} 
-
-export const startGetComboZona = ( ) => async( dispatch: AppDispatch ) => {
-    try {
-
-
-        const body = await cuadrantesApi.post(`/comboZona`, { } );
-
-        const { done, rows } = body.data;
-
-        if( done ){
-            dispatch( setComboZona( rows ) );
-        }
-
-    } catch (error) {
-
-        if ( error instanceof AxiosError ) console.error(error.message);
-        else console.error(error);
-
-    }
-}
 
