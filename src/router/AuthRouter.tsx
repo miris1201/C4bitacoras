@@ -8,14 +8,30 @@ import { Loading } from "../components/ui/UserInterface";
 const Users = lazy(() => import('../screens/admin/Users'));
 const Profiles = lazy(() => import('../screens/admin/Profiles'));
 const Home = lazy(() => import('../screens/Home'));
-const Operadores = lazy(() => import('../screens/catalogos/Operadores'));
+const Colonias = lazy(() => import('../screens/catalogos/Colonias'));
+const Cuadrantes = lazy(() => import('../screens/catalogos/Cuadrantes'));
+const Operativos = lazy(() => import('../screens/catalogos/Operativos'));
+const Procedencia = lazy(() => import('../screens/catalogos/Procedencia'));
+const TipoEmergencia = lazy(() => import('../screens/catalogos/TipoEmergencia'));
+const TipoCierre = lazy(() => import('../screens/catalogos/TipoCierre'));
+const Departamentos = lazy(() => import('../screens/catalogos/Departamentos'));
+const Emergencias = lazy(() => import('../screens/catalogos/Emergencias'));
+
+
 
 const App: FC = (): JSX.Element => {
 	let routes = useRoutes([
 		{ path: "/", element: <Home /> },
 		{ path: "/users", element: <Users /> },
 		{ path: "/rol", element: <Profiles /> },
-		{ path: "/operadores", element: <Operadores /> },
+		{ path: "/colonias", element: <Colonias /> },
+		{ path: "/cuadrantes", element: <Cuadrantes />},
+		{ path: "/operativos", element: <Operativos />},
+		{ path: "/procedencia", element: <Procedencia />},
+		{ path: "/tipo_emergencia", element: <TipoEmergencia />},
+		{ path: "/tipo_cierre", element: <TipoCierre />},
+		{ path: "/departamentos", element: <Departamentos />},
+		{ path: "/emergencias", element: <Emergencias />},
 	]);
 	return <>{routes}</>;
 };
