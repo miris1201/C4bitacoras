@@ -3,11 +3,11 @@ import axios from "axios";
 
 import { getToken } from "../components/helpers/general";
 
-const operativoApi = axios.create({
-    baseURL: baseUrl + "/catalogos/operativo"
+const emergenciasApi = axios.create({
+    baseURL: baseUrl + "/catalogos/emergencias"
 });
 
-operativoApi.interceptors.request.use(
+emergenciasApi.interceptors.request.use(
     async ( config ) => {
         const token = getToken();
 
@@ -20,4 +20,4 @@ operativoApi.interceptors.request.use(
     }
 );
 
-export default operativoApi;
+export default emergenciasApi;

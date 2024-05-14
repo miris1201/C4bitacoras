@@ -2,49 +2,51 @@
 
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { startGetComboOperativos, startInsertOperativo } from '../../../store/slices/catalogos';
+import { startGetComboDepartamentos, startInsertDepartamentos } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setShowList } from '../../../store/slices/transaction';
 import { HeaderList } from '../../ui/UserInterface';
 import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
 
-export const OperativosFrm: FC = () => {
+export const DepartamentosFrm: FC = () => {
 
     const dispatch = useAppDispatch();
     const [loadingBtn, setloadingBtn] = useState(false);
 
-    const {idActive, rActive, comboOperativos} = useAppSelector(state => state.operativos);
+    const {idActive, rActive, comboDepartamentos} = useAppSelector(state => state.departamentos);
     const { readOnly } = useAppSelector(state => state.transaction);
  
     const {
-        descripcion: dDescripcion
+        departamento: dDepartamento,
+        abreviatura: dAbreviatura
     } = rActive;
 
     const { formValues, handleInputChange, setValues } = useForm({
         id_update: idActive,
-        descripcion: dDescripcion
+        departamento: dDepartamento,
+        abreviatura: dAbreviatura
 
     });
 
-    const { descripcion } = formValues;
+    const { departamento, abreviatura } = formValues;
 
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setloadingBtn(true);
-        dispatch( startInsertOperativo( formValues,  setloadingBtn));
+        dispatch( startInsertDepartamentos( formValues,  setloadingBtn));
     }
 
     useEffect(() => {
         
-        if (comboOperativos.length === 0) {
-            dispatch( startGetComboOperativos() );
+        if (comboDepartamentos.length === 0) {
+            dispatch( startGetComboDepartamentos() );
             
         }
-    }, [dispatch, comboOperativos])
+    }, [dispatch, comboDepartamentos])
 
-    let titleMain = "Nuevo operativo";
-    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando operativo' : 'Editar operativo';
+    let titleMain = "Nuevo departamento";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando departamento' : 'Editar departamento';
     titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     return(
@@ -67,15 +69,32 @@ export const OperativosFrm: FC = () => {
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">
                         <div className="col-6 col-lg-4 col-xl-6">
-                            <label htmlFor="descripcion">
-                                Descripción <span className="text-danger">*</span>
+                            <label htmlFor="departamento">
+                                Departamento <span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                name="descripcion"
-                                id="descripcion"
-                                value={descripcion}
+                                name="departamento"
+                                id="departamento"
+                                value={departamento}
+                                onChange={handleInputChange}
+                                autoComplete="off"
+                                autoFocus={true}
+                                readOnly={readOnly}
+                                required
+                            />
+                        </div>
+                        <div className="col-6 col-lg-4 col-xl-4">
+                            <label htmlFor="abreviatura">
+                                Abreviatura <span className="text-danger">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="abreviatura"
+                                id="abreviatura"
+                                value={abreviatura}
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={true}

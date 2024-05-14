@@ -5,21 +5,21 @@ import { setReadOnly } from '../../../store/slices/transaction';
 
 import { useAppDispatch } from '../../../store/hooks';
 
-import { startOperativoDelete, startOperativosActive } from '../../../store/slices/catalogos';
-import { dataItemOperativos } from '../../../interfaces';
+import { startTipoCierreActive, startTipoCierreDelete } from '../../../store/slices/catalogos';
+import { dataItemTipoCierre } from '../../../interfaces';
 
-export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => {
+export const TipoCierreListItem = ({ item, edit, elim }: dataItemTipoCierre) => {
 
     const dispatch = useAppDispatch();
     
     const { 
-		id_operativo,
+		id_tipo_cierre,
 		descripcion,
         activo	
     } = item;
 
 	const handleSetWindow = ( id : number, readOnly = false ) => { 
-        dispatch( startOperativosActive( id ) );
+        dispatch( startTipoCierreActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }
 
@@ -56,7 +56,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
         }).then(( result ) => {
             
             if (result.isConfirmed) {
-                dispatch( startOperativoDelete( type, id ) );
+                dispatch( startTipoCierreDelete( type, id ) );
             }
         });
     }
@@ -70,7 +70,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2"
                     title="Ver"
-                    onClick={ () =>{ handleSetWindow( id_operativo, true ) } }    
+                    onClick={ () =>{ handleSetWindow( id_tipo_cierre, true ) } }    
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -81,7 +81,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id_operativo, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_tipo_cierre, false ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
@@ -93,7 +93,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_operativo, typeBa )}}
+                        onClick={ () =>{ handleDeleteReg( id_tipo_cierre, typeBa )}}
                         >
                         <FontAwesomeIcon icon={ icoba } />
                     </button>
@@ -104,7 +104,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_operativo, 2 )}}
+                        onClick={ () =>{ handleDeleteReg( id_tipo_cierre, 2 )}}
                         >
                         <FontAwesomeIcon icon={ faTrashAlt } />
                     </button>

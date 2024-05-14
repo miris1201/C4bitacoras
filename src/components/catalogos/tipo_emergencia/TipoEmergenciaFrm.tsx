@@ -2,19 +2,19 @@
 
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { startGetComboOperativos, startInsertOperativo } from '../../../store/slices/catalogos';
+import { startGetComboTipoEmergencia, startInsertTipoEmergencia } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setShowList } from '../../../store/slices/transaction';
 import { HeaderList } from '../../ui/UserInterface';
 import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
 
-export const OperativosFrm: FC = () => {
+export const TipoEmergenciaFrm: FC = () => {
 
     const dispatch = useAppDispatch();
     const [loadingBtn, setloadingBtn] = useState(false);
 
-    const {idActive, rActive, comboOperativos} = useAppSelector(state => state.operativos);
+    const {idActive, rActive, comboTipoEmergencia} = useAppSelector(state => state.tipoEmergencia);
     const { readOnly } = useAppSelector(state => state.transaction);
  
     const {
@@ -32,19 +32,19 @@ export const OperativosFrm: FC = () => {
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setloadingBtn(true);
-        dispatch( startInsertOperativo( formValues,  setloadingBtn));
+        dispatch( startInsertTipoEmergencia( formValues,  setloadingBtn));
     }
 
     useEffect(() => {
         
-        if (comboOperativos.length === 0) {
-            dispatch( startGetComboOperativos() );
+        if (comboTipoEmergencia.length === 0) {
+            dispatch( startGetComboTipoEmergencia() );
             
         }
-    }, [dispatch, comboOperativos])
+    }, [dispatch, comboTipoEmergencia])
 
-    let titleMain = "Nuevo operativo";
-    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando operativo' : 'Editar operativo';
+    let titleMain = "Nuevo tipo de emergencia";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando tipo de emergencia' : 'Editar tipo de emergencia';
     titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     return(

@@ -5,9 +5,9 @@ import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } 
 import { useForm } from '../../../hooks/useForm';
 import { ModalSearchList } from '../../../interfaces'
 import { useAppDispatch } from '../../../store/hooks';
-import { setSearchOperativos } from '../../../store/slices/catalogos';
+import { setSearchTipoCierre } from '../../../store/slices/catalogos';
 
-export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchList ) => {
+export const TipoCierreModalSearch = ({ showModal, setShowModal  }: ModalSearchList ) => {
 
     const dispatch = useAppDispatch();
 
@@ -24,7 +24,7 @@ export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchL
 
         setLoadingBtn(true);
 
-        dispatch( setSearchOperativos(formValues) );
+        dispatch( setSearchTipoCierre(formValues) );
         
         setLoadingBtn(false);
         setShowModal(false);
@@ -44,7 +44,7 @@ export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchL
                     <div className="row g-3">                        
                         <div className="col-12">
                             <label htmlFor="descripcion">
-                                Operativo
+                                Tipo de cierre
                             </label>
                             <input
                                 type="text"

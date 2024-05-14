@@ -1,25 +1,28 @@
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { setReadOnly } from '../../../store/slices/transaction';
 
 import { useAppDispatch } from '../../../store/hooks';
 
-import { startOperativoDelete, startOperativosActive } from '../../../store/slices/catalogos';
-import { dataItemOperativos } from '../../../interfaces';
 
-export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => {
+import { setReadOnly } from '../../../store/slices/transaction';
+import { dataItemEmergencias } from '../../../interfaces';
+import { startCuadranteDelete, startEmergenciasActive, startEmergenciasDelete } from '../../../store/slices/catalogos';
+
+export const EmergenciasListItem = ({ item, edit, elim }: dataItemEmergencias) => {
 
     const dispatch = useAppDispatch();
     
     const { 
-		id_operativo,
-		descripcion,
-        activo	
+		id_emergencia,
+		id_departamento, 
+		departamento, 
+        descripcion,
+        activo
     } = item;
 
 	const handleSetWindow = ( id : number, readOnly = false ) => { 
-        dispatch( startOperativosActive( id ) );
+        dispatch( startEmergenciasActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }
 
@@ -29,7 +32,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
         typeBa = 1,
         classStatus = 'badge rounded-pill bg-danger',
         txtStatus = 'Inactivo';
-
+    
     if (Number(activo) === 1) {
         titleba = "Dar de Baja";
         icoba   = faBan;
@@ -56,21 +59,24 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
         }).then(( result ) => {
             
             if (result.isConfirmed) {
-                dispatch( startOperativoDelete( type, id ) );
+                dispatch( startEmergenciasDelete( type, id ) );
             }
         });
     }
 
 	return (
 		<>
-            <td><span className={classStatus}> {txtStatus } </span></td>
-            <td>{ descripcion }</td>
+            <td>
+                <span className={classStatus}> {txtStatus } </span>
+            </td>
+			<th> { descripcion }</th>
+            <td>{ departamento }</td>
             <td className="text-center">
                 <button 
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2"
                     title="Ver"
-                    onClick={ () =>{ handleSetWindow( id_operativo, true ) } }    
+                    onClick={ () =>{ handleSetWindow( id_emergencia, true ) } }    
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -81,7 +87,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id_operativo, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_emergencia, false ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
@@ -93,7 +99,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_operativo, typeBa )}}
+                        onClick={ () =>{ handleDeleteReg( id_emergencia, typeBa )}}
                         >
                         <FontAwesomeIcon icon={ icoba } />
                     </button>
@@ -104,7 +110,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                         type="button"
                         className={ classBa }
                         title={ titleba }
-                        onClick={ () =>{ handleDeleteReg( id_operativo, 2 )}}
+                        onClick={ () =>{ handleDeleteReg( id_emergencia, 2 )}}
                         >
                         <FontAwesomeIcon icon={ faTrashAlt } />
                     </button>

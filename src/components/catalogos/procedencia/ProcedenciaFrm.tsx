@@ -2,19 +2,19 @@
 
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { startGetComboOperativos, startInsertOperativo } from '../../../store/slices/catalogos';
+import { startGetComboProcedencia, startInsertProcedencia } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setShowList } from '../../../store/slices/transaction';
 import { HeaderList } from '../../ui/UserInterface';
 import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
 
-export const OperativosFrm: FC = () => {
+export const ProcedenciaFrm: FC = () => {
 
     const dispatch = useAppDispatch();
     const [loadingBtn, setloadingBtn] = useState(false);
 
-    const {idActive, rActive, comboOperativos} = useAppSelector(state => state.operativos);
+    const {idActive, rActive, comboProcedencia} = useAppSelector(state => state.procedencia);
     const { readOnly } = useAppSelector(state => state.transaction);
  
     const {
@@ -32,19 +32,19 @@ export const OperativosFrm: FC = () => {
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setloadingBtn(true);
-        dispatch( startInsertOperativo( formValues,  setloadingBtn));
+        dispatch( startInsertProcedencia( formValues,  setloadingBtn));
     }
 
     useEffect(() => {
         
-        if (comboOperativos.length === 0) {
-            dispatch( startGetComboOperativos() );
+        if (comboProcedencia.length === 0) {
+            dispatch( startGetComboProcedencia() );
             
         }
-    }, [dispatch, comboOperativos])
+    }, [dispatch, comboProcedencia])
 
-    let titleMain = "Nuevo operativo";
-    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando operativo' : 'Editar operativo';
+    let titleMain = "Nueva procedencia de llamada";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando procedencia de llamada' : 'Editar procedencia de llamada';
     titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     return(

@@ -7,3 +7,8 @@ export * from './interfaceGeneral';
 export * from './interfaceColonias';
 export * from './interfaceCuadrantes';
 export * from './interfaceOperativos';
+export * from './interfaceProcedencia';
+export * from './interfaceTipoEmergencia';
+export * from './interfaceTipoCierre';
+export * from './interfaceDepartamentos';
+export * from './interfaceEmergencias';

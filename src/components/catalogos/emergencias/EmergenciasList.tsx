@@ -2,22 +2,22 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setPageNumberOperativos, setSearchOperativos, startGetRegOperativos, unSetActiveOperativo } from '../../../store/slices/catalogos';
 import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
 import { setReadOnly, setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { OperativosInterface } from '../../../interfaces';
+import { EmergenciasInterface } from '../../../interfaces';
+import { EmergenciasModalSearch } from './EmergenciasModalSearch';
 import { useGetNewPage } from '../../../hooks/useGetNewPage';
-import { OperativosListItem } from './OperativosListItem';
-import { OperativosModalSearch } from './OperativosModalSearch';
+import { setPageNumberEmergencias, setSearchEmergencias,startGetRegEmergencias, unSetActiveEmergencias } from '../../../store/slices/catalogos';
+import { EmergenciasListItem } from './EmergenciasListItem';
 
-export const OperativosList: FC = (): JSX.Element => {
+export const EmergenciasList: FC = (): JSX.Element => {
 
     const { pathname } = useLocation();
     const allowed = usePermission( pathname ) ;
 
-    const { list, page, totalRows, totalPages, filterSearch } = useAppSelector( state => state.operativos);
+    const { list, page, totalRows, totalPages, filterSearch } = useAppSelector( state => state.emergencias);
     const { loading } = useAppSelector(state => state.transaction);
 
     const [loadingExport, setLoadingExport] = useState(false);
@@ -26,7 +26,7 @@ export const OperativosList: FC = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch( startGetRegOperativos() );
+        dispatch( startGetRegEmergencias() );
     
       
     }, [dispatch, page, filterSearch]);
@@ -43,7 +43,7 @@ export const OperativosList: FC = (): JSX.Element => {
 
     const setChangeWindow = ( ) => {
         
-      dispatch( unSetActiveOperativo() );
+      dispatch( unSetActiveEmergencias() );
       dispatch( setShowList( false ) );
       dispatch( setReadOnly( false ) );
 
@@ -57,19 +57,19 @@ export const OperativosList: FC = (): JSX.Element => {
 
         const nPage = useGetNewPage( page ,type, event, iniend )
 
-        dispatch( setPageNumberOperativos( nPage ) );
+        dispatch( setPageNumberEmergencias( nPage ) );
 
     }
 
   const setSearchEmpty = () => {
-    dispatch ( setSearchOperativos({}) ); 
+    dispatch ( setSearchEmergencias({}) ); 
   }
 
     return(
       <>
       <div className="card mb-4">
             <HeaderList
-                title='Operativos'
+                title='Emergencias'
                 totalRows={ totalRows }
             />
           <div className='card-body'>
@@ -120,7 +120,8 @@ export const OperativosList: FC = (): JSX.Element => {
                             <thead className="table-light">
                                 <tr>
                                     <th scope="col">Estatus</th>
-                                    <th scope="col">Operativo</th>
+                                    <th scope="col">Emergencia</th>
+                                    <th scope="col">Departamento</th>
                                     <th 
                                         scope="col"
                                         className="text-center">
@@ -130,9 +131,9 @@ export const OperativosList: FC = (): JSX.Element => {
                             </thead>
                             <tbody>
                                 {
-                                    list.map(( item: OperativosInterface, index )=>(
+                                    list.map(( item: EmergenciasInterface, index )=>(
                                         <tr key={ index }>
-                                            {<OperativosListItem
+                                            {<EmergenciasListItem
                                                 item={item}
                                                 edit={ edit }
                                                 elim={ elim }/>}
@@ -167,7 +168,7 @@ export const OperativosList: FC = (): JSX.Element => {
       </div>
       {
         showModalFilter &&
-        <OperativosModalSearch
+        <EmergenciasModalSearch
             showModal={ showModalFilter }
             setShowModal={ setShowModalFilter }
         />

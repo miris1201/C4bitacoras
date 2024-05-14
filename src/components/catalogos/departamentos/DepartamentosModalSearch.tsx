@@ -5,26 +5,26 @@ import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } 
 import { useForm } from '../../../hooks/useForm';
 import { ModalSearchList } from '../../../interfaces'
 import { useAppDispatch } from '../../../store/hooks';
-import { setSearchOperativos } from '../../../store/slices/catalogos';
+import { setSearchDepartamentos } from '../../../store/slices/catalogos';
 
-export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchList ) => {
+export const DepartamentosModalSearch = ({ showModal, setShowModal  }: ModalSearchList ) => {
 
     const dispatch = useAppDispatch();
 
     const [loadingBtn, setLoadingBtn] = useState(false);
 
     const { formValues, handleInputChange } = useForm({
-        descripcion: '',
+        departamento: '',
     });
 
-    const { descripcion, } = formValues;
+    const { departamento } = formValues;
     
     const handleSubmitSearch = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setLoadingBtn(true);
 
-        dispatch( setSearchOperativos(formValues) );
+        dispatch( setSearchDepartamentos(formValues) );
         
         setLoadingBtn(false);
         setShowModal(false);
@@ -43,15 +43,15 @@ export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchL
                 <CModalBody>
                     <div className="row g-3">                        
                         <div className="col-12">
-                            <label htmlFor="descripcion">
-                                Operativo
+                            <label htmlFor="departamento">
+                                Departamentos
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
-                                name="descripcion"
-                                id="descripcion"
-                                value={ descripcion }
+                                name="departamento"
+                                id="departamento"
+                                value={ departamento }
                                 onChange={ handleInputChange }
                             />
                         </div>
