@@ -55,7 +55,7 @@ export const AccountModalForm = ({ showModal, setShowModal }: dataAccountParams)
             <CModalHeader>
                 <CModalTitle>Mi Cuenta </CModalTitle>
             </CModalHeader>
-            <form className="row g-12">
+            <form>
                 <CModalBody> 					
                     <div className="row g-12">
 						<div className="col-6">
