@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react';
 
 
@@ -8,42 +8,33 @@ import { useForm } from '../../hooks/useForm';
 import Swal from "sweetalert2";
 
 import { dataAccountParams } from '../../interfaces';
-import { setMyAccount } from '../../store/slices/users';
+import { startChangePassword } from '../../store/slices/users/thunks';
 
 export const AccountModalForm = ({ showModal, setShowModal }: dataAccountParams) => {
 
-	// const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 	
 	const [loadingBtnDtl, setLoadingBtnDtl] = useState(false);
 	
-	// const { idActive, uActive } = useAppSelector(state => state.users);
+	const { uid, name, systemOptions } = useAppSelector(state => state.login);
 
-	const { idActive, uActive,  } = useAppSelector(state => state.login);
-	
-	console.log(uActive);
-
-
-	const {
-		nombre: dNombre,
-        apepa: dApepa,
-        apema: dApema,
-        usuario: dUsuario,
-        no_empleado: dNo_empleado,
-    } = uActive;
-
-	
-    const { formValues, handleInputChange, setValues } = useForm({
-		id_update: idActive,
-        nombre: dNombre,
-        apepa: dApepa,
-        apema: dApema || '',
-        usuario: dUsuario,
-        no_empleado: dNo_empleado
+	const { formValues, handleInputChange } = useForm({
+		id_usuario: uid,
+        old_password: '',
+        confirm_password: ''
     });
 	
-	const { nombre, apepa, apema, usuario, no_empleado } = formValues;
-	// console.log(no_empleado);
+	const { nombre_completo, no_empleado, sexo } = systemOptions;
 	
+	const { id_usuario, old_password, confirm_password } = formValues;
+
+	let genero = (sexo == 1) ? 'Femenino' : 'Masculino';
+
+	const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoadingBtnDtl(true);
+        dispatch(  startChangePassword( formValues, setLoadingBtnDtl, setShowModal ));
+    };
 
 	return (
 		<CModal
@@ -55,111 +46,44 @@ export const AccountModalForm = ({ showModal, setShowModal }: dataAccountParams)
             <CModalHeader>
                 <CModalTitle>Mi Cuenta </CModalTitle>
             </CModalHeader>
-            <form>
+            <form className="g-3" onSubmit={handleSubmitForm}>
                 <CModalBody> 					
-                    <div className="row g-12">
+					<div className="row g-12">					
 						<div className="col-6">
-                            <label htmlFor="usuario">
-                                Usuario
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="usuario"
-                                id="usuario"
-                                value={ usuario }
-                                onChange={handleInputChange}
-                                autoComplete="off"
-								disabled
-                            />
-                        </div>
-						<div className="col-6">
-							<label htmlFor="no_empleado">
-								No. empleado <span className='text-danger'>*</span>
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								name="no_empleado"
-								id="no_empleado"
-								value={ no_empleado }
-								onChange={handleInputChange}
-								autoComplete="off"
-								autoFocus={false}
-								disabled
-							/>
-						</div>
-						<div className="col-4">
-							<label htmlFor="nombre">
-								Nombre <span className='text-danger'>*</span>
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								name="nombre"
-								id="nombre"
-								value={ nombre }
-								onChange={handleInputChange}
-								autoComplete="off"
-								autoFocus={false}
-								disabled
-							/>
-						</div>
-						<div className="col-4">
-							<label htmlFor="apepa">
-								Apellido Paterno <span className='text-danger'>*</span>
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								name="apepa"
-								id="apepa"
-								value={ apepa }
-								onChange={handleInputChange}
-								autoComplete="off"
-								autoFocus={false}
-								disabled
-							/>
-						</div>
-						<div className="col-4">
-							<label htmlFor="apema">
-								Apellido Materno
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								name="apema"
-								id="apema"
-								value={ apema }
-								onChange={handleInputChange}
-								autoComplete="off"
-								autoFocus={false}
-								disabled
-							/>
+							<span>Nombre: <strong>{ nombre_completo }</strong></span> <br />
+							<span>Usuario: <strong>{ name }</strong></span> <br />							
 						</div>
 						<div className="col-6">
-                            <label htmlFor="clave_nueva">
+							<span>No. empleado: <strong>{ no_empleado }</strong></span> <br />
+							<span>Sexo: <strong>{ genero }</strong></span> <br />
+                        </div><br />
+					</div>	
+					<div className="row g-12">						
+						<div className="col-6">
+                            <label htmlFor="old_password">
                                 Contraseña Nueva <span className='text-danger'>*</span>
                             </label>
                             <input
                                 type="password"
                                 className="form-control"
-                                name="clave_nueva"
-                                id="clave_nueva"
-                                onChange={handleInputChange}
+                                name="old_password"
+                                id="old_password"
+								value={ old_password }
+								onChange={ handleInputChange}
                                 autoComplete="off"
                             />
                         </div>
 						<div className="col-6">
-							<label htmlFor="clave_conf">
+							<label htmlFor="confirm_password">
 								Confirmar contraseña <span className='text-danger'>*</span>
 							</label>
 							<input
 								type="password"
 								className="form-control"
-								name="clave_conf"
-								id="clave_conf"
-								onChange={handleInputChange}
+								name="confirm_password"
+								id="confirm_password"
+								value={ confirm_password }
+								onChange={ handleInputChange}
 								autoComplete="off"
 								autoFocus={false}
 							/>

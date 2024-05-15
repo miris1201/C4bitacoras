@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 import { userLoginData } from '../../../interfaces';
 import { AppDispatch } from '../../store';
-import { setDataName, setDataUid, setDataUserMenu, setLoadingState } from './loginSlice';
+import { setDataName, setDataSystemOptions, setDataUid, setDataUserMenu, setLoadingState } from './loginSlice';
 
 export const startLogin = ( data: userLoginData ) => async( dispatch: AppDispatch ) => {
     try {
@@ -13,7 +13,8 @@ export const startLogin = ( data: userLoginData ) => async( dispatch: AppDispatc
         dispatch( setLoadingState( true ) );
 
         const resp = await axios.post(`${ baseUrl }/acceso`, data);
-        const { done, msg, token, menu, uid, name } = resp.data;
+        const { done, msg, token, menu, uid, name, systemOptions } = resp.data;
+
 
         if( done ){
 
@@ -21,6 +22,7 @@ export const startLogin = ( data: userLoginData ) => async( dispatch: AppDispatc
             dispatch( setDataUserMenu( menu ) );
             dispatch( setDataUid( uid ) );
             dispatch( setDataName( name ) );
+            dispatch( setDataSystemOptions( systemOptions));
 
         }else{
             localStorage.setItem('token', '');
@@ -52,13 +54,14 @@ export const startCheking = ( ) => async( dispatch: AppDispatch ) => {
                 } 
             } 
         );
-        const { done, menu, uid, name } = resp.data;
+        const { done, menu, uid, name, systemOptions } = resp.data;
 
         if( done ){
          
             dispatch( setDataUserMenu( menu ) );
             dispatch( setDataUid( uid ) );
             dispatch( setDataName( name ) );
+            dispatch( setDataSystemOptions( systemOptions) );
 
         }else{
             

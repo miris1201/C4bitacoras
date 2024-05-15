@@ -200,11 +200,11 @@ export const startUserDelete = ( iTipo: number, id_delete: number ) => async( di
 export const startChangePassword = ( values: {}, setLoadingBtn: React.SetStateAction<any>, setShowModal: React.SetStateAction<any>) => async( dispatch: AppDispatch ) => 
 {
     try {
-    
+   
         const body = await usersApi.post(`/updatepassword`, values );
-        
-        const { done, msg } = body.data;
 
+        const { done, msg } = body.data;
+        
         if( done ){
             await Swal.fire("¡Correcto!", msg, "success").then( () =>{
                 setLoadingBtn(true);
@@ -213,6 +213,8 @@ export const startChangePassword = ( values: {}, setLoadingBtn: React.SetStateAc
         }else{
             Swal.fire("Error", msg, "error");
         }
+
+        setLoadingBtn( false );
 
     } catch (error) {
 
