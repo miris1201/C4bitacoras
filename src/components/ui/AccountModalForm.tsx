@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react';
 
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { useForm } from '../../../hooks/useForm';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useForm } from '../../hooks/useForm';
 
 import Swal from "sweetalert2";
 
-import { dataAccountParams } from '../../../interfaces';
-import { setMyAccount } from '../../../store/slices/users';
+import { dataAccountParams } from '../../interfaces';
+import { setMyAccount } from '../../store/slices/users';
 
 export const AccountModalForm = ({ showModal, setShowModal }: dataAccountParams) => {
 
@@ -18,7 +18,7 @@ export const AccountModalForm = ({ showModal, setShowModal }: dataAccountParams)
 	
 	// const { idActive, uActive } = useAppSelector(state => state.users);
 
-	const { idActive, uActive } = useAppSelector(state => state.users);
+	const { idActive, uActive,  } = useAppSelector(state => state.login);
 	
 	console.log(uActive);
 

@@ -18,7 +18,7 @@ import CIcon from '@coreui/icons-react';
 import avatar8 from '../../../assets/images/avatars/avatar.png';
 import { useAppSelector } from '../../../store/hooks';
 import { startLogout } from '../../../store/slices/login';
-import { AccountModalForm } from './AccountModalForm';
+import { AccountModalForm } from '../AccountModalForm';
 
 const AppHeaderDropdown = () => {
 

@@ -135,7 +135,6 @@ export const UserList: FC = (): JSX.Element => {
                         <table className="table table-hover ">
                             <thead className="table-light">
                                 <tr>
-                                    <th scope="col">Id</th>
                                     <th scope="col">Usuario</th>
                                     <th scope="col">No. empleado</th>
                                     <th scope="col">Nombre</th>

@@ -31,6 +31,7 @@ export const UserFrm: FC = () => {
         id_zona: dId_zona,
         id_rol: dId_rol,
         admin: dAdmin,
+        sexo: dSexo,
         menuActive
     } = uActive;
 
@@ -44,12 +45,13 @@ export const UserFrm: FC = () => {
         clave: "",
         id_rol: dId_rol || '',
         id_zona: dId_zona || '',
+        sexo: dSexo || '',
         admin: dAdmin,
         menu: dataProfileId,
     });
     const [ idRolIni, setIdRolIni ] = useState <string|number>( dId_rol );
     //Variables que van para el formulario
-    const { nombre, apepa, apema, usuario, clave, id_rol, id_zona, no_empleado, menu } = formValues;
+    const { nombre, apepa, apema, usuario, clave, id_rol, id_zona, sexo, no_empleado, menu } = formValues;
 
     const hanbleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -256,6 +258,61 @@ export const UserFrm: FC = () => {
                                 />
                         </div>
                         <div className="col-6 col-lg-4 col-xl-4">
+                            <label htmlFor="sexo">
+                                Sexo: <span className="text-danger">*</span>
+                            </label>
+                            <select
+                            name="sexo"
+                            id="sexo"
+                            value={sexo}
+                            disabled={readOnly}
+                            onChange={ handleInputChange }
+                            className="form-select"
+                            required
+                            >
+                                <option value="">Selecciona</option>
+                                <option value="1">Femenino</option>
+                                <option value="2">Masculino</option>
+                               
+                            </select>
+                        </div>
+                        
+                        <div className="col-6 col-lg-4 col-xl-4">
+                            <label htmlFor="id_zona">
+                                Zona: <span className="text-danger">*</span>
+                            </label>
+                            <select
+                            name="id_zona"
+                            id="id_zona"
+                            value={id_zona}
+                            disabled={readOnly}
+                            onChange={ handleInputChange }
+                            className="form-select"
+                            required
+                            >
+                                <option value="">Selecciona</option>
+                                <option value="1">Poniente</option>
+                                <option value="2">Oriente</option>
+                               
+                            </select>
+                        </div>
+                        <div className="col-6 col-lg-4 col-xl-4">
+                            <label htmlFor="no_empleado">
+                                No. empleado<span className="text-danger">*</span>
+                            </label>
+                                <input
+                                type="text"
+                                className="form-control"
+                                name="no_empleado"
+                                value={no_empleado}
+                                onChange={handleInputChange}
+                                id="no_empleado"
+                                autoComplete="off"
+                                required={readOnly}
+                                readOnly={readOnly}
+                                />
+                        </div>
+                        <div className="col-6 col-lg-4 col-xl-4">
                             <label htmlFor="id_rol">
                                 Perfil: <span className="text-danger">*</span>
                             </label>
@@ -280,41 +337,6 @@ export const UserFrm: FC = () => {
                                     ))
                                 }
                             </select>
-                        </div>
-                        <div className="col-6 col-lg-4 col-xl-4">
-                            <label htmlFor="id_zona">
-                                Zona: <span className="text-danger">*</span>
-                            </label>
-                            <select
-                            name="id_zona"
-                            id="id_zona"
-                            value={id_zona}
-                            disabled={readOnly}
-                            onChange={ handleInputChange }
-                            className="form-select"
-                            required
-                            >
-                                <option value="">Selecciona</option>
-                                <option value="1">Poniente</option>
-                                <option value="1">Oriente</option>
-                               
-                            </select>
-                        </div>
-                        <div className="col-6 col-lg-4 col-xl-4">
-                            <label htmlFor="no_empleado">
-                                No. empleado<span className="text-danger">*</span>
-                            </label>
-                                <input
-                                type="text"
-                                className="form-control"
-                                name="no_empleado"
-                                value={no_empleado}
-                                onChange={handleInputChange}
-                                id="no_empleado"
-                                autoComplete="off"
-                                required={readOnly}
-                                readOnly={readOnly}
-                                />
                         </div>
                     </div>
                     {  

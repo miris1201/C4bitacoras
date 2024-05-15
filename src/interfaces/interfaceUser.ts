@@ -22,6 +22,7 @@ export interface FilterS {
 
 export interface ItemUser{
 	id_usuario: number;
+	no_empleado: number;
 	usuario: string;
 	nombre: string;
 	activo: number;
