@@ -22,6 +22,7 @@ export interface FilterS {
 
 export interface ItemUser{
 	id_usuario: number;
+	no_empleado: number;
 	usuario: string;
 	nombre: string;
 	activo: number;
@@ -41,4 +42,9 @@ export interface dataProfileCheck {
     menu: Array<any>;
     handleCheckBoxChange: any;
     handleCheckBoxChangeChild: any;
+}
+
+export interface dataAccountParams {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }

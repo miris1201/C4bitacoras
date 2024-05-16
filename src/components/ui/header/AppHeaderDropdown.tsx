@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -18,21 +18,27 @@ import CIcon from '@coreui/icons-react';
 import avatar8 from '../../../assets/images/avatars/avatar.png';
 import { useAppSelector } from '../../../store/hooks';
 import { startLogout } from '../../../store/slices/login';
+import { AccountModalForm } from '../AccountModalForm';
+
 
 const AppHeaderDropdown = () => {
 
 	const dispatch = useDispatch();
 
 	const { name } = useAppSelector( state => state.login );
+	const [showModalAccount, setShowModalAccount] = useState(false);
 
 	const handleLogOut = () => {
 		dispatch( startLogout() );
 	}
 	
 	const handleShowModalDataUser = () => {
+		setShowModalAccount(true);
+		
 	}
 
 	return (
+		<>
 		<CDropdown variant="nav-item">
 			<CDropdownToggle 
 				className="py-0" 
@@ -64,6 +70,14 @@ const AppHeaderDropdown = () => {
 					</CDropdownItem>
 			</CDropdownMenu>
 		</CDropdown>
+		{
+			(showModalAccount) &&
+			<AccountModalForm
+                showModal={ showModalAccount }
+                setShowModal={ setShowModalAccount }
+            />
+		}
+		</>
 	)
 }
 

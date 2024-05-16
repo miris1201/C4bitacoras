@@ -6,7 +6,7 @@ import axios, { AxiosError } from 'axios';
 
 import { AppDispatch, GetState } from '../../store';
 import { AppState } from '../../../interfaces';
-import { setListUser, setUserActive, setDataProfileById, setIdUserActive, setComboProfile } from './userSlice';
+import { setListUser, setUserActive, setDataProfileById, setIdUserActive, setComboProfile, setMyAccount } from './userSlice';
 import { setShowList, setLoadingState } from '../transaction';
 
 import { exportFile } from "../../../components/helpers/exportGeneric";
@@ -200,11 +200,11 @@ export const startUserDelete = ( iTipo: number, id_delete: number ) => async( di
 export const startChangePassword = ( values: {}, setLoadingBtn: React.SetStateAction<any>, setShowModal: React.SetStateAction<any>) => async( dispatch: AppDispatch ) => 
 {
     try {
-    
+   
         const body = await usersApi.post(`/updatepassword`, values );
-        
-        const { done, msg } = body.data;
 
+        const { done, msg } = body.data;
+        
         if( done ){
             await Swal.fire("¡Correcto!", msg, "success").then( () =>{
                 setLoadingBtn(true);
@@ -213,6 +213,8 @@ export const startChangePassword = ( values: {}, setLoadingBtn: React.SetStateAc
         }else{
             Swal.fire("Error", msg, "error");
         }
+
+        setLoadingBtn( false );
 
     } catch (error) {
 
@@ -229,4 +231,41 @@ export const startChangePassword = ( values: {}, setLoadingBtn: React.SetStateAc
         setLoadingBtn( false );
 
     }
-} 
+}
+
+export const startInsertSalidas = ( values: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) => 
+    {
+        try {
+            
+            const body = await usersApi.post(`/sys/account`, values);
+
+    
+            const { done, msg, id} = body.data;
+    
+            if( done ){
+                await Swal.fire("¡Correcto!", msg, "success");
+                await dispatch( setShowList( true ) );
+                await dispatch( setMyAccount(id) );
+            }else{
+                Swal.fire("Error", msg, "error");
+            }
+    
+            setLoadingBtn( false );
+            
+    
+        } catch (error) {
+    
+            const err:any = error as AxiosError;
+    
+            let data = err.response?.data;
+            
+            if( typeof data === 'object'){
+                Swal.fire("Error", data.msg , "error");
+            }else{
+                Swal.fire("Error", data , "error");
+            }
+            
+            setLoadingBtn( false );
+    
+        }
+    } 

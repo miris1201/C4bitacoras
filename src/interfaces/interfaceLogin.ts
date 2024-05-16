@@ -8,6 +8,7 @@ export interface templateState {
 	id_rol: number
 	user_name: string,
 	errors?: any;
+	systemOptions?: any
 }
 
 export interface userLoginData {

@@ -8,7 +8,8 @@ const initialState: templateState = {
 	uid: null,
 	id_rol: 0,
 	user_name: "",
-	name: ""
+	name: "",
+	systemOptions: "",
 }
 
 export const loginSlice = createSlice({
@@ -33,12 +34,17 @@ export const loginSlice = createSlice({
 		setUserName: (state, action: PayloadAction<string>) => {
 			state.user_name = action.payload
 		},
+		setDataSystemOptions: ( state, action: PayloadAction<[]> ) =>{
+			state.systemOptions = action.payload
+		},
 		startLogout: ( state ) => {
 			localStorage.clear();
 			state.checking = false
 			state.uid = null
 			state.name = ""
+			state.systemOptions = ""
 		},
+		
 		
 	}
 })
@@ -51,5 +57,6 @@ export const {
 	setIdRol,
 	setDataName,
 	setUserName,
-	startLogout 
+	setDataSystemOptions,
+	startLogout
 } = loginSlice.actions;

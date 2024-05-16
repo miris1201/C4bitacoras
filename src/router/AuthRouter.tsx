@@ -17,8 +17,6 @@ const TipoCierre = lazy(() => import('../screens/catalogos/TipoCierre'));
 const Departamentos = lazy(() => import('../screens/catalogos/Departamentos'));
 const Emergencias = lazy(() => import('../screens/catalogos/Emergencias'));
 
-
-
 const App: FC = (): JSX.Element => {
 	let routes = useRoutes([
 		{ path: "/", element: <Home /> },
