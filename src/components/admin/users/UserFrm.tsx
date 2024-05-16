@@ -160,9 +160,13 @@ export const UserFrm: FC = () => {
 
     }
 
+    let titleMain = "Nuevo Usuario";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando usuario' : 'Editar usuario';
+    titleMain = (idActive === 0) ? titleMain : titleHeader;
+
     return (
         <div className="card mb-4">
-            <HeaderList title='Agregando Usuario'/>
+            <HeaderList title={ titleMain }/>
             <div className="card-body">
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">

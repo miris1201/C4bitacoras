@@ -99,9 +99,12 @@ export const startUserActive = ( idShow: number ) => async( dispatch: AppDispatc
 export const startGetProfilebyId = ( id_rol: string, setValues:  React.SetStateAction<any>, values: {} ) => async( dispatch: AppDispatch ) => {
     try {
        
+
         const resp = await loginApi.post(`menu/listGeneric`, { id_rol } );
 
         const { done, menu } = resp.data;
+
+        console.log(resp.data)
 
         if( done ){
             dispatch( setDataProfileById( menu) );
