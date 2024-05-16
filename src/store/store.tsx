@@ -4,7 +4,15 @@ import { templateSlice } from './slices/template/templateSlice';
 import { loginSlice } from './slices/login';
 import { userSlice } from './slices/users';
 import { profileSlice } from './slices/profiles';
-import { sliceOperadores } from './slices/catalogos';
+import { sliceColonias, 
+		 sliceCuadrantes, 
+		 sliceOperativos, 
+		 sliceProcedencia, 
+		 sliceTipoEmergencia, 
+		 sliceTipoCierre, 
+		 sliceDepartamentos, 
+		 sliceEmergencias } from './slices/catalogos';
+
 
 export const store = configureStore({
 	reducer: {
@@ -13,7 +21,14 @@ export const store = configureStore({
 		login: loginSlice.reducer,
 		users: userSlice.reducer,
 		profiles: profileSlice.reducer,
-		operadores: sliceOperadores.reducer,
+		colonias: sliceColonias.reducer,
+		cuadrantes: sliceCuadrantes.reducer,
+		operativos: sliceOperativos.reducer,
+		procedencia: sliceProcedencia.reducer,
+		tipoEmergencia: sliceTipoEmergencia.reducer,
+		tipoCierre: sliceTipoCierre.reducer,
+		departamentos: sliceDepartamentos.reducer,
+		emergencias: sliceEmergencias.reducer,
 	},
 })
 

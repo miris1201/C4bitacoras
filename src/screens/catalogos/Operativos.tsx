@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setShowList } from '../../store/slices/transaction';
-import { OperadoresList } from '../../components/catalogos/operadores/OperadoresList';
-import { OperadoresFrm } from '../../components/catalogos/operadores/OperadoresFrm';
+import { OperativosList } from '../../components/catalogos/operativos/OperativosList';
+import { OperativosFrm } from '../../components/catalogos/operativos/OperativosFrm';
 
-const Operadores: FC = () : JSX.Element=> {
+const Operativos: FC = () : JSX.Element=> {
 
     const { showList } = useAppSelector((state) => state.transaction);
     const dispatch = useAppDispatch();
@@ -15,9 +15,9 @@ const Operadores: FC = () : JSX.Element=> {
 
     return (
         ( showList ) 
-        ? <OperadoresList/>
-        : <OperadoresFrm />
+        ? <OperativosList/>
+        : <OperativosFrm />
     )
 }
 
-export default Operadores;
+export default Operativos;

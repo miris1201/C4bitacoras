@@ -6,7 +6,7 @@ export interface UserTemplateState {
 	readOnly: boolean;
 	page: number;
 	totalRows: number;
-	totalPages: number;
+	totalPages: number; 
 	dataProfileId: any[];
 	filterSearch: any;
 	list: any[];
