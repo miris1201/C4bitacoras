@@ -12,6 +12,7 @@ import { sliceColonias,
 		 sliceTipoCierre, 
 		 sliceDepartamentos, 
 		 sliceEmergencias } from './slices/catalogos';
+import { bitacorasSlice } from './slices/bitacoras';
 
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
 		tipoCierre: sliceTipoCierre.reducer,
 		departamentos: sliceDepartamentos.reducer,
 		emergencias: sliceEmergencias.reducer,
+		bitacoras: bitacorasSlice.reducer,
 	},
 })
 

@@ -12,3 +12,5 @@ export * from './interfaceTipoEmergencia';
 export * from './interfaceTipoCierre';
 export * from './interfaceDepartamentos';
 export * from './interfaceEmergencias';
+
+export * from './interfaceBitacoras';
