@@ -3,16 +3,15 @@ import axios from "axios";
 
 import { getToken } from "../components/helpers/general";
 
-const bitacorasApi = axios.create({
-    baseURL: baseUrl + "/bitacoras"
+const bitacoraApi = axios.create({
+    baseURL: baseUrl + "/registros/bitacora"
 });
 
-bitacorasApi.interceptors.request.use(
-    async ( config ) => {
+bitacoraApi.interceptors.request.use(
+    async ( config ) => {   
         const token = getToken();
-
         if ( token ) {
-            if( config.headers != null ) {
+            if( config.headers!= null ) {
                 config.headers["Authorization"] = "Bearer " + token;
             }
         }
@@ -20,4 +19,4 @@ bitacorasApi.interceptors.request.use(
     }
 );
 
-export default bitacorasApi;
+export default bitacoraApi;
