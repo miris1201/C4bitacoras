@@ -48,6 +48,10 @@ export const sliceBitacoras = createSlice({
         setPageNumberBitacoras: ( state, action: PayloadAction<number> ) => {
             state.page = action.payload
         },
+        unSetActiveBitacoras: ( state ) => {
+			state.idActive = 0;
+			state.rActive = initialBitacorasActive;
+		},
         setSearchBitacoras: ( state, action: PayloadAction<{}> ) => {
             state.filterSearch = action.payload
         },
@@ -62,6 +66,7 @@ export const {
     setBitacorasActive,
     setListaBitacoras,
     setPageNumberBitacoras,
+    unSetActiveBitacoras,
     setSearchBitacoras,
     setComboDepartamentos,
 } = sliceBitacoras.actions;

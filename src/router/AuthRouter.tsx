@@ -16,6 +16,7 @@ const TipoEmergencia = lazy(() => import('../screens/catalogos/TipoEmergencia'))
 const TipoCierre = lazy(() => import('../screens/catalogos/TipoCierre'));
 const Departamentos = lazy(() => import('../screens/catalogos/Departamentos'));
 const Emergencias = lazy(() => import('../screens/catalogos/Emergencias'));
+const Bitacoras = lazy(() => import('../screens/registros/Bitacoras'));
 
 const App: FC = (): JSX.Element => {
 	
@@ -31,6 +32,7 @@ const App: FC = (): JSX.Element => {
 		{ path: "/tipo_cierre", element: <TipoCierre />},
 		{ path: "/departamentos", element: <Departamentos />},
 		{ path: "/emergencias", element: <Emergencias />},
+		{ path: "/bitacoras", element: <Bitacoras />},
 	]);
 	return <>{routes}</>;
 };
@@ -42,7 +44,7 @@ export const AuthRouter = () => {
 			<div className="wrapper d-flex flex-column min-vh-100 bg-light">
 				<AppHeader />
 				<div className="body flex-grow-1 px-3">
-					<CContainer>
+					<CContainer fluid>
 						<Suspense fallback={<Loading/>}>
 							<App />
 						</Suspense>

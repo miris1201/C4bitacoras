@@ -21,7 +21,6 @@ export const startGetRegBitacoras = () => async( dispatch: AppDispatch, getState
         
         const { bitacoras } = getState() as AppState;
 
-        dispatch( setLoadingState( true) ) ;
         const regIni = bitacoras.page * recordsPerPage;
         
         const dataSend = {
