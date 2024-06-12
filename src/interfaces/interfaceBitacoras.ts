@@ -8,9 +8,9 @@ export interface BitacoraTemplate {
     totalRows: number;
     totalPages: number;
     filterSearch: any;
+    filterDeptos: Array<number>;
     list: any[];
     errors?: any;
-    comboDepartamentos: any[];
 }
 
 export interface BitacoraInterface {
@@ -30,7 +30,6 @@ export interface BitacoraInterface {
 
 export interface FilterBitacora {
     sFolio: string;
-    sDepartamento: string;
     sFechaInicial: string;
     sFechaFinal: string;
 }

@@ -9,13 +9,15 @@ import { HeaderList } from '../../ui/UserInterface';
 import { setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import Select from 'react-select';
 
 export const BitacorasFrm: FC = () => {
 
     const dispatch = useAppDispatch();
     const [loadingBtn, setLoadingBtn] = useState( false )
 
-    const { idActive, rActive, comboDepartamentos } = useAppSelector( state => state.bitacoras);
+    const { idActive, rActive } = useAppSelector( state => state.bitacoras);
+    const { comboDepartamentos } = useAppSelector( state => state.departamentos);
     const { readOnly } = useAppSelector( state => state.transaction);
 
     const { 
@@ -60,10 +62,21 @@ export const BitacorasFrm: FC = () => {
         }
     
     }, [dispatch, comboDepartamentos])
+
+    const handleChangeDepto = (opcion : any) => {
+        
+        let selectDepto = opcion.value;
+
+        setValues({
+            ...formValues,
+            id_departamento: selectDepto
+
+        });
+    }
     
     return(
         <>
-            <div className="card mb-4">
+        <div className="card mb-4">
             <HeaderList title='Bitacoras'/>
             <div className="card-body">
                 <ul className="nav nav-pills mb-2">
@@ -80,15 +93,37 @@ export const BitacorasFrm: FC = () => {
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">
-                        <div className="col-6 col-lg-4 col-xl-6">
-                            <label htmlFor="nombre">
-                                Nombre(s)<span className="text-danger">*</span>
+                        <div className="col-6 col-lg-4 col-xl-3">
+                           <label htmlFor="id_departamento">
+                                Departamento <span className="text-danger">*</span>
+                            </label>
+                            {
+                            (comboDepartamentos !== undefined) &&
+                            (comboDepartamentos.length > 0) &&
+                            <Select 
+                                required
+                                placeholder={ 'Selecciona el departamento' }
+                                onChange={ handleChangeDepto }
+                                defaultValue={ 
+                                    {'value' : id_departamento, 'label' : departamento}
+                                }
+                                options={ 
+                                    comboDepartamentos.map(reg => ({ 
+                                        value: reg.id_departamento, label: reg.departamento 
+                                    })) 
+                                }
+                            />
+                            }
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-3">
+                            <label htmlFor="fecha">
+                                Fecha<span className="text-danger">*</span>
                             </label>
                             <input
-                                type="text"
+                                type="date"
                                 className="form-control"
-                                name="nombre"
-                                id="nombre"
+                                name="fecha"
+                                id="fecha"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={true}

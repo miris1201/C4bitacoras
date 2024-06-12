@@ -16,7 +16,7 @@ import { setComboDepartamentos } from "../catalogos";
 import bitacoraApi from "../../../api/bitacoras";
 import departamentosApi from "../../../api/departamentos";
 
-export const startGetRegBitacoras = () => async( dispatch: AppDispatch, getState: GetState) => {
+export const startGetRegBitacoras = ( id_zona: number, id_rol: number) => async( dispatch: AppDispatch, getState: GetState) => {
     try {
         
         const { bitacoras } = getState() as AppState;
@@ -27,8 +27,13 @@ export const startGetRegBitacoras = () => async( dispatch: AppDispatch, getState
             limite: 0,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: bitacoras.filterSearch
+            filtroB: bitacoras.filterSearch,
+            filtroD: bitacoras.filterDeptos,
+            id_zona: id_zona,
+            id_rol: id_rol
         };
+
+
 
         const resp = await bitacoraApi.post(`/list`, dataSend);
         
@@ -47,17 +52,18 @@ export const exportDataBitacoras = ( setLoadingExport: React.Dispatch<React.SetS
 
         const { bitacoras } = getState() as AppState;
 
-        setLoadingExport( true );
         const regIni = bitacoras.page * recordsPerPage;
         
         const dataSend = {
             limite: 0,
             regIni: regIni,
             regFin: recordsPerPage,
-            filtroB: bitacoras.filterSearch
+            filtroB: bitacoras.filterSearch,
+            filtroD: bitacoras.filterDeptos
         };
 
-        const resp = await bitacoraApi.post(`/list`, dataSend);
+
+        const resp = await bitacoraApi.post(`/listExport`, dataSend);
 
         await exportFile ( 'rptBitacoras',  resp.data.rows );
         setLoadingExport( false );
@@ -75,7 +81,7 @@ export const startInsertBitacora = ( data: {}, setLoadingBtn: React.Dispatch<Rea
 
     try {
 
-        setLoadingBtn( true );
+        // setLoadingBtn( true );
         const body = await bitacoraApi.post(`/insertupdate`, data);
 
         const { done, msg } = body.data;
@@ -112,6 +118,7 @@ export const startGetComboDepartamentos = ( ) => async( dispatch: AppDispatch ) 
         const body = await departamentosApi.post(`/combo`, {} );
 
         const { done, rows } = body.data;
+
 
         if( done ){
             dispatch( setComboDepartamentos( rows ) );

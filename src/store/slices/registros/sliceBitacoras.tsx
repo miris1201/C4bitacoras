@@ -27,8 +27,8 @@ const initialState: BitacoraTemplate = {
     totalRows: 0,
     totalPages: 0,
     filterSearch: {},
+    filterDeptos: [],
     list: [],
-    comboDepartamentos: [],
 }
 
 export const sliceBitacoras = createSlice({
@@ -55,9 +55,9 @@ export const sliceBitacoras = createSlice({
         setSearchBitacoras: ( state, action: PayloadAction<{}> ) => {
             state.filterSearch = action.payload
         },
-        setComboDepartamentos: ( state, action: PayloadAction<Array<[]>> ) => {
-            state.comboDepartamentos = action.payload;
-        },
+        setFilterDepartamentos: (state, action: PayloadAction<any[]> ) =>{
+			state.filterDeptos = action.payload;
+		},
 
     }
 })
@@ -68,5 +68,5 @@ export const {
     setPageNumberBitacoras,
     unSetActiveBitacoras,
     setSearchBitacoras,
-    setComboDepartamentos,
+    setFilterDepartamentos,
 } = sliceBitacoras.actions;

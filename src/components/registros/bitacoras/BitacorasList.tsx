@@ -3,7 +3,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { exportDataBitacoras, setPageNumberBitacoras, setSearchBitacoras, startGetRegBitacoras, unSetActiveBitacoras } from '../../../store/slices/registros';
+import { exportDataBitacoras, setFilterDepartamentos, setPageNumberBitacoras, setSearchBitacoras, startGetComboDepartamentos, startGetRegBitacoras, unSetActiveBitacoras } from '../../../store/slices/registros';
 import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
 import { useGetNewPage } from '../../../hooks/useGetNewPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,23 +18,26 @@ export const BitacorasList: FC = (): JSX.Element => {
     const { pathname } = useLocation();
     const allowed = usePermission( pathname );
 
-    const { list, page, totalRows, totalPages, filterSearch } = useAppSelector( state => state.bitacoras);  
+    const { list, page, totalRows, totalPages, filterSearch, filterDeptos } = useAppSelector( state => state.bitacoras);  
+    const { comboDepartamentos } = useAppSelector( state => state.departamentos);
     const { loading } = useAppSelector( state => state.transaction)
+    const [ valFilterDeptos, setValFilterDeptos] = useState<Array<any>>([]);
+
+    const { systemOptions } = useAppSelector(state => state.login);
+
+    const { id_zona, id_rol } = systemOptions;
+
 
     const [loadingExport, setLoadingExport] = useState(false);
     const [ showModalFilter, setShowModalFilter ] = useState(false);
 
     const dispatch = useAppDispatch();
 
-    if ( loading ) {
-        return( <Loading/>);
-    }
+    if ( loading ) { return( <Loading/>); }
 
-    if (allowed.length === 0) {
-        return( <NoAccess/> );
-    }
+    if (allowed.length === 0) { return( <NoAccess/> ); }
 
-    const { edit, elim, nuevo, exportar } = allowed[0];
+    const { nuevo, exportar } = allowed[0];
 
     const setChangeWindow = ( ) => {
         
@@ -57,12 +60,71 @@ export const BitacorasList: FC = (): JSX.Element => {
     }
 
     useEffect(() => {
-        dispatch( startGetRegBitacoras() );
+
+        if (comboDepartamentos.length === 0) {
+            dispatch( startGetComboDepartamentos() );            
+        }
+    }, [dispatch, comboDepartamentos])
+
+
+    useEffect(() => {
+
+        if ( filterDeptos.length === 0 ) {
+
+            if( filterDeptos !== undefined){
+                
+                if( comboDepartamentos.length > 0){
+
+                    let arrayValues: number[] = [];
+
+                    comboDepartamentos.forEach(element => {
+
+                        let tipo_entrada = parseInt(element.id_tipo_nota);
+                        if( tipo_entrada > 0 && element.default_bar == 1  ){       
+                            arrayValues.push( tipo_entrada);
+                        }
+                       
+                    });
+                    
+                    setValFilterDeptos( arrayValues );
+                    dispatch( setFilterDepartamentos( arrayValues ));
+                }
+            }
+
+        }else{
+            setValFilterDeptos( filterDeptos );
+        }
+
+    }, [ comboDepartamentos ]);
+
+    useEffect(() => {
+        dispatch( startGetRegBitacoras(id_zona, id_rol ) );
     
-    }, [dispatch, page, filterSearch]);
+    }, [dispatch, page, filterSearch, filterDeptos]);
 
     const setSearchEmpty = () => {
         dispatch( setSearchBitacoras({}) );
+    }
+
+    const handleChangeDeptos = ( { target }: ChangeEvent<HTMLInputElement>  ) => {
+        const { value } = target;
+        
+        let newArrayValues: number[] = [...filterDeptos ];
+
+        let estatusValue = parseInt(value)
+        
+        let doAdd = ( filterDeptos.includes( estatusValue ) ) ? false : true;
+        
+        if( doAdd ) {
+            newArrayValues.push( estatusValue );
+        }else{
+            const index = newArrayValues.indexOf(estatusValue);
+            newArrayValues.splice(index, 1);
+        }
+
+        dispatch( setFilterDepartamentos(newArrayValues) );
+        setValFilterDeptos(newArrayValues);
+
     }
 
     return (
@@ -73,7 +135,7 @@ export const BitacorasList: FC = (): JSX.Element => {
             />
             <div className='card-body '>
                 <div className='row'>
-                    <div className="col-8">
+                    <div className="col-2">
                         <ul className="nav nav-pills">
                             <li className="nav-item">
                                 {
@@ -101,7 +163,35 @@ export const BitacorasList: FC = (): JSX.Element => {
                                 }
                             </li>
                         </ul>
-                    </div>                    
+                    </div>            
+                    <div className="col-4">
+                        <div className="btn-group" role="group" aria-label="Tipo de Entrada">
+                            {
+                                (comboDepartamentos !== undefined) &&
+                                (comboDepartamentos.length > 0) &&
+                                comboDepartamentos.map((item, index) => (
+                                    <div key={ "btnDesc"+index }>
+                                    <input
+                                        type="checkbox" 
+                                        title={ item.departamento }
+                                        className="btn-check"
+                                        name="filterSearch[]" 
+                                        checked={ (valFilterDeptos.includes(parseInt(item.id_departamento))) ? true: false }
+                                        id={"btncheck"+index }
+                                        value={ item.id_departamento }
+                                        onChange={ handleChangeDeptos }
+                                        autoComplete="off"
+                                        key={ index }
+                                        />
+                                    
+                                    <label className="btn btn-outline-success" htmlFor={"btncheck"+index }>                                        
+                                            {item.abreviatura}
+                                        </label>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>        
                     <div className="col-4">
                         {
                             ( Object.keys(filterSearch).length > 0) ?
