@@ -45,7 +45,9 @@ export const BitacorasList: FC = (): JSX.Element => {
         dispatch( setShowList( false ) );
         dispatch( setReadOnly( false ) );
   
-      }
+    }
+
+    if (id_rol == 3) { let idZona = id_zona; }
 
     const handleChangePage = ( 
         type:number , 
@@ -98,7 +100,7 @@ export const BitacorasList: FC = (): JSX.Element => {
     }, [ comboDepartamentos ]);
 
     useEffect(() => {
-        dispatch( startGetRegBitacoras(id_zona, id_rol ) );
+        dispatch( startGetRegBitacoras( id_zona, id_rol ) );
     
     }, [dispatch, page, filterSearch, filterDeptos]);
 
@@ -155,7 +157,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                                         className="btn btn-info btn-sm me-2"
                                         disabled={ loadingExport }
                                         onClick={() => {
-                                            dispatch( exportDataBitacoras( setLoadingExport ) );
+                                            dispatch( exportDataBitacoras(id_zona, id_rol, setLoadingExport ) );
                                         }}
                                     >
                                         <FontAwesomeIcon icon={ faFileExcel } /> Exportar
@@ -164,27 +166,29 @@ export const BitacorasList: FC = (): JSX.Element => {
                             </li>
                         </ul>
                     </div>            
-                    <div className="col-4">
-                        <div className="btn-group" role="group" aria-label="Tipo de Entrada">
+                    <div className="col-6">
+                        <div className="btn-group" role="group" aria-label="Departamentos">
                             {
                                 (comboDepartamentos !== undefined) &&
                                 (comboDepartamentos.length > 0) &&
                                 comboDepartamentos.map((item, index) => (
                                     <div key={ "btnDesc"+index }>
-                                    <input
-                                        type="checkbox" 
-                                        title={ item.departamento }
-                                        className="btn-check"
-                                        name="filterSearch[]" 
-                                        checked={ (valFilterDeptos.includes(parseInt(item.id_departamento))) ? true: false }
-                                        id={"btncheck"+index }
-                                        value={ item.id_departamento }
-                                        onChange={ handleChangeDeptos }
-                                        autoComplete="off"
-                                        key={ index }
-                                        />
-                                    
-                                    <label className="btn btn-outline-success" htmlFor={"btncheck"+index }>                                        
+                                        <input
+                                            type="checkbox" 
+                                            title={ item.departamento }
+                                            className="btn-check "
+                                            name="filterSearch[]" 
+                                            checked={ (valFilterDeptos.includes(parseInt(item.id_departamento))) ? true: false }
+                                            id={"btncheck"+index }
+                                            value={ item.id_departamento }
+                                            onChange={ handleChangeDeptos }
+                                            autoComplete="off"
+                                            key={ index }
+                                            />
+                                        
+                                        <label className="btn btn-outline-danger" 
+                                            htmlFor={"btncheck"+index }
+                                            title={item.departamento}>                                        
                                             {item.abreviatura}
                                         </label>
                                     </div>

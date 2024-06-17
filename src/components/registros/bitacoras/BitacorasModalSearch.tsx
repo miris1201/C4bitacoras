@@ -12,17 +12,22 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
     
     const dispatch = useAppDispatch();
     const { comboDepartamentos } = useAppSelector( state => state.departamentos);
+    const { uid, systemOptions } = useAppSelector(state => state.login);
+
+    const { id_zona, id_rol } = systemOptions;
 
     const [ loadingBtn, setLoadingBtn ] = useState( false );
+    const [ letShow, setLetShow ] = useState( false );
     
     const {formValues, handleInputChange, setValues } = useForm({
         folio: '',
+        id_zona_s: id_zona,
         fecha_inicial: '',
         fecha_final: '',
         
     });
 
-    const { folio, fecha_inicial, fecha_final } = formValues;
+    const { folio, id_zona_s, fecha_inicial, fecha_final } = formValues;
 
     const handleSubmitSearch = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -61,7 +66,7 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 onChange={ handleInputChange }
                             />
                         </div>
-                        <div className="col-8">
+                        <div className="col-4">
                             <label htmlFor="fecha_inicial">
 								Fecha Inicial
                             </label>
@@ -74,7 +79,7 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 onChange={ handleInputChange }
                             />
                         </div>
-						<div className="col-6">
+						<div className="col-4">
                             <label htmlFor="fecha_final">
 								Fecha Final
                             </label>

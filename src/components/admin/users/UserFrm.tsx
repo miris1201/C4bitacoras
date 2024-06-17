@@ -279,8 +279,7 @@ export const UserFrm: FC = () => {
                                 <option value="2">Masculino</option>
                                
                             </select>
-                        </div>
-                        
+                        </div>                        
                         <div className="col-6 col-lg-4 col-xl-4">
                             <label htmlFor="id_zona">
                                 Zona: <span className="text-danger">*</span>

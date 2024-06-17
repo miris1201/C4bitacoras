@@ -16,7 +16,7 @@ import { setComboDepartamentos } from "../catalogos";
 import bitacoraApi from "../../../api/bitacoras";
 import departamentosApi from "../../../api/departamentos";
 
-export const startGetRegBitacoras = ( id_zona: number, id_rol: number) => async( dispatch: AppDispatch, getState: GetState) => {
+export const startGetRegBitacoras = (id_zona: number, id_rol: number) => async( dispatch: AppDispatch, getState: GetState) => {
     try {
         
         const { bitacoras } = getState() as AppState;
@@ -33,12 +33,11 @@ export const startGetRegBitacoras = ( id_zona: number, id_rol: number) => async(
             id_rol: id_rol
         };
 
-
-
         const resp = await bitacoraApi.post(`/list`, dataSend);
         
         dispatch( setListaBitacoras( resp.data )) ;
         dispatch( setLoadingState( false ) ) ;
+
     } catch (error) {
         
         if ( error instanceof AxiosError ) console.error(error.message);
@@ -47,7 +46,7 @@ export const startGetRegBitacoras = ( id_zona: number, id_rol: number) => async(
 
 }
 
-export const exportDataBitacoras = ( setLoadingExport: React.Dispatch<React.SetStateAction<boolean>> ) => async (dispatch: AppDispatch, getState: GetState ) => {  
+export const exportDataBitacoras = (id_zona: number, id_rol: number, setLoadingExport: React.Dispatch<React.SetStateAction<boolean>> ) => async (dispatch: AppDispatch, getState: GetState ) => {  
     try {
 
         const { bitacoras } = getState() as AppState;
@@ -59,9 +58,10 @@ export const exportDataBitacoras = ( setLoadingExport: React.Dispatch<React.SetS
             regIni: regIni,
             regFin: recordsPerPage,
             filtroB: bitacoras.filterSearch,
-            filtroD: bitacoras.filterDeptos
+            filtroD: bitacoras.filterDeptos,
+            id_zona: id_zona,
+            id_rol: id_rol
         };
-
 
         const resp = await bitacoraApi.post(`/listExport`, dataSend);
 
@@ -93,6 +93,8 @@ export const startInsertBitacora = ( data: {}, setLoadingBtn: React.Dispatch<Rea
         } else {
             Swal.fire("Error", msg, "error");
         }
+
+        setLoadingBtn( false );
         
     } catch (error) {
         
