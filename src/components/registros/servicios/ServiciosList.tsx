@@ -3,22 +3,22 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { exportDataBitacoras, setFilterDepartamentos, setPageNumberBitacoras, setSearchBitacoras, startGetComboDepartamentos, startGetRegBitacoras, unSetActiveBitacoras } from '../../../store/slices/registros';
+import { exportDataServicios, setFilterDepartamentos, setFilterDeptos, setPageNumberServicios, setSearchServicios, startGetComboDepartamentos, startGetRegServicios, unSetActiveServicios } from '../../../store/slices/registros';
 import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
 import { useGetNewPage } from '../../../hooks/useGetNewPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel, faFilter, faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly, setShowList } from '../../../store/slices/transaction';
-import { BitacoraInterface } from '../../../interfaces';
-import { BitacorasListItem } from './BitacorasListItem';
-import { BitacorasModalSearch } from './BitacorasModalSearch';
+import { BitacoraInterface, ServicioInterface } from '../../../interfaces';
+import { ServiciosListItem } from './ServiciosListItem';
+import { ServiciosModalSearch } from './ServiciosModalSearch';
 
-export const BitacorasList: FC = (): JSX.Element => {
+export const ServiciosList: FC = (): JSX.Element => {
 
     const { pathname } = useLocation();
     const allowed = usePermission( pathname );
 
-    const { list, page, totalRows, totalPages, filterSearch, filterDeptos } = useAppSelector( state => state.bitacoras);  
+    const { list, page, totalRows, totalPages, filterSearch, filterDeptos } = useAppSelector( state => state.servicios);  
     const { comboDepartamentos } = useAppSelector( state => state.departamentos);
     const { loading } = useAppSelector( state => state.transaction)
     
@@ -35,17 +35,17 @@ export const BitacorasList: FC = (): JSX.Element => {
 
     if (allowed.length === 0) { return( <NoAccess/> ); }
 
-    const { nuevo, exportar } = allowed[0];
+    const { edit, elim, nuevo, exportar } = allowed[0];
 
     const setChangeWindow = ( ) => {
         
-        dispatch( unSetActiveBitacoras() );
+        dispatch( unSetActiveServicios() );
         dispatch( setShowList( false ) );
         dispatch( setReadOnly( false ) );
   
     }
 
-    const handleChangePage = (
+    const handleChangePage = ( 
         type:number , 
         iniend: number|null = null,
         event: ChangeEvent<HTMLInputElement> | null = null,
@@ -53,7 +53,7 @@ export const BitacorasList: FC = (): JSX.Element => {
 
         const nPage = useGetNewPage( page ,type, event, iniend )
 
-        dispatch( setPageNumberBitacoras( nPage ) );
+        dispatch( setPageNumberServicios( nPage ) );
 
     }
 
@@ -85,7 +85,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                     });
                     
                     setValFilterDeptos( arrayValues );
-                    dispatch( setFilterDepartamentos( arrayValues ));
+                    dispatch( setFilterDeptos( arrayValues ));
                 }
             }
 
@@ -96,12 +96,12 @@ export const BitacorasList: FC = (): JSX.Element => {
     }, [ comboDepartamentos ]);
 
     useEffect(() => {
-        dispatch( startGetRegBitacoras( id_zona, id_rol ) );
+        dispatch( startGetRegServicios( id_zona, id_rol ) );
     
     }, [dispatch, page, filterSearch, filterDeptos]);
 
     const setSearchEmpty = () => {
-        dispatch( setSearchBitacoras({}) );
+        dispatch( setSearchServicios({}) );
     }
 
     const handleChangeDeptos = ( { target }: ChangeEvent<HTMLInputElement>  ) => {
@@ -120,7 +120,7 @@ export const BitacorasList: FC = (): JSX.Element => {
             newArrayValues.splice(index, 1);
         }
 
-        dispatch( setFilterDepartamentos(newArrayValues) );
+        dispatch( setFilterDeptos(newArrayValues) );
         setValFilterDeptos(newArrayValues);
 
     }
@@ -129,7 +129,7 @@ export const BitacorasList: FC = (): JSX.Element => {
         <>
         <div className="card  mb-4">
             <HeaderList
-                title='Bitacoras'
+                title='Servicios'
             />
             <div className='card-body '>
                 <div className='row'>
@@ -153,7 +153,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                                         className="btn btn-info btn-sm me-2"
                                         disabled={ loadingExport }
                                         onClick={() => {
-                                            dispatch( exportDataBitacoras(id_zona, id_rol, setLoadingExport ) );
+                                            dispatch( exportDataServicios(id_zona, id_rol, setLoadingExport ) );
                                         }}
                                     >
                                         <FontAwesomeIcon icon={ faFileExcel } /> Exportar
@@ -222,21 +222,24 @@ export const BitacorasList: FC = (): JSX.Element => {
                         <table className="table table-hover ">
                             <thead className="table-light">
                                 <tr>
+                                    <th scope="col"></th>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Zona</th>
                                     <th scope="col">Departamento</th>
-                                    <th scope="col">Usuario</th>
-                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Emergencia</th>
                                     <th scope="col">Reporte</th>                                    
+                                    <th scope="col">Funciones</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    list.map(( item: BitacoraInterface, index )=>(
+                                    list.map(( item: ServicioInterface, index )=>(
                                         <tr key={ index }>
-                                            {<BitacorasListItem
-                                                item={item}/>}
+                                            {<ServiciosListItem
+                                                item={item}
+                                                edit={ edit }
+                                                elim={ elim }/>}
                                         </tr>
                                     ))
                                 }
@@ -268,7 +271,7 @@ export const BitacorasList: FC = (): JSX.Element => {
         </div>
       {
         showModalFilter &&
-        <BitacorasModalSearch
+        <ServiciosModalSearch
             showModal={ showModalFilter }
             setShowModal={ setShowModalFilter }
         />

@@ -14,3 +14,4 @@ export * from './interfaceDepartamentos';
 export * from './interfaceEmergencias';
 
 export * from './interfaceBitacoras';
+export * from './interfaceServicios';

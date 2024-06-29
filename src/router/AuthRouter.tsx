@@ -17,6 +17,7 @@ const TipoCierre = lazy(() => import('../screens/catalogos/TipoCierre'));
 const Departamentos = lazy(() => import('../screens/catalogos/Departamentos'));
 const Emergencias = lazy(() => import('../screens/catalogos/Emergencias'));
 const Bitacoras = lazy(() => import('../screens/registros/Bitacoras'));
+const Servicios = lazy(() => import('../screens/registros/Servicios'));
 
 const App: FC = (): JSX.Element => {
 	
@@ -33,6 +34,7 @@ const App: FC = (): JSX.Element => {
 		{ path: "/departamentos", element: <Departamentos />},
 		{ path: "/emergencias", element: <Emergencias />},
 		{ path: "/bitacoras", element: <Bitacoras />},
+		{ path: "/servicios", element: <Servicios />},
 	]);
 	return <>{routes}</>;
 };

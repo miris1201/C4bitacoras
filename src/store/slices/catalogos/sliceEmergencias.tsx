@@ -21,6 +21,7 @@ const initialState: EmergenciasTemplate = {
     filterSearch: {},
     list: [],
 	comboEmergencias: [],
+	comboEmergenciaCierre: [],
 }
 
 export const sliceEmergencias = createSlice({
@@ -55,6 +56,9 @@ export const sliceEmergencias = createSlice({
 		setComboEmergencias: (state, action: PayloadAction<[]> ) =>{
 			state.comboEmergencias = action.payload;
 		},
+		setComboEmergenciaCierre: (state, action: PayloadAction<[]> ) =>{
+			state.comboEmergenciaCierre = action.payload;
+		},
 	}
 })
 
@@ -66,4 +70,5 @@ export const {
 	unSetActiveEmergencias,
 	setSearchEmergencias,
 	setComboEmergencias,
+	setComboEmergenciaCierre,
 } = sliceEmergencias.actions;

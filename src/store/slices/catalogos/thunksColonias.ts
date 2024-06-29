@@ -154,8 +154,9 @@ export const startColoniaDelete = ( iTipo: number, id_delete: number ) => async(
     }
 } 
 
-export const startGetCombo = ( ) => async( dispatch: AppDispatch ) => {
+export const startGetComboColonias = ( ) => async( dispatch: AppDispatch ) => {
     try {
+
 
         const body = await coloniasApi.post(`/combo`, {} );
 

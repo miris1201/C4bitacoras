@@ -1,6 +1,6 @@
 
 
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { startGetComboProcedencia, startInsertProcedencia } from '../../../store/slices/catalogos';
 import { useForm } from '../../../hooks/useForm';
