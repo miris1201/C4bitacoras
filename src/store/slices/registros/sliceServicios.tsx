@@ -1,7 +1,7 @@
 const recordsPerPage = import.meta.env.VITE_APP_RECORSPP;
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ResponseData, ServicioInterface, ServiciosTemplate, VehiculoDtlInterface } from "../../../interfaces";
+import { ResponseData, ServicioDtlInterface, ServicioInterface, ServiciosTemplate } from "../../../interfaces";
 
 
 const initialServiciosActive = {
@@ -31,6 +31,8 @@ const initialServiciosActive = {
     id_llamada: 0,
     id_turno: 0,
     id_cuadrante: 0,
+    sector: 0,
+    cuadrante: '',
     id_departamento: 0,
     departamento: '',
     placas: '',
@@ -39,8 +41,23 @@ const initialServiciosActive = {
 	subMarca: '',
 	color: '',
 	serie: '',
-    
-
+    id_usuario_dtl: 0,
+    usuario_dtl: '',
+    fecha_captura_dtl: '',
+	resultado: '',
+	unidad: '',
+	hrecibe: '',
+	hasignacion: '',
+	harribo: '',
+    id_usuario_cierre: 0,
+    usuario_cierre: '',
+    fecha_cierre: '',
+	id_emergencia_cierre: 0,
+	emergencia_cierre: '',
+	id_tipo_cierre: 0,
+	tipo_cierre: '',
+	id_tipo_emergencia: 0,
+	tipo_emergencia: '',
 }
 
 const initialState: ServiciosTemplate = {
@@ -95,9 +112,7 @@ export const sliceServicios = createSlice({
         setComboEstatus: (state, action: PayloadAction<[]> ) =>{
 			state.comboStatus = action.payload;
 		},
-        
     }
-
 })
 
 export const {

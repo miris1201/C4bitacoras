@@ -154,10 +154,10 @@ export const startCuadranteDelete = ( iTipo: number, id_delete: number ) => asyn
     }
 } 
 
-export const startComboCuadrantes = ( ) => async( dispatch: AppDispatch ) => {
+export const startComboCuadrantes = ( sector : number ) => async( dispatch: AppDispatch ) => {
     try {
 
-        const body = await cuadrantesApi.post(`/combo`, {} );
+        const body = await cuadrantesApi.post(`/combo`, { sector } );
 
         const { done, rows } = body.data;
 

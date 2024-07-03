@@ -10,10 +10,11 @@ import moment from 'moment';
 import { HeaderList, NoAccess } from '../../ui/UserInterface';
 import { useForm } from '../../../hooks/useForm';
 import { startInsertServicios } from '../../../store/slices/registros';
-import { startGetComboColonias, startGetComboEmergencias, startGetComboOperativos, startGetComboProcedencia, startGetComboTipoCierre, startGetComboTipoEmergencia } from '../../../store/slices/catalogos';
+import { startComboCuadrantes, startGetComboColonias, startGetComboEmergencias, startGetComboOperativos, startGetComboProcedencia, startGetComboSector, startGetComboTipoCierre, startGetComboTipoEmergencia } from '../../../store/slices/catalogos';
 import { setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faShareFromSquare, faSquareArrowUpRight, faStepBackward, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { AsignarModalFrm } from './AsignarModalFrm';
 
 export const ServiciosFrm: FC = () => {
 
@@ -26,6 +27,7 @@ export const ServiciosFrm: FC = () => {
     const [disabled, setDisabled] = useState(false);
     const [showInputs, setShowInputs] = useState( false );
     const [showOtros, setShowOtros] = useState( false )
+    const [ showModalAsignar, setShowModalAsignar ] = useState(false);
 
     const { idActive, rActive  } = useAppSelector( state => state.servicios);
     const { comboEmergencias } = useAppSelector( state => state.emergencias);
@@ -39,6 +41,9 @@ export const ServiciosFrm: FC = () => {
     const { id_zona, id_rol } = systemOptions;
 
     const { readOnly } = useAppSelector( state => state.transaction);
+
+
+    let inputClass = (idActive > 0) ? 'form-control-plaintext fw-bolder' : 'form-control';
 
     const { 
         id_servicio: dId_servicio,
@@ -61,12 +66,30 @@ export const ServiciosFrm: FC = () => {
         calle: dCalle,
         calle1: dCalle1,
         observaciones: dObservaciones,
+        id_cuadrante: dId_cuadrante,
+        sector: dSector,
+        cuadrante: dCuadrante,
         placas: dPlacas,
         serie: dSerie,
         color: dColor,
         marca: dMarca,
         subMarca: dSubMarca,
         modelo: dModelo,
+        resultado: dResultado,
+        unidad: dUnidad,
+        hrecibe: dHRecibe,
+        hasignacion: dHAsignacion,
+        harribo: dHArribo,
+        id_emergencia_cierre: dId_emergencia_cierre,
+        emergencia_cierre: dEmergencia_cierre,
+        id_tipo_cierre: dId_tipo_cierre,
+        tipo_cierre: dTipo_cierre,
+        id_tipo_emergencia: dId_tipo_emergencia,
+        tipo_emergencia: dTipo_emergencia,
+        fecha_captura_dtl: dFecha_dtl,
+        usuario_dtl: dUsuario_dtl,
+        fecha_cierre: dFecha_cierre,
+        usuario_cierre: dUsuario_cierre
     } = rActive;
 
     if (allowed.length === 0) {
@@ -99,14 +122,33 @@ export const ServiciosFrm: FC = () => {
         calle: dCalle,
         calle1: dCalle1,
         observaciones: dObservaciones,
+        id_cuadrante: dId_cuadrante,
+        sector: dSector,
+        cuadrante: dCuadrante,
         placas: (dPlacas == null ) ? '': dPlacas,
         color: (dColor == null ) ? '': dColor,
         serie: (dSerie == null ) ? '': dSerie,
         modelo: (dModelo == null ) ? '': dModelo,
         marca: (dMarca == null ) ? '': dMarca,
         subMarca: (dSubMarca == null ) ? '': dSubMarca,
-
+        resultado: dResultado,
+        unidad: dUnidad,
+        hrecibe: dHRecibe,
+        hasignacion: dHAsignacion,
+        harribo: dHArribo,
+        id_emergencia_cierre: (dId_emergencia_cierre == null) ? 0 : dId_emergencia_cierre,
+        emergencia_cierre: (dEmergencia_cierre == "" || dEmergencia_cierre == null) ? 'Selecciona' : dEmergencia_cierre,
+        id_tipo_cierre: (dId_tipo_cierre == null) ? 0 : dId_tipo_cierre, 
+        tipo_cierre: (dTipo_cierre == "" || dTipo_cierre == null) ? 'Selecciona' : dTipo_cierre,
+        id_tipo_emergencia: (dId_tipo_emergencia == null) ? 0 : dId_tipo_emergencia,
+        tipo_emergencia: (dTipo_emergencia == "" || dTipo_emergencia == null) ? 'Selecciona' : dTipo_emergencia, 
+        fecha_captura_dtl: (dFecha_dtl == null) ? '----' : dFecha_dtl,
+        usuario_dtl: (dUsuario_dtl == null || dUsuario_dtl == "" ) ? '----' : dUsuario_dtl,
+        fecha_cierre: (dFecha_cierre == null) ? '----' : dFecha_cierre,
+        usuario_cierre: (dUsuario_cierre == null || dUsuario_cierre == "") ? '----' : dUsuario_cierre
     });
+
+    
 
     const { folio,
             id_zona_b, 
@@ -127,22 +169,39 @@ export const ServiciosFrm: FC = () => {
             calle, 
             calle1, 
             observaciones,
+            id_cuadrante,
+            sector,
+            cuadrante,
             placas,
             color,
             serie,
             marca,
             subMarca,
             modelo,
+            resultado,
+            unidad,
+            hrecibe,
+            hasignacion,
+            harribo,
+            id_emergencia_cierre,
+            emergencia_cierre,
+            id_tipo_cierre,
+            tipo_cierre,
+            id_tipo_emergencia,
+            tipo_emergencia,
+            fecha_captura_dtl,
+            usuario_dtl,
+            fecha_cierre,
+            usuario_cierre
         } = formValues;
-
-        console.log(formValues);
-    
+        
+        
     useEffect(() => {
         if (comboEmergencias.length === 0) {
             dispatch( startGetComboEmergencias() );
         }
     
-        if (id_emergencia == 37 ) {
+        if (id_emergencia == 37 || id_emergencia == 36 ) {
             setShowInputs(true);
         }
 
@@ -188,6 +247,7 @@ export const ServiciosFrm: FC = () => {
         }
     
     }, [dispatch, comboTipoCierre])
+
     
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -199,11 +259,11 @@ export const ServiciosFrm: FC = () => {
         
         let id_e = opcion.value;
 
-        setShowInputs( true );
-        if (parseInt(id_e) != 37) {
-            setShowInputs( false );
+        if (parseInt(id_e) == 37 || parseInt(id_e) == 36) {
+            setShowInputs( true );
+        } else {
+            setShowInputs( false );            
         }
-
 
         setValues({
             ...formValues,
@@ -238,19 +298,8 @@ export const ServiciosFrm: FC = () => {
         });
     }
 
-    // const handleChangeEmergenciaCierre = (opcion : any) => {
-        
-    //     let id_ec = opcion.value;
-
-    //     setValues({
-    //         ...formValues,
-    //         id_emergencia_cierre: id_ec,
-
-    //     });
-    // }
-
     let titleMain = "Servicios";
-    let titleHeader = (Number(idActive) === 2 || readOnly) ? `Visualizando servicio (Folio N° ${folio})` : `Editar servicio ( Folio N° ${folio } )`;
+    let titleHeader = (Number(id_status) === 2 || readOnly) ? `Asignar servicio (Folio N° ${folio})` : `Responder servicio ( Folio N° ${folio } )`;
     titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     return(
@@ -258,17 +307,46 @@ export const ServiciosFrm: FC = () => {
         <div className="card mb-4">
             <HeaderList title={titleMain}/>
             <div className="card-body">
-                <ul className="nav nav-pills mb-2">
+                <ul className="nav nav-pills mb-4">
                     <li className="nav-item">
-                    <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => {
-                            dispatch(setShowList( true ));
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faStepBackward} /> Regresar
-                    </button>
+                        <button
+                            className="btn btn-outline-danger btn-sm me-2 float-end"
+                            onClick={() => {
+                                dispatch(setShowList( true ));
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faStepBackward} /> Regresar
+                        </button>
+                    
                     </li>
+                    {
+                        (id_status == 1) &&
+                        <li className="nav-item">
+                            <button
+                                className="btn btn-success me-2 btn-sm float-end"
+                                title='Asignar servicio'
+                                onClick={ ()=> {
+                                    setShowModalAsignar( true );
+                                }}
+                                >                 
+                                <FontAwesomeIcon icon={faShareFromSquare} /> Asignar
+                            </button>                    
+                        </li>
+                    }
+                     {
+                        (id_status == 2) &&
+                        <li className="nav-item">
+                            <button
+                                className="btn btn-warning me-2 btn-sm float-end"
+                                title='Respuesta servicio'
+                                onClick={ ()=> {
+                                    setShowModalAsignar( true );
+                                }}
+                                >                 
+                                <FontAwesomeIcon icon={faUserPen} /> Respuesta
+                            </button>                    
+                        </li>
+                    }
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">                        
@@ -278,7 +356,7 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="date"
-                                className="form-control"
+                                className={inputClass}
                                 name="fecha"
                                 id="fecha"
                                 onChange={handleInputChange}
@@ -295,7 +373,7 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="time"
-                                className="form-control"
+                                className={inputClass}
                                 name="hora"
                                 id="hora"
                                 onChange={handleInputChange}
@@ -315,7 +393,7 @@ export const ServiciosFrm: FC = () => {
                             value={id_turno}
                             disabled={readOnly}
                             onChange={ handleInputChange }
-                            className="form-select"
+                            className={inputClass}
                             required
                             >
                                 <option value="">Selecciona</option>
@@ -335,7 +413,7 @@ export const ServiciosFrm: FC = () => {
                                 value={ id_zona_b }
                                 disabled={(id_rol == 3) ? !readOnly : readOnly }
                                 onChange={ handleInputChange }
-                                className="form-select"
+                                className={inputClass}
                                 required
                                 >
                                 <option value="">Selecciona</option>
@@ -344,7 +422,7 @@ export const ServiciosFrm: FC = () => {
                                 
                             </select>
                         </div>
-                        <div className="col-12 col-lg-4 col-xl-4">
+                        <div className="col-12 col-lg-6 col-xl-4">
                            <label htmlFor="id_emergencia">
                                 Emergencias <span className="text-danger">*</span>
                             </label>
@@ -353,6 +431,7 @@ export const ServiciosFrm: FC = () => {
                             (comboEmergencias.length > 0) &&
                             <Select 
                                 required
+                                className='indicatorsContainer'
                                 isDisabled={ readOnly }
                                 placeholder={ 'Selecciona el departamento' }
                                 onChange={ handleChangeEmergencia }
@@ -369,7 +448,7 @@ export const ServiciosFrm: FC = () => {
                         </div>
                     </div>    
                     <div className="row">
-                        <div className="col-6 col-md-4 col-xl-2">
+                        <div className="col-12 col-md-6 col-xl-2">
                             <label htmlFor="id_llamada">
                                 Procedencia de llamada <span className='text-danger'>*</span>
                             </label>
@@ -379,7 +458,7 @@ export const ServiciosFrm: FC = () => {
                                 value={id_llamada}
                                 disabled={readOnly}
                                 onChange={handleInputChange}
-                                className="form-select"
+                                className={inputClass}
                                 required
                             >
                                 <option value="">Selecciona</option>
@@ -405,7 +484,7 @@ export const ServiciosFrm: FC = () => {
                                 }
                             </select>
                         </div>
-                        <div className="col-6 col-md-4 col-xl-3">
+                        <div className="col-12 col-md-6 col-xl-3">
                             <label htmlFor="id_operativo">
                                 Operativos <span className='text-danger'>*</span>
                             </label>
@@ -414,6 +493,9 @@ export const ServiciosFrm: FC = () => {
                             (comboOperativos.length > 0) &&
                             <Select 
                                 required
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                isDisabled={ readOnly }
                                 placeholder={ 'Selecciona el operativo' }
                                 onChange={ handleChangeOperativo }
                                 defaultValue={ 
@@ -430,30 +512,31 @@ export const ServiciosFrm: FC = () => {
                         {
                         (!showOtros) && 
                         (otros_operativos !== null) || (
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-12 col-lg-6 col-xl-2">
                             <label htmlFor="nombre">
                                 Especifica el operativo<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="otro_operativo"
                                 id="otro_operativo"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
                                 value={ otros_operativos }
+                                disabled={ readOnly }
                                 required
                             />
                         </div>
                         )}
-                        <div className="col-6 col-lg-4 col-xl-4">
+                        <div className="col-12 col-lg-6 col-xl-4">
                             <label htmlFor="nombre">
                                 Nombre<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="nombre"
                                 id="nombre"
                                 onChange={handleInputChange}
@@ -464,13 +547,13 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-12 col-lg-6 col-xl-2">
                             <label htmlFor="telefono">
                                 Teléfono<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="telefono"
                                 id="telefono"
                                 onChange={handleInputChange}
@@ -481,7 +564,7 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-12 col-lg-4 col-xl-4">
+                        <div className="col-12 col-lg-6 col-xl-4">
                             <label htmlFor="id_colonia">
                                 Colonia <span className="text-danger">*</span>
                             </label>
@@ -504,13 +587,13 @@ export const ServiciosFrm: FC = () => {
                             />
                             }
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-3">
+                        <div className="col-6 col-lg-6 col-xl-3">
                             <label htmlFor="calle">
                                 Calle<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="calle"
                                 id="calle"
                                 onChange={handleInputChange}
@@ -521,13 +604,13 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-3">
+                        <div className="col-6 col-lg-6 col-xl-3">
                             <label htmlFor="calle1">
                                 Esquina / Referencia<span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="calle1"
                                 id="calle1"
                                 onChange={handleInputChange}
@@ -539,8 +622,7 @@ export const ServiciosFrm: FC = () => {
                         </div>
                     </div>  
                     {                    
-                    (showInputs) && (
-                        
+                    (showInputs) && (                        
                     <div className="row">                        
                         <div className="col-6 col-lg-4 col-xl-2">
                             <label htmlFor="placas">
@@ -548,12 +630,13 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="placas"
                                 id="placas"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
+                                disabled={ readOnly }
                                 value={placas}
                             />
                         </div>
@@ -563,12 +646,13 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="modelo"
                                 id="modelo"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
+                                disabled={ readOnly }
                                 value={modelo}
                             />
                         </div>
@@ -578,12 +662,13 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="marca"
                                 id="marca"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
+                                disabled={ readOnly }
                                 value={marca}
                             />
                         </div>
@@ -593,12 +678,13 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="submarca"
                                 id="submarca"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
+                                disabled={ readOnly }
                                 value={ subMarca }
                             />
                         </div>
@@ -608,12 +694,13 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="color"
                                 id="color"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
+                                disabled={ readOnly }
                                 value={ color }
                             />
                         </div>
@@ -623,7 +710,7 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={inputClass}
                                 name="serie"
                                 id="serie"
                                 onChange={handleInputChange}
@@ -641,27 +728,148 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <textarea name="observaciones" id="observaciones" 
                                 rows={5} 
-                                className='form-control'
+                                className={inputClass}
+                                disabled={ readOnly }
                                 onChange={ handleInputChange }
                                 value={ observaciones } ></textarea>
                         </div>
-                    </div>    <br />                    
-                             
-                    <div className="row mt-4">
-                        <div className="col-12">
-                            {readOnly || (
-                            <button
-                                type="submit"
-                                disabled={loadingBtn}
-                                className="btn btn-outline-info btn-sm"
-                                id="btn_guardar"
-                            >
-                                <FontAwesomeIcon icon={faSave} /> Guardar
-                            </button>
-                            )}
+                    </div>
+                    {
+                    (id_status >= 2) &&
+                    <div className="row mt-3">
+                        <div className="col-12 me-2">
+                            <h5>Detalle de Asignación</h5>
+                            <i className='me-2 list-group-item'>Usuario Captura: <strong> { usuario_dtl } </strong> </i>
+                            <i className='me-2  list-group-item'>Fecha captura: <strong> { fecha_captura_dtl } </strong></i>
+                            <br />
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-2">
+                            <label htmlFor="hasignacion">
+                                Hr. Asignación
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ hasignacion }
+                            />
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-2">
+                            <label htmlFor="unidad">
+                                Unidad
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ unidad }
+                            />
+                        </div>
+                        <div className="col-6 col-md-3 col-xl-2">
+                            <label htmlFor="sector">
+                                Sector 
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ sector }
+                            />
+                        </div>
+                        <div className="col-6 col-md-3 col-xl-2">
+                            <label htmlFor="cuadrante">
+                                Cuadrante
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ cuadrante }
+                            />                           
                         </div>
                     </div>
+                    }
+                    {
+                    (id_status >= 3) &&
+                    <div className="row mt-3">
+                        <div className="col-12 mt-2">
+                            <h5>Detalle del cierre de servicio</h5>
+                            <i className='me-2 list-group-item'>Usuario Cierre: <strong> { usuario_cierre } </strong> </i>
+                            <i className='m2-2  list-group-item'>Fecha Cierre: <strong> { fecha_cierre } </strong></i>
+                            <br />
+                        </div>
+                        <div className="col-6 col-lg-2 col-xl-1">
+                            <label>
+                                Hr. Arribo
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ harribo }
+                            />
+                        </div>
+                        <div className="col-6 col-lg-2 col-xl-2">
+                            <label>
+                                Hr. Termino
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ hrecibe }
+                            />
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-3">
+                            <label>
+                                Tipo de emergencia
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ tipo_emergencia }
+                            />
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-3">
+                            <label> Emergencia Cierre </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ emergencia_cierre }
+                            />
+                        </div>
+                        <div className="col-6 col-lg-3 col-xl-3">
+                            <label>
+                                Tipo de Cierre
+                            </label>
+                            <input
+                                type="text"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ tipo_cierre }
+                            />
+                        </div>
+                        <div className="col-12">
+                            <label htmlFor="observaciones">
+                                Reporte <span className="text-danger">*</span>
+                            </label>
+                            <textarea
+                                rows={7} 
+                                className={inputClass}
+                                value={ resultado } ></textarea>
+                        </div>
+                    </div>
+                    }
                 </form>
+                {
+                    (showModalAsignar) &&
+                    <AsignarModalFrm
+                        showModal={ showModalAsignar }
+                        setShowModal={ setShowModalAsignar }
+                    />
+                }
             </div>
         </div>
         </>

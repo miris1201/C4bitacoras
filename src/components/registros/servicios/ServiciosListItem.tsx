@@ -7,8 +7,8 @@ import { dataItemServicio } from '../../../interfaces'
 import { useAppDispatch } from '../../../store/hooks';
 import { useLocation } from 'react-router-dom';
 import { usePermission } from '../../../hooks/usePermission';
-import { startServiciosActive } from '../../../store/slices/registros';
-import { setReadOnly } from '../../../store/slices/transaction';
+import { startServiciosActive, unSetActiveServicios } from '../../../store/slices/registros';
+import { setReadOnly, setShowList } from '../../../store/slices/transaction';
 
 export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
 
@@ -33,18 +33,24 @@ export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
 
     let zona = (id_zona == 1) ? 'PONIENTE' : 'ORIENTE';
 
-
     const handleSetWindow = ( id : number, readOnly = false ) => { 
         dispatch( startServiciosActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }    
 
+    const setChangeWindow = ( ) => {
+        
+        dispatch( unSetActiveServicios() );
+        dispatch( setShowList( false ) );
+        dispatch( setReadOnly( false ) );
+    }
+
     return (
         <>
             <td scope="row">
                 <FontAwesomeIcon
-                    icon={ (id_status == 3 ) ? faCheck : faXmark } 
-                    title={ estatus }
+                    icon={ (id_status == 4 ) ? faCheck : faXmark } 
+                    title={ estatus }   
                     className={ class_name } />
             </td>
             <th><strong>
@@ -60,8 +66,8 @@ export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
                 <button 
                     type="button"
                     className="btn btn-outline-secondary btn-sm me-2"
-                    title="Ver"
-                    onClick={ () =>{ handleSetWindow( id_servicio, true ) } }    
+                    title="Asignar servicio"
+                    onClick={ () => {  handleSetWindow( id_servicio, true )  } }
                 >
                     <FontAwesomeIcon icon={ faEye } />
                 </button>
@@ -72,15 +78,13 @@ export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
                         type="button"
                         className="btn btn-outline-secondary btn-sm me-2"
                         title="Editar"
-                        onClick={ () =>{ handleSetWindow( id_servicio, false ) } }
+                        onClick={ () =>{ handleSetWindow( id_servicio, true ) } }
                     >
                         <FontAwesomeIcon icon={ faEdit } />
                     </button>
                     </>
                 }                
             </td>
-            
-
         </>
     )
 

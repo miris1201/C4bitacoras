@@ -42,6 +42,8 @@ export interface ServicioInterface {
     id_llamada: number;
     id_turno: number;
     id_cuadrante: number;
+    sector: number;
+    cuadrante: string;
     id_departamento: number;
     departamento: string;
     placas: string;
@@ -50,6 +52,24 @@ export interface ServicioInterface {
 	subMarca?: string;
 	color?: string;
 	serie?: string;
+    id_usuario_dtl: number;
+    usuario_dtl: string,
+    fecha_captura_dtl: string;
+	resultado: string;
+	unidad: string;
+	hrecibe: string;
+	hasignacion: string;
+	harribo: string;
+    id_usuario_cierre: number;
+    usuario_cierre: string
+    fecha_cierre: string;
+	id_emergencia_cierre: number;
+	emergencia_cierre: string;
+	id_tipo_cierre: number;
+	tipo_cierre: string;
+	id_tipo_emergencia: number;
+	tipo_emergencia: string;
+    
 }
 
 export interface FilterServicios {
@@ -68,11 +88,15 @@ export interface dataItemServicio {
 export interface ServicioDtlInterface {
 	id_servicio_dtl: number;
 	id_servicio: number;
+    id_usuario: number;
+    fecha_captura: string;
 	resultado: string;
 	unidad: string;
 	hrecibe: string;
 	hasignacion: string;
 	harribo: string;
+    id_usuario_cierre: number;
+    fecha_cierre: string;
 	id_emergencia_cierre: number;
 	emergencia_cierre: string;
 	id_tipo_cierre: number;
@@ -81,13 +105,12 @@ export interface ServicioDtlInterface {
 	tipo_emergencia: string;
 }
 
-export interface VehiculoDtlInterface {
-	id_robo: number;
-	id_servicio: number;
-	placas?: string;
-	modelo?: string;
-	marca?: string;
-	subMarca?: string;
-	color?: string;
-	serie?: string;
+export interface iModalAsignar {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface iModalRespuesta {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
