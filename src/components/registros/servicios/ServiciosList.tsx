@@ -3,7 +3,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { exportDataServicios, setFilterDepartamentos, setFilterDeptos, setPageNumberServicios, setSearchServicios, startGetComboDepartamentos, startGetRegServicios, unSetActiveServicios } from '../../../store/slices/registros';
+import { exportDataServicios, setFilterDeptos, setFilterEstatus, setPageNumberServicios, setSearchServicios, startGetComboDepartamentos, startGetComboEstatus, startGetRegServicios, unSetActiveServicios } from '../../../store/slices/registros';
 import { HeaderList, Loading, NoAccess, Pager } from '../../ui/UserInterface';
 import { useGetNewPage } from '../../../hooks/useGetNewPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +18,7 @@ export const ServiciosList: FC = (): JSX.Element => {
     const { pathname } = useLocation();
     const allowed = usePermission( pathname );
 
-    const { list, page, totalRows, totalPages, filterSearch, filterDeptos } = useAppSelector( state => state.servicios);  
+    const { list, page, totalRows, totalPages, filterSearch, filterDeptos, filterStatus, comboStatus } = useAppSelector( state => state.servicios);  
     const { comboDepartamentos } = useAppSelector( state => state.departamentos);
     const { loading } = useAppSelector( state => state.transaction)
     
@@ -26,6 +26,7 @@ export const ServiciosList: FC = (): JSX.Element => {
     const { id_zona, id_rol } = systemOptions;    
     
     const [ valFilterDeptos, setValFilterDeptos] = useState<Array<any>>([]);
+    const [ valFilterStatus, setValFilterStatus] = useState<Array<any>>([]);
     const [loadingExport, setLoadingExport] = useState(false);
     const [ showModalFilter, setShowModalFilter ] = useState(false);
 
@@ -64,6 +65,12 @@ export const ServiciosList: FC = (): JSX.Element => {
         }
     }, [dispatch, comboDepartamentos])
 
+    useEffect(() => {
+        if (comboStatus.length === 0){
+            dispatch( startGetComboEstatus() );
+        }
+    }, [dispatch, comboStatus])
+    
 
     useEffect(() => {
 
@@ -96,9 +103,33 @@ export const ServiciosList: FC = (): JSX.Element => {
     }, [ comboDepartamentos ]);
 
     useEffect(() => {
+        if ( filterStatus.length === 0) {
+            if ( filterStatus !== undefined) {
+                if (comboStatus.length > 0) {
+                    let arrayStatus : number[] = [];
+
+                    comboStatus.forEach(element => {
+                        let id_estatus = parseInt(element.id_estatus);
+                        if (id_estatus > 0) {
+                            arrayStatus.push(id_estatus);
+                        }
+                        
+                    });
+
+                    setValFilterStatus(arrayStatus);
+                    dispatch( setFilterEstatus(arrayStatus));
+
+                }
+            }
+        }
+
+    }, [comboStatus]);
+
+
+    useEffect(() => {
         dispatch( startGetRegServicios( id_zona, id_rol ) );
     
-    }, [dispatch, page, filterSearch, filterDeptos]);
+    }, [dispatch, page, filterSearch, filterDeptos, filterStatus]);
 
     const setSearchEmpty = () => {
         dispatch( setSearchServicios({}) );
@@ -122,6 +153,27 @@ export const ServiciosList: FC = (): JSX.Element => {
 
         dispatch( setFilterDeptos(newArrayValues) );
         setValFilterDeptos(newArrayValues);
+
+    }
+
+    const handleChangeStatus = ( { target }: ChangeEvent<HTMLInputElement>  ) => {
+        const { value } = target;
+        
+        let newArrayVal: number[] = [...filterStatus ];
+
+        let statusValue = parseInt(value)
+        
+        let doAddS = ( filterStatus.includes( statusValue ) ) ? false : true;
+        
+        if( doAddS ) {
+            newArrayVal.push( statusValue );
+        }else{
+            const index = newArrayVal.indexOf(statusValue);
+            newArrayVal.splice(index, 1);
+        }
+
+        dispatch( setFilterEstatus(newArrayVal) );
+        setValFilterStatus(newArrayVal);
 
     }
 
@@ -161,8 +213,8 @@ export const ServiciosList: FC = (): JSX.Element => {
                                 }
                             </li>
                         </ul>
-                    </div>            
-                    <div className="col-6">
+                    </div>  
+                    <div className="col-4">
                         <div className="btn-group" role="group" aria-label="Departamentos">
                             {
                                 (comboDepartamentos !== undefined) &&
@@ -191,8 +243,38 @@ export const ServiciosList: FC = (): JSX.Element => {
                                 ))
                             }
                         </div>
-                    </div>        
-                    <div className="col-4">
+                    </div>          
+                    <div className="col-3">
+                        <div className="btn-group" role="group" aria-label="Estatus">
+                            {
+                                (comboStatus !== undefined) &&
+                                (comboStatus.length > 0) &&
+                                comboStatus.map((item, index) => (
+                                    <div key={ "btnStatus"+index }>
+                                        <input
+                                            type="checkbox" 
+                                            title={ item.id_estatus }
+                                            className="btn-check "
+                                            name="filterStatus[]" 
+                                            checked={ (valFilterStatus.includes(parseInt(item.id_estatus))) ? true: false }
+                                            id={"btnchk"+index }
+                                            value={ item.id_estatus }
+                                            onChange={ handleChangeStatus }
+                                            autoComplete="off"
+                                            key={ index }
+                                            />
+                                        
+                                        <label className="btn btn-outline-info" 
+                                            htmlFor={"btnchk"+index }
+                                            title={item.descripcion}>                                        
+                                            {item.descripcion}
+                                        </label>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div className="col-3">
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
@@ -238,6 +320,7 @@ export const ServiciosList: FC = (): JSX.Element => {
                                         <tr key={ index }>
                                             {<ServiciosListItem
                                                 item={item}
+                                                index={index}
                                                 edit={ edit }
                                                 elim={ elim }/>}
                                         </tr>
@@ -269,13 +352,16 @@ export const ServiciosList: FC = (): JSX.Element => {
                 }
             </div>
         </div>
-      {
+        {
         showModalFilter &&
         <ServiciosModalSearch
             showModal={ showModalFilter }
             setShowModal={ setShowModalFilter }
         />
-    }
+        }
+        {
+            
+        }
     </>
     )
 }

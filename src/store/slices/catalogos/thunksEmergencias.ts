@@ -11,7 +11,7 @@ import { setShowList, setLoadingState } from '../transaction';
 
 import { exportFile } from "../../../components/helpers/exportGeneric";
 
-import { setComboEmergencias, setIdEmergenciasActive, setListEmergencias, setEmergenciasActive } from "./sliceEmergencias";
+import { setComboEmergencias, setIdEmergenciasActive, setListEmergencias, setEmergenciasActive, setComboEmergenciaCierre } from "./sliceEmergencias";
 import emergenciasApi from "../../../api/emergencias";
 
 export const startGetRegEmergencias = () => async( dispatch: AppDispatch, getState: GetState) => {
@@ -164,6 +164,25 @@ export const startGetComboEmergencias = ( ) => async( dispatch: AppDispatch ) =>
 
         if( done ){
             dispatch( setComboEmergencias( rows ) );
+        }
+
+    } catch (error) {
+
+        if ( error instanceof AxiosError ) console.error(error.message);
+        else console.error(error);
+
+    }
+} 
+
+export const startComboEmergenciaCierre = ( ) => async( dispatch: AppDispatch ) => {
+    try {
+
+        const body = await emergenciasApi.post(`/combo`, {} );
+
+        const { done, rows } = body.data;
+
+        if( done ){
+            dispatch( setComboEmergenciaCierre( rows ) );
         }
 
     } catch (error) {

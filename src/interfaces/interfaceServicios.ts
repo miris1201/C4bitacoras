@@ -44,6 +44,7 @@ export interface ServicioInterface {
     id_cuadrante: number;
     sector: number;
     cuadrante: string;
+    region: number;
     id_departamento: number;
     departamento: string;
     placas: string;
@@ -63,12 +64,13 @@ export interface ServicioInterface {
     id_usuario_cierre: number;
     usuario_cierre: string
     fecha_cierre: string;
-	id_emergencia_cierre: number;
+	id_emergencia_cierre?: number;
 	emergencia_cierre: string;
 	id_tipo_cierre: number;
 	tipo_cierre: string;
 	id_tipo_emergencia: number;
 	tipo_emergencia: string;
+    notas_dtl: NotasDtlInterface[];
     
 }
 
@@ -81,28 +83,18 @@ export interface FilterServicios {
 
 export interface dataItemServicio {
     item: ServicioInterface;
+    index: number;
     edit: boolean;
     elim: boolean;
 }
 
-export interface ServicioDtlInterface {
-	id_servicio_dtl: number;
+export interface NotasDtlInterface {
+	id_nota: number;
 	id_servicio: number;
     id_usuario: number;
     fecha_captura: string;
-	resultado: string;
-	unidad: string;
-	hrecibe: string;
-	hasignacion: string;
-	harribo: string;
-    id_usuario_cierre: number;
-    fecha_cierre: string;
-	id_emergencia_cierre: number;
-	emergencia_cierre: string;
-	id_tipo_cierre: number;
-	tipo_cierre: string;
-	id_tipo_emergencia: number;
-	tipo_emergencia: string;
+	id_zona: number;
+	descripcion: string;
 }
 
 export interface iModalAsignar {
@@ -111,6 +103,11 @@ export interface iModalAsignar {
 }
 
 export interface iModalRespuesta {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface iModalNotas {
 	showModal: boolean;
 	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }

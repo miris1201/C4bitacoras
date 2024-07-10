@@ -2,20 +2,25 @@
 
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
-import { faEdit, faBan, faCheckSquare, faTrashAlt, faEye, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faBan, faCheckSquare, faTrashAlt, faEye, faCheck, faXmark, faPersonMilitaryPointing, faCircleInfo, faRightLeft, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
 import { dataItemServicio } from '../../../interfaces'
 import { useAppDispatch } from '../../../store/hooks';
 import { useLocation } from 'react-router-dom';
 import { usePermission } from '../../../hooks/usePermission';
 import { startServiciosActive, unSetActiveServicios } from '../../../store/slices/registros';
 import { setReadOnly, setShowList } from '../../../store/slices/transaction';
+import { useState } from 'react';
+import { NotasModal } from './NotasModal';
 
-export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
+export const ServiciosListItem = ({ item, edit, elim, index }: dataItemServicio) => {
 
     const dispatch = useAppDispatch();
     
     const { pathname } = useLocation();
     const allowed = usePermission( pathname ) ;
+
+    
+    const [ showModalNotas, setShowModalNotas ] = useState(false);
 
     const {
         id_servicio, 
@@ -45,11 +50,27 @@ export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
         dispatch( setReadOnly( false ) );
     }
 
+
+    let iconStatus = faPersonMilitaryPointing,
+        titleIcon = "Asignar servicio",
+        classIcon = "btn btn-outline-danger btn-sm me-2";
+
+     if(id_status == 2) {
+        iconStatus = faRightLeft;
+        titleIcon  = "Responder servicio"
+        classIcon  = "btn btn-outline-warning btn-sm me-2";
+    } else if(id_status == 3) {
+        iconStatus = faCircleInfo;
+        classIcon = "btn btn-outline-success btn-sm me-2";
+        titleIcon  = "Historial del servicio"
+    }
+
+
     return (
         <>
             <td scope="row">
                 <FontAwesomeIcon
-                    icon={ (id_status == 4 ) ? faCheck : faXmark } 
+                    icon={ (id_status == 3 ) ? faCheck : faXmark } 
                     title={ estatus }   
                     className={ class_name } />
             </td>
@@ -61,30 +82,39 @@ export const ServiciosListItem = ({ item, edit, elim }: dataItemServicio) => {
             <td>{ zona } </td>
             <td>{ departamento }</td>
             <td>{ emergencia }</td>
-            <td width="40%">{ observaciones }</td>
-            <td className="text-center">
+            <td width="35%">{ observaciones }</td>
+            <td width="8%" className="text-center">
                 <button 
                     type="button"
-                    className="btn btn-outline-secondary btn-sm me-2"
-                    title="Asignar servicio"
+                    className={classIcon}
+                    title={ titleIcon }
                     onClick={ () => {  handleSetWindow( id_servicio, true )  } }
                 >
-                    <FontAwesomeIcon icon={ faEye } />
+                    <FontAwesomeIcon icon={ iconStatus  } />
                 </button>
                 { 
-                    ( edit ) &&
+                    ( id_status == 3 ) &&
                     <>
                     <button 
                         type="button"
-                        className="btn btn-outline-secondary btn-sm me-2"
-                        title="Editar"
-                        onClick={ () =>{ handleSetWindow( id_servicio, true ) } }
+                        className="btn btn-outline-info btn-sm me-2"
+                        title="Notas"
+                        onClick={() => {
+                            setShowModalNotas( true );
+                        }}
                     >
-                        <FontAwesomeIcon icon={ faEdit } />
+                        <FontAwesomeIcon icon={ faNoteSticky } />
                     </button>
                     </>
                 }                
             </td>
+            {
+                (showModalNotas) &&
+                <NotasModal
+                    showModal={ showModalNotas }
+                    setShowModal={ setShowModalNotas }
+                />
+            }
         </>
     )
 

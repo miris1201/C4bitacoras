@@ -17,10 +17,7 @@ export const ServiciosModalSearch = ({ showModal, setShowModal }: ModalSearchLis
     const { comboEmergencias } = useAppSelector( state => state.emergencias);
     const { uid, systemOptions } = useAppSelector(state => state.login);
 
-    const { id_zona, id_rol } = systemOptions;
-
     const [ loadingBtn, setLoadingBtn ] = useState( false );
-    const [ letShow, setLetShow ] = useState( false );
     
     const {formValues, handleInputChange, setValues } = useForm({
         folio: '',

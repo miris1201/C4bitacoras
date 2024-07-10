@@ -11,6 +11,7 @@ export interface EmergenciasTemplate {
 	list: any[];
 	errors?: any;
 	comboEmergencias: any[];
+	comboEmergenciaCierre: any[];
 }
 
 export interface EmergenciasInterface {

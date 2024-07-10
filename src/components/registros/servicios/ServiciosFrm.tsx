@@ -10,11 +10,16 @@ import moment from 'moment';
 import { HeaderList, NoAccess } from '../../ui/UserInterface';
 import { useForm } from '../../../hooks/useForm';
 import { startInsertServicios } from '../../../store/slices/registros';
-import { startComboCuadrantes, startGetComboColonias, startGetComboEmergencias, startGetComboOperativos, startGetComboProcedencia, startGetComboSector, startGetComboTipoCierre, startGetComboTipoEmergencia } from '../../../store/slices/catalogos';
+import { startComboCuadrantes, startGetComboColonias, startGetComboEmergencias, startGetComboOperativos, startGetComboProcedencia } from '../../../store/slices/catalogos';
 import { setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faShareFromSquare, faSquareArrowUpRight, faStepBackward, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { AsignarModalFrm } from './AsignarModalFrm';
+import { RespuestaModalFrm } from './RespuestaModalFrm';
+import { title } from 'process';
+import { NotasDtlInterface } from '../../../interfaces';
+import { Console } from 'console';
+import { CFormLabel } from '@coreui/react';
 
 export const ServiciosFrm: FC = () => {
 
@@ -28,14 +33,13 @@ export const ServiciosFrm: FC = () => {
     const [showInputs, setShowInputs] = useState( false );
     const [showOtros, setShowOtros] = useState( false )
     const [ showModalAsignar, setShowModalAsignar ] = useState(false);
+    const [ showModalRespuesta, setShowModalRespuesta ] = useState(false);
 
     const { idActive, rActive  } = useAppSelector( state => state.servicios);
     const { comboEmergencias } = useAppSelector( state => state.emergencias);
     const { comboProcedencia } = useAppSelector( state => state.procedencia);
     const { comboOperativos } = useAppSelector( state => state.operativos);
     const { comboColonias } = useAppSelector( state => state.colonias);
-    const { comboTipoEmergencia } = useAppSelector( state => state.tipoEmergencia);
-    const { comboTipoCierre } = useAppSelector( state => state.tipoCierre);
     const { uid, systemOptions } = useAppSelector(state => state.login);
 
     const { id_zona, id_rol } = systemOptions;
@@ -69,6 +73,7 @@ export const ServiciosFrm: FC = () => {
         id_cuadrante: dId_cuadrante,
         sector: dSector,
         cuadrante: dCuadrante,
+        region: dRegion,
         placas: dPlacas,
         serie: dSerie,
         color: dColor,
@@ -89,7 +94,8 @@ export const ServiciosFrm: FC = () => {
         fecha_captura_dtl: dFecha_dtl,
         usuario_dtl: dUsuario_dtl,
         fecha_cierre: dFecha_cierre,
-        usuario_cierre: dUsuario_cierre
+        usuario_cierre: dUsuario_cierre,
+        notas_dtl: dNotasList,
     } = rActive;
 
     if (allowed.length === 0) {
@@ -114,28 +120,29 @@ export const ServiciosFrm: FC = () => {
         id_llamada: dId_llamada,
         id_operativo: (dId_operativo == null ) ? 0 : dId_operativo,
         operativo: (dOperativo == "" || dOperativo == null) ? 'Selecciona el operativo' : dOperativo,
-        otros_operativos: (dOtroOperativo == null) ? '' : dOtroOperativo,
+        otros_operativos: (dOtroOperativo == null || dOtroOperativo == "") ? 'Sin datos' : dOtroOperativo,
         nombre: dNombre,
-        telefono: dTelefono,
+        telefono: dTelefono, 
         id_colonia: dId_colonia,
         colonia: dColonia,
         calle: dCalle,
         calle1: dCalle1,
         observaciones: dObservaciones,
-        id_cuadrante: dId_cuadrante,
-        sector: dSector,
-        cuadrante: dCuadrante,
-        placas: (dPlacas == null ) ? '': dPlacas,
-        color: (dColor == null ) ? '': dColor,
-        serie: (dSerie == null ) ? '': dSerie,
-        modelo: (dModelo == null ) ? '': dModelo,
-        marca: (dMarca == null ) ? '': dMarca,
-        subMarca: (dSubMarca == null ) ? '': dSubMarca,
-        resultado: dResultado,
-        unidad: dUnidad,
-        hrecibe: dHRecibe,
-        hasignacion: dHAsignacion,
-        harribo: dHArribo,
+        id_cuadrante: (dId_cuadrante == null ) ? 0 : dId_cuadrante,
+        sector: (dSector == null) ? '----' : dSector,
+        cuadrante: (dCuadrante == undefined) ? '----' : dCuadrante,
+        region: (dRegion == null || dRegion == undefined) ? '----' : dRegion,
+        placas: (dPlacas == null || dPlacas == undefined ) ? '': dPlacas,
+        color: (dColor == null || dColor == undefined) ? '': dColor,
+        serie: (dSerie == null || dSerie == undefined) ? '': dSerie,
+        modelo: (dModelo == null || dModelo == undefined) ? '': dModelo,
+        marca: (dMarca == null || dMarca == undefined) ? '': dMarca,
+        subMarca: (dSubMarca == null || dSubMarca == undefined) ? '': dSubMarca,
+        resultado: (dResultado == null || dResultado == undefined) ? '': dResultado,
+        unidad: (dUnidad == null || dUnidad == undefined) ? '': dUnidad,
+        hrecibe: (dHRecibe == null || dHRecibe == undefined) ? '': dHRecibe,
+        hasignacion: (dHAsignacion == null || dHAsignacion == undefined) ? '': dHAsignacion,
+        harribo: (dHArribo == null || dHArribo == undefined) ? '' : dHArribo,
         id_emergencia_cierre: (dId_emergencia_cierre == null) ? 0 : dId_emergencia_cierre,
         emergencia_cierre: (dEmergencia_cierre == "" || dEmergencia_cierre == null) ? 'Selecciona' : dEmergencia_cierre,
         id_tipo_cierre: (dId_tipo_cierre == null) ? 0 : dId_tipo_cierre, 
@@ -145,10 +152,9 @@ export const ServiciosFrm: FC = () => {
         fecha_captura_dtl: (dFecha_dtl == null) ? '----' : dFecha_dtl,
         usuario_dtl: (dUsuario_dtl == null || dUsuario_dtl == "" ) ? '----' : dUsuario_dtl,
         fecha_cierre: (dFecha_cierre == null) ? '----' : dFecha_cierre,
-        usuario_cierre: (dUsuario_cierre == null || dUsuario_cierre == "") ? '----' : dUsuario_cierre
+        usuario_cierre: (dUsuario_cierre == null || dUsuario_cierre == "") ? '----' : dUsuario_cierre,
+        notasDtl: dNotasList,
     });
-
-    
 
     const { folio,
             id_zona_b, 
@@ -169,9 +175,9 @@ export const ServiciosFrm: FC = () => {
             calle, 
             calle1, 
             observaciones,
-            id_cuadrante,
             sector,
             cuadrante,
+            region,
             placas,
             color,
             serie,
@@ -183,19 +189,16 @@ export const ServiciosFrm: FC = () => {
             hrecibe,
             hasignacion,
             harribo,
-            id_emergencia_cierre,
             emergencia_cierre,
-            id_tipo_cierre,
             tipo_cierre,
-            id_tipo_emergencia,
             tipo_emergencia,
             fecha_captura_dtl,
             usuario_dtl,
             fecha_cierre,
-            usuario_cierre
+            usuario_cierre,
+            notasDtl
         } = formValues;
-        
-        
+
     useEffect(() => {
         if (comboEmergencias.length === 0) {
             dispatch( startGetComboEmergencias() );
@@ -233,21 +236,6 @@ export const ServiciosFrm: FC = () => {
         }
     
     }, [dispatch, comboColonias])
-
-    useEffect(() => {
-        if (comboTipoEmergencia.length === 0) {
-            dispatch( startGetComboTipoEmergencia() );
-        }
-    
-    }, [dispatch, comboTipoEmergencia])
-
-    useEffect(() => {
-        if (comboTipoCierre.length === 0) {
-            dispatch( startGetComboTipoCierre() );
-        }
-    
-    }, [dispatch, comboTipoCierre])
-
     
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -299,7 +287,16 @@ export const ServiciosFrm: FC = () => {
     }
 
     let titleMain = "Servicios";
-    let titleHeader = (Number(id_status) === 2 || readOnly) ? `Asignar servicio (Folio N° ${folio})` : `Responder servicio ( Folio N° ${folio } )`;
+    let titleHeader = `Asignar servicio (Folio N° ${folio})`;
+
+    if(id_status == 2) {
+        titleHeader = `Responder servicio (Folio N° ${folio})`;
+
+    } else if(id_status == 3) {
+        titleHeader = `Servicio concluido (Folio N° ${folio})`;
+
+    }
+
     titleMain = (idActive === 0) ? titleMain : titleHeader;
 
     return(
@@ -333,14 +330,14 @@ export const ServiciosFrm: FC = () => {
                             </button>                    
                         </li>
                     }
-                     {
+                    {
                         (id_status == 2) &&
                         <li className="nav-item">
                             <button
                                 className="btn btn-warning me-2 btn-sm float-end"
                                 title='Respuesta servicio'
                                 onClick={ ()=> {
-                                    setShowModalAsignar( true );
+                                    setShowModalRespuesta( true );
                                 }}
                                 >                 
                                 <FontAwesomeIcon icon={faUserPen} /> Respuesta
@@ -350,7 +347,7 @@ export const ServiciosFrm: FC = () => {
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">                        
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-6 col-lg-4 col-xl-3 col-xxl-2">
                             <label htmlFor="fecha">
                                 Fecha<span className="text-danger">*</span>
                             </label>
@@ -362,12 +359,13 @@ export const ServiciosFrm: FC = () => {
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 autoFocus={false}
-                                disabled={!disabled}
+                                readOnly={readOnly}
+                                // disabled={!disabled}
                                 value={ fecha }
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-6 col-lg-4 col-xl-3 col-xxl-2">
                             <label htmlFor="hora">
                                 Hora <span className="text-danger">*</span>
                             </label>
@@ -383,7 +381,7 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-6 col-lg-4 col-xl-3 col-xxl-2">
                             <label htmlFor="id_turno">
                                 Turno: <span className="text-danger">*</span>
                             </label>
@@ -403,7 +401,7 @@ export const ServiciosFrm: FC = () => {
                                
                             </select>
                         </div>        
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-6 col-lg-4 col-xl-3 col-xxl-2">
                             <label htmlFor="id_zona_b">
                                 Zona: <span className="text-danger">*</span>
                             </label>
@@ -422,7 +420,7 @@ export const ServiciosFrm: FC = () => {
                                 
                             </select>
                         </div>
-                        <div className="col-12 col-lg-6 col-xl-4">
+                        <div className="col-12 col-lg-8 col-xl-6 col-xxl-4">
                            <label htmlFor="id_emergencia">
                                 Emergencias <span className="text-danger">*</span>
                             </label>
@@ -431,7 +429,6 @@ export const ServiciosFrm: FC = () => {
                             (comboEmergencias.length > 0) &&
                             <Select 
                                 required
-                                className='indicatorsContainer'
                                 isDisabled={ readOnly }
                                 placeholder={ 'Selecciona el departamento' }
                                 onChange={ handleChangeEmergencia }
@@ -446,9 +443,7 @@ export const ServiciosFrm: FC = () => {
                             />
                             }
                         </div>
-                    </div>    
-                    <div className="row">
-                        <div className="col-12 col-md-6 col-xl-2">
+                        <div className="col-12 col-lg-6 col-xl-3 col-xxl-3">
                             <label htmlFor="id_llamada">
                                 Procedencia de llamada <span className='text-danger'>*</span>
                             </label>
@@ -484,7 +479,7 @@ export const ServiciosFrm: FC = () => {
                                 }
                             </select>
                         </div>
-                        <div className="col-12 col-md-6 col-xl-3">
+                        <div className="col-12 col-lg-6 col-xl-3 col-xxl-3">
                             <label htmlFor="id_operativo">
                                 Operativos <span className='text-danger'>*</span>
                             </label>
@@ -494,7 +489,7 @@ export const ServiciosFrm: FC = () => {
                             <Select 
                                 required
                                 className="react-select-container"
-                                classNamePrefix="react-select"
+                                classNamePrefix="form-select"
                                 isDisabled={ readOnly }
                                 placeholder={ 'Selecciona el operativo' }
                                 onChange={ handleChangeOperativo }
@@ -512,7 +507,7 @@ export const ServiciosFrm: FC = () => {
                         {
                         (!showOtros) && 
                         (otros_operativos !== null) || (
-                        <div className="col-12 col-lg-6 col-xl-2">
+                        <div className="col-12 col-lg-6 col-xl-4 col-xxl-3">
                             <label htmlFor="nombre">
                                 Especifica el operativo<span className="text-danger">*</span>
                             </label>
@@ -530,7 +525,7 @@ export const ServiciosFrm: FC = () => {
                             />
                         </div>
                         )}
-                        <div className="col-12 col-lg-6 col-xl-4">
+                        <div className="col-12 col-lg-6 col-xl-4 col-xxl-3">
                             <label htmlFor="nombre">
                                 Nombre<span className="text-danger">*</span>
                             </label>
@@ -547,7 +542,7 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-12 col-lg-6 col-xl-2">
+                        <div className="col-12 col-lg-6 col-xl-4 col-xxl-3">
                             <label htmlFor="telefono">
                                 Teléfono<span className="text-danger">*</span>
                             </label>
@@ -564,7 +559,7 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-12 col-lg-6 col-xl-4">
+                        <div className="col-12 col-lg-12 col-xl-6 col-xxl-4">
                             <label htmlFor="id_colonia">
                                 Colonia <span className="text-danger">*</span>
                             </label>
@@ -587,7 +582,7 @@ export const ServiciosFrm: FC = () => {
                             />
                             }
                         </div>
-                        <div className="col-6 col-lg-6 col-xl-3">
+                        <div className="col-6 col-lg-6 col-xl-3 col-xxl-4">
                             <label htmlFor="calle">
                                 Calle<span className="text-danger">*</span>
                             </label>
@@ -604,7 +599,7 @@ export const ServiciosFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-6 col-xl-3">
+                        <div className="col-6 col-lg-6 col-xl-3 col-xxl-4">
                             <label htmlFor="calle1">
                                 Esquina / Referencia<span className="text-danger">*</span>
                             </label>
@@ -749,6 +744,8 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
+                                id="hasignacion"
+                                name="hasignacion"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ hasignacion }
@@ -760,6 +757,8 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
+                                id="unidad"
+                                name="unidad"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ unidad }
@@ -771,6 +770,8 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
+                                name="sector"
+                                id="sector"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ sector }
@@ -782,15 +783,30 @@ export const ServiciosFrm: FC = () => {
                             </label>
                             <input
                                 type="text"
+                                name="cuadrante"
+                                id="cuadrante"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ cuadrante }
                             />                           
                         </div>
+                        <div className="col-6 col-md-3 col-xl-2">
+                            <label htmlFor="region">
+                                Región
+                            </label>
+                            <input
+                                type="text"
+                                name="region"
+                                id="region"
+                                className={inputClass}
+                                disabled={ readOnly }
+                                value={ region }
+                            />                           
+                        </div>
                     </div>
                     }
-                    {
-                    (id_status >= 3) &&
+                    {                    
+                    (id_status == 3) &&                    
                     <div className="row mt-3">
                         <div className="col-12 mt-2">
                             <h5>Detalle del cierre de servicio</h5>
@@ -799,75 +815,130 @@ export const ServiciosFrm: FC = () => {
                             <br />
                         </div>
                         <div className="col-6 col-lg-2 col-xl-1">
-                            <label>
+                            <label htmlFor="harribo">
                                 Hr. Arribo
                             </label>
                             <input
                                 type="text"
+                                name='harribo'
+                                id='harribo'
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ harribo }
                             />
                         </div>
                         <div className="col-6 col-lg-2 col-xl-2">
-                            <label>
+                            <label htmlFor='hrecibe'>
                                 Hr. Termino
                             </label>
                             <input
                                 type="text"
+                                name='hrecibe'
+                                id='hrecibe'
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ hrecibe }
                             />
                         </div>
                         <div className="col-6 col-lg-3 col-xl-3">
-                            <label>
+                            <label htmlFor="tipo_emergencia">
                                 Tipo de emergencia
                             </label>
                             <input
                                 type="text"
+                                name='tipo_emergencia'
+                                id='tipo_emergencia'
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ tipo_emergencia }
                             />
                         </div>
                         <div className="col-6 col-lg-3 col-xl-3">
-                            <label> Emergencia Cierre </label>
+                            <label htmlFor="emergencia_cierre"> Emergencia Cierre </label>
                             <input
                                 type="text"
+                                name="emergencia_cierre"
+                                id="emergencia_cierre"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ emergencia_cierre }
                             />
                         </div>
                         <div className="col-6 col-lg-3 col-xl-3">
-                            <label>
+                            <label htmlFor="tipo_cierre">
                                 Tipo de Cierre
                             </label>
                             <input
                                 type="text"
+                                name="tipo_cierre"
+                                id="tipo_cierre"
                                 className={inputClass}
                                 disabled={ readOnly }
                                 value={ tipo_cierre }
                             />
                         </div>
                         <div className="col-12">
-                            <label htmlFor="observaciones">
+                            <label htmlFor="resultado">
                                 Reporte <span className="text-danger">*</span>
-                            </label>
+                            </label>                          
                             <textarea
                                 rows={7} 
+                                id="resultado"
+                                name="resultado"
+                                disabled={ readOnly }
                                 className={inputClass}
-                                value={ resultado } ></textarea>
-                        </div>
+                                value={ resultado } ></textarea><br />
+                        </div><br />
                     </div>
                     }
+                    <div className="row">
+                        <br />
+                        <label htmlFor="">Notas</label>
+                        {
+                            (notasDtl.length > 0) &&
+                            notasDtl.map((item: any) => (
+                                <div key={item.id_nota}  className='col-11 border-bottom'>
+                                    <div className='fw-bolder'>
+                                        <li>{item.descripcion}</li></div>
+                                </div>
+                            ))                            
+                        }
+                        {
+                            (notasDtl.length == 0) &&
+                            <div>
+                                <h6><i className='fw-bolder'>
+                                    No hay notas registradas.
+                                </i></h6>
+                            </div>
+                        }
+                    </div>
+                    <div className="row mt-4">
+                        <div className="col-12">
+                            {readOnly || (
+                            <button
+                                type="submit"
+                                disabled={loadingBtn}
+                                className="btn btn-outline-info btn-sm"
+                                id="btn_guardar"
+                            >
+                                <FontAwesomeIcon icon={faSave} /> Guardar
+                            </button>
+                            )}
+                        </div>
+                    </div>
                 </form>
                 {
                     (showModalAsignar) &&
                     <AsignarModalFrm
                         showModal={ showModalAsignar }
                         setShowModal={ setShowModalAsignar }
+                    />
+                }
+                {
+                    (showModalRespuesta) &&
+                    <RespuestaModalFrm
+                        showModal= { showModalRespuesta}
+                        setShowModal={ setShowModalRespuesta }
                     />
                 }
             </div>

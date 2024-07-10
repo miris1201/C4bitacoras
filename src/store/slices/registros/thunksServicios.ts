@@ -60,7 +60,7 @@ export const exportDataServicios = (id_zona: number, id_rol: number, setLoadingE
             filtroD: servicios.filterDeptos,
             filtroS: servicios.filterStatus,
             id_zona: id_zona,
-            id_rol: id_rol,
+            id_rol: id_rol
         };
 
         const resp = await serviciosApi.post(`/listExport`, dataSend);
@@ -77,12 +77,65 @@ export const exportDataServicios = (id_zona: number, id_rol: number, setLoadingE
 
 }
 
-export const startInsertServicios = ( data: {}, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) =>  {
+export const startInsertServicios = ( data: any, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>> ) => async( dispatch: AppDispatch ) =>  {
     try {
 
         const body = await serviciosApi.post(`/insertupdate`, data);
 
         const { done, msg } = body.data;
+
+        if( done ){
+            await Swal.fire("¡Correcto!", msg, "success");
+            dispatch( setShowList( true ) );
+        }else{
+            Swal.fire("Error", msg, "error");
+        }
+
+        setLoadingBtn( false );
+        
+
+    } catch (error) {
+
+        if ( error instanceof AxiosError ) console.error(error.message);
+        else console.error(error);
+
+    }
+
+} 
+
+export const startServiciosActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
+    try {
+       
+        const body = await serviciosApi.post(`/show`, { idShow });
+        
+        const { done, rows  } = body.data;
+
+        if( done ){
+
+            dispatch( setServiciosActive( rows) );
+            dispatch( setIdServicioActive( idShow ) ) ;
+            dispatch( setShowList( false ));
+            dispatch( setLoadingState( false ) ) ;
+
+        }
+
+    } catch (error) {
+
+        if ( error instanceof AxiosError ) console.error(error.message);
+        else console.error(error);
+
+    }
+} 
+
+export const startInsertAsignacion = (  data: any, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>>  ) => async( dispatch: AppDispatch ) => {
+    try {
+
+        debugger;
+        console.log(data);
+       
+        const body = await serviciosApi.post(`/insertAsignacion`, data );
+        
+        const { done, msg, rows, id } = body.data;
 
         if( done ){
             await Swal.fire("¡Correcto!", msg, "success");
@@ -109,29 +162,72 @@ export const startInsertServicios = ( data: {}, setLoadingBtn: React.Dispatch<Re
         setLoadingBtn( false );
 
     }
-
 } 
 
-export const startServiciosActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
+export const startInsertResultado = (  data: any, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>>  ) => async( dispatch: AppDispatch ) => {
     try {
-       
-        const body = await serviciosApi.post(`/show`, { idShow });
+
+        const body = await serviciosApi.post(`/insertRespuesta`, data );
         
-        const { done, rows  } = body.data;
+        const { done, msg } = body.data;
 
         if( done ){
-
-            dispatch( setServiciosActive( rows) );
-            dispatch( setIdServicioActive( idShow ) ) ;
-            dispatch( setShowList( false ));
-            dispatch( setLoadingState( false ) ) ;
-
+            await Swal.fire("¡Correcto!", msg, "success");
+            dispatch( setShowList( true ));
+        }else{
+            Swal.fire("Error", msg, "error");
         }
+
+        setLoadingBtn( false );
+        
 
     } catch (error) {
 
-        if ( error instanceof AxiosError ) console.error(error.message);
-        else console.error(error);
+        const err:any = error as AxiosError;
+
+        let data = err.response?.data;
+        
+        if( typeof data === 'object'){
+            Swal.fire("Error", data.msg , "error");
+        }else{
+            Swal.fire("Error", data , "error");
+        }
+        
+        setLoadingBtn( false );
+
+    }
+} 
+
+export const startInsertNotes = (  data: any, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>>  ) => async( dispatch: AppDispatch ) => {
+    try {
+       
+        const body = await serviciosApi.post(`/insertNotas`, data );
+        
+        const { done, msg  } = body.data;
+
+        if( done ){
+            await Swal.fire("¡Correcto!", msg, "success");
+            dispatch( setShowList( true ) );
+        }else{
+            Swal.fire("Error", msg, "error");
+        }
+
+        setLoadingBtn( false );
+        
+
+    } catch (error) {
+
+        const err:any = error as AxiosError;
+
+        let data = err.response?.data;
+        
+        if( typeof data === 'object'){
+            Swal.fire("Error", data.msg , "error");
+        }else{
+            Swal.fire("Error", data , "error");
+        }
+        
+        setLoadingBtn( false );
 
     }
 } 
