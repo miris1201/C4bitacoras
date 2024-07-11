@@ -56,11 +56,7 @@ export const ProfileListItem = ({ item, edit, elim }: dataItemProfile) => {
 
     return (
         <>
-            <th scope="row">
-                <strong>
-                    { id_rol }
-                </strong>
-            </th>
+        
             <td>{ rol }</td>
             <td>{ descripcion }</td>
             <td>

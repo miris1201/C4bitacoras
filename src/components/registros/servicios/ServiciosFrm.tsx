@@ -307,7 +307,7 @@ export const ServiciosFrm: FC = () => {
                 <ul className="nav nav-pills mb-4">
                     <li className="nav-item">
                         <button
-                            className="btn btn-outline-danger btn-sm me-2 float-end"
+                            className="btn btn-outline-success btn-sm me-2 float-end"
                             onClick={() => {
                                 dispatch(setShowList( true ));
                             }}
@@ -320,7 +320,7 @@ export const ServiciosFrm: FC = () => {
                         (id_status == 1) &&
                         <li className="nav-item">
                             <button
-                                className="btn btn-success me-2 btn-sm float-end"
+                                className="btn btn-outline-danger me-2 btn-sm float-end"
                                 title='Asignar servicio'
                                 onClick={ ()=> {
                                     setShowModalAsignar( true );
@@ -334,7 +334,7 @@ export const ServiciosFrm: FC = () => {
                         (id_status == 2) &&
                         <li className="nav-item">
                             <button
-                                className="btn btn-warning me-2 btn-sm float-end"
+                                className="btn btn-outline-danger me-2 btn-sm float-end"
                                 title='Respuesta servicio'
                                 onClick={ ()=> {
                                     setShowModalRespuesta( true );
@@ -913,12 +913,12 @@ export const ServiciosFrm: FC = () => {
                         }
                     </div>
                     <div className="row mt-4">
-                        <div className="col-12">
+                        <div className="col-6 d-grid gap-2 mx-auto">
                             {readOnly || (
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-info btn-sm"
+                                className="btn btn-outline-success btn-sm"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

@@ -80,7 +80,7 @@ export const ProfileList: FC = (): JSX.Element => {
                                 {
                                     ( nuevo ) && 
                                     <button 
-                                        className="btn btn-outline-info btn-sm me-2"
+                                        className="btn btn-outline-success btn-sm me-2"
                                         onClick={ () => { setChangeWindow() }  }
                                     >
                                     <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -107,7 +107,7 @@ export const ProfileList: FC = (): JSX.Element => {
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn btn-outline-warning btn-sm me-2 float-end"
+                                className="btn btn-outline-success btn-sm me-2 float-end"
                                 onClick={() => {
                                     dispatch ( setSearchProfile({}) ); 
                                 }}
@@ -116,7 +116,7 @@ export const ProfileList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn btn-outline-info  btn-sm me-2 float-end"
+                                className="btn btn-outline-success  btn-sm me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}
@@ -132,8 +132,7 @@ export const ProfileList: FC = (): JSX.Element => {
                         role="tabpanel">
                         <table className="table table-hover ">
                             <thead className="table-light">
-                                <tr>
-                                    <th scope="col">Id</th>
+                                <tr>                                    
                                     <th scope="col">Rol</th>
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Estatus</th>

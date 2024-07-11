@@ -66,7 +66,7 @@ export const TipoEmergenciaFrm: FC = () => {
                 </ul>
                 <form className="g-3" onSubmit={handleSubmitForm}>
                     <div className="row">
-                        <div className="col-6 col-lg-4 col-xl-6">
+                        <div className="col-6 col-lg-6 col-xl-6">
                             <label htmlFor="descripcion">
                                 Descripción <span className="text-danger">*</span>
                             </label>
@@ -85,12 +85,12 @@ export const TipoEmergenciaFrm: FC = () => {
                         </div>
                     </div>                    
                     <div className="row mt-4">
-                        <div className="col-12">
+                        <div className="col-6 d-grid gap-2 mx-auto">
                             {readOnly || (
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-info btn-sm"
+                                className="btn btn-outline-success btn-sm"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

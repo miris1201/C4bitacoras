@@ -84,7 +84,7 @@ export const CuadrantesFrm: FC = () => {
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                         <button
-                            className="btn btn-outline-danger btn-sm"
+                            className="btn btn-outline-success btn-sm"
                             onClick={() => {
                                 dispatch(setShowList( true ));
                             }}
@@ -112,7 +112,7 @@ export const CuadrantesFrm: FC = () => {
                                 required
                             />
                         </div>
-                        <div className="col-6 col-lg-4 col-xl-2">
+                        <div className="col-6 col-lg-4 col-xl-3">
                            <label htmlFor="id_zona">
                                 Zona <span className="text-danger">*</span>
                             </label>
@@ -158,12 +158,12 @@ export const CuadrantesFrm: FC = () => {
                         </div>
                     </div>                    
                     <div className="row mt-4">
-                        <div className="col-12">
+                        <div className="col-6 d-grid gap-2 mx-auto">
                             {readOnly || (
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-info btn-sm"
+                                className="btn btn-outline-success btn-sm"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

@@ -67,11 +67,6 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
 
 	return (
 		<>
-			<th scope="row">
-                <strong>
-                    { id_colonia }
-                </strong>
-            </th>
             <td><span className={classStatus}> {txtStatus } </span></td>
             <td>{ nombre }</td>
             <td>{ tipo }</td>

@@ -80,7 +80,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                             {
                                 ( nuevo ) && 
                                 <button 
-                                    className="btn btn-success btn-sm me-2"
+                                    className="btn btn-outline-success btn-sm me-2"
                                     onClick={ () => { setChangeWindow() }  }
                                 >
                                 <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -93,7 +93,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn btn-warning btn-sm me-2 float-end"
+                                className="btn btn-outline-success btn-sm me-2 float-end"
                                 onClick={() => {
                                     setSearchEmpty();
                                 }}
@@ -102,7 +102,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn btn-primary btn-sm me-2 float-end"
+                                className="btn btn-outline-success btn-sm me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}
@@ -119,7 +119,6 @@ export const ColoniasList: FC = (): JSX.Element => {
                         <table className="table table-hover ">
                             <thead className="table-light">
                                 <tr>
-                                    <th scope="col">Id</th>
                                     <th scope="col">Estatus</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Tipo</th>

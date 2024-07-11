@@ -55,7 +55,7 @@ export const OperativosFrm: FC = () => {
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                     <button
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn btn-outline-success btn-sm"
                         onClick={() => {
                             dispatch(setShowList( true ));
                         }}
@@ -85,12 +85,12 @@ export const OperativosFrm: FC = () => {
                         </div>
                     </div>                    
                     <div className="row mt-4">
-                        <div className="col-12">
+                        <div className="col-6 d-grid gap-2 mx-auto">
                             {readOnly || (
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-info btn-sm"
+                                className="btn btn-outline-success btn-sm"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

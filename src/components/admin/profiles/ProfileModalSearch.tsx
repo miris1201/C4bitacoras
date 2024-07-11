@@ -14,13 +14,12 @@ export const ProfileModalSearch = ({ showModal, setShowModal  }: ModalSearchList
     const [loadingBtn, setLoadingBtn] = useState(false);
 
     const { formValues, handleInputChange } = useForm({
-        id_rol: '',
         rol: '',
         descripcion: '',
     });
 
 
-    const { id_rol, rol, descripcion } = formValues;
+    const { rol, descripcion } = formValues;
     
     const handleSubmitSearch = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -44,19 +43,6 @@ export const ProfileModalSearch = ({ showModal, setShowModal  }: ModalSearchList
             <form className="row g-3" onSubmit={ handleSubmitSearch }>
                 <CModalBody>
                     <div className="row g-3">
-                        <div className="col-6">
-                            <label htmlFor="id_rol">
-                                ID
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="id_rol"
-                                id="id_rol"
-                                value={ id_rol }
-                                onChange={ handleInputChange }
-                            />
-                        </div>
                         <div className="col-6">
                             <label htmlFor="rol">
                                 Rol

@@ -40,7 +40,7 @@ export const buildMenu = ( menu : any ) => {
 					name: itemChild.texto,
 					to: itemChild.link,
 				}
-			 )
+			)
 		});
 
 		objNav.push(
@@ -52,9 +52,7 @@ export const buildMenu = ( menu : any ) => {
 				items: itemsToAdd
 			}
 		)
-		
-    	}		
-	)
+    })
 	
     return objNav;
 }

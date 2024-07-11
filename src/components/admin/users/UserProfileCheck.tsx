@@ -40,7 +40,7 @@ export const UserProfileCheck = ({ menu, handleCheckBoxChange, handleCheckBoxCha
                                             value={ itemChild.value } 
                                             name={`menu${itemChild.id_menu}`}
                                             id={`menu${itemChild.id_menu}`}
-                                            className="form-check-input" 
+                                            className="form-check-input " 
                                             checked={ (parseInt(itemChild.value) === 1) ? true : false }
                                             onChange={ handleCheckBoxChangeChild(index,  indexChild, "value" ) }
                                         />

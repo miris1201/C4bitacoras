@@ -139,7 +139,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                                 {
                                     ( nuevo ) && 
                                     <button 
-                                        className="btn btn-success btn-sm me-2"
+                                        className="btn btn-outline-success btn-sm me-2"
                                         onClick={ () => { setChangeWindow() }  }
                                     >
                                     <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -150,7 +150,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                                 {
                                     ( exportar ) && 
                                     <button 
-                                        className="btn btn-info btn-sm me-2"
+                                        className="btn btn-outline-success btn-sm me-2"
                                         disabled={ loadingExport }
                                         onClick={() => {
                                             dispatch( exportDataBitacoras(id_zona, id_rol, setLoadingExport ) );
@@ -196,7 +196,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn btn-warning btn-sm me-2 float-end"
+                                className="btn  btn-outline-success btn-sm me-2 float-end"
                                 onClick={() => {
                                     setSearchEmpty();
                                 }}
@@ -205,7 +205,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn btn-primary btn-sm me-2 float-end"
+                                className="btn  btn-outline-success btn-sm me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}

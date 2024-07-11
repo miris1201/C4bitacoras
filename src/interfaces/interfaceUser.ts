@@ -17,6 +17,7 @@ export interface UserTemplateState {
 export interface FilterS {
 	sNombre:  string;
 	sUsuario: string;
+	sNoEmpleado: number;
 	sZona: number
 }
 

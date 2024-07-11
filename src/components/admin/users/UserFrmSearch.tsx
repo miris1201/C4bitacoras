@@ -12,12 +12,12 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
     const [loadingBtn, setLoadingBtn] = useState(false);
 
     const { formValues, handleInputChange } = useForm({
-        id_usuario: '',
         usuario: '',
         nombre: '',
+        no_empleado: '',
     });
 
-    const { id_usuario, usuario, nombre } = formValues;
+    const { no_empleado, usuario, nombre } = formValues;
     
     const handleSubmitSearch = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,31 +43,18 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                 <CModalBody>
                     <div className="row g-3">
                         <div className="col-6">
-                            <label htmlFor="id_usuario">
-                                ID
+                            <label htmlFor="no_empleado">
+                                No. empleado
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
-                                name="id_usuario"
-                                id="id_usuario"
-                                value={ id_usuario }
+                                name="no_empleado"
+                                id="no_empleado"
+                                value={ no_empleado }
                                 onChange={ handleInputChange }
                             />
-                        </div>
-                        <div className="col-6">
-                            <label htmlFor="nombre">
-                                Nombre
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="nombre"
-                                id="nombre"
-                                value={ nombre }
-                                onChange={ handleInputChange }
-                            />
-                        </div>
+                        </div>                        
                         <div className="col-6">
                             <label htmlFor="usuario">
                                 Usuario
@@ -78,6 +65,19 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                                 name="usuario"
                                 id="usuario"
                                 value={ usuario }
+                                onChange={ handleInputChange }
+                            />
+                        </div>
+                        <div className="col-12">
+                            <label htmlFor="nombre">
+                                Nombre
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="nombre"
+                                id="nombre"
+                                value={ nombre }
                                 onChange={ handleInputChange }
                             />
                         </div>
