@@ -16,6 +16,8 @@ import {
 import CIcon from '@coreui/icons-react';
 
 import avatar8 from '../../../assets/images/avatars/avatar.png';
+import avatarf from '../../../assets/images/avatars/avatar2.png';
+import avatarm from '../../../assets/images/avatars/avatar5.png';
 import { useAppSelector } from '../../../store/hooks';
 import { startLogout } from '../../../store/slices/login';
 import { AccountModalForm } from '../AccountModalForm';
@@ -25,8 +27,10 @@ const AppHeaderDropdown = () => {
 
 	const dispatch = useDispatch();
 
-	const { name } = useAppSelector( state => state.login );
+	const { name, systemOptions } = useAppSelector( state => state.login );
 	const [showModalAccount, setShowModalAccount] = useState(false);
+
+	const { sexo } = systemOptions;
 
 	const handleLogOut = () => {
 		dispatch( startLogout() );
@@ -44,13 +48,12 @@ const AppHeaderDropdown = () => {
 				className="py-0" 
 				caret={false}>
 				<strong className="me-2">{ name }</strong>
-				<CAvatar src={avatar8} size="md" />
+				<CAvatar src={(sexo == 1) ? avatarf : avatarm } size="md" />
 			</CDropdownToggle>
 			<CDropdownMenu 
-				className="pt-0" 
-				placement="bottom-end">
+				className="pt-0" >
 				<CDropdownHeader 
-					className="bg-dark py-3">
+					className="py-3">
 					Preferencias
 				</CDropdownHeader>
 					<CDropdownItem 

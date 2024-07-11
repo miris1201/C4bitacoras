@@ -39,7 +39,7 @@ export const LoginScreen = () => {
                             onSubmit={ handleLoginSubmit }>
                             <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                                 <p className="lead fw-normal mb-0 me-3">
-                                    <strong>Acceder al sistema</strong>
+                                    <strong className="title-login">C4 Bitácoras</strong>
                                 </p>
                             </div>
                             <div className="divider d-flex align-items-center my-4"></div>
@@ -81,7 +81,7 @@ export const LoginScreen = () => {
                             <div className="text-center text-lg-start mt-4 pt-2">
                                 <button 
                                     type="submit" 
-                                    className="btn btn-primary btn-lg"
+                                    className="btn btn-danger btn-lg"
                                     disabled={ checking }>
                                     Ingresar
                                 </button>

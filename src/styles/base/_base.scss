@@ -34,7 +34,7 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 }
 
 .base__logo{
-  text-shadow: 2px 2px 3px #ABABAB;
+  text-shadow: 1px 2px 3px #ABABAB;
 }
 
 .area_DropDown {
@@ -44,8 +44,9 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 .colorReg {
   font-size: 12px;
   color:$info-color!important;
-  font-weight: normal!important;
-  background-color: $info-bg!important;
+  // font-weight: normal!important;
+  font-weight: 200px!important;
+  background-color: $dark-light!important;
 }
 .calendar-screen{
   display: flex;
@@ -80,7 +81,16 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   background-color: $info-btn!important;
   color: $info-color-btn!important;
 }
+
 .header-title-tf{
   background-color: rgb(255, 255, 255) !important;
   border-bottom: solid 1px rgb(211 207 207 / 95%) !important;
+}
+
+.title-login{
+  color: $success
+}
+
+.success-gral{
+  color: $success
 }

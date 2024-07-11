@@ -1,14 +1,14 @@
 import React from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode, faHome, faHouse, faScrewdriverWrench, faFolderClosed } from "@fortawesome/free-solid-svg-icons";
+import { faCode, faHome, faHouse, faScrewdriverWrench, faFolderClosed, faRectangleList, faPhone, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import { CNavGroup, CNavItem } from "@coreui/react";
 import { CIconProps } from "@coreui/icons-react/dist/CIcon";
 import { CNavGroupProps } from "@coreui/react/dist/components/nav/CNavGroup";
 
-library.add(faCode, faHome, faHouse, faScrewdriverWrench, faFolderClosed);
+library.add(faCode, faHome, faHouse, faScrewdriverWrench, faFolderClosed, faRectangleList, faPhone, faFolderOpen);
 
 export const buildMenu = ( menu : any ) => {
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import imgLogo from '../../assets/brand/logo.jpg';
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react';
 import { AppSidebarNav } from './AppSidebarNav';
@@ -35,8 +36,10 @@ const AppSidebar = () => {
 				handleSideBarClick( visible )
 			}}
 		>
-			<CSidebarBrand className="d-none d-md-flex">
-			<h2 className="base__logo">C4</h2>
+			<CSidebarBrand className="d-none d-md-flex bg-white">
+			{/* <h2 className="base__logo">C4</h2> */}
+			<img src={imgLogo}
+            	width="68%" alt="LOGO"/>
 			</CSidebarBrand>
 			<CSidebarNav>
 				<SimpleBar>

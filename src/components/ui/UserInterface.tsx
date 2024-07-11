@@ -36,12 +36,12 @@ interface HeaderValues {
 
 export const HeaderList = ({ title, totalRows = 0 }: HeaderValues) => {
     return (
-        <div className="card-header header-title-tf">
-            <h4>{ title } { ' ' }
+        <div className="card-header header-title-tf bg-danger">
+            <h4 className='text-white' >{ title } { ' ' }
             {
                 ( totalRows > 0) && 
-                <span className="badge colorReg ">
-                    <em className="colorReg"> { totalRows } Reg.</em>
+                <span className="badge  colorReg ">
+                    <em className="badge-pill colorReg"> { totalRows } Reg.</em>
                 </span>
             }
             </h4>
