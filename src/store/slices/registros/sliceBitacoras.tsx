@@ -1,13 +1,14 @@
 const recordsPerPage = import.meta.env.VITE_APP_RECORSPP;
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { BitacoraTemplate, ResponseData } from "../../../interfaces"
+import { BitacoraInterface, BitacoraTemplate, ResponseData } from "../../../interfaces"
 
 const initialBitacorasActive = {
     id_bitacora: '',
-    folio: '',
+    folio: 0,
     id_usuario: '',
     usuario: '',
+    fecha_captura: '',
     id_zona: '',
     id_departamento: '',
     departamento: '',

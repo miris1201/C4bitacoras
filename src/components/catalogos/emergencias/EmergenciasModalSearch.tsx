@@ -65,7 +65,7 @@ export const EmergenciasModalSearch = ({ showModal, setShowModal  }: ModalSearch
             <form className="row g-3" onSubmit={ handleSubmitSearch }>
                 <CModalBody>
                     <div className="row g-3">     
-                        <div className="col-6 col-lg-4 col-xl-6">
+                        <div className="col-12">
                            <label htmlFor="id_departamento">
                                 Departamento <span className="text-danger">*</span>
                             </label>
@@ -89,7 +89,7 @@ export const EmergenciasModalSearch = ({ showModal, setShowModal  }: ModalSearch
                             />
                             }
                         </div>                   
-                        <div className="col-6">
+                        <div className="col-12">
                             <label htmlFor="descripcion">
                                 Emergencia
                             </label>
@@ -98,6 +98,7 @@ export const EmergenciasModalSearch = ({ showModal, setShowModal  }: ModalSearch
                                 className="form-control"
                                 name="descripcion"
                                 id="descripcion"
+                                autoComplete='off'
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

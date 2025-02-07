@@ -131,14 +131,18 @@ export const ProfileFrm: FC = () => {
 
     }
 
+    let titleMain = "Nuevo Rol";
+    let titleHeader = (Number(idActive) === 2 || readOnly) ? 'Visualizando rol' : 'Editar rol';
+    titleMain = (idActive === 0) ? titleMain : titleHeader;
+
     return (
         <div className="card mb-4">
-            <HeaderList title='Agregando Perfil'/>
+            <HeaderList title={titleMain}/>
             <div className="card-body">
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                     <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-outline-primary"
                         onClick={() => {
                             dispatch(setShowList( true ));
                         }}
@@ -192,7 +196,7 @@ export const ProfileFrm: FC = () => {
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-success btn-sm"
+                                className="btn btn-outline-primary"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

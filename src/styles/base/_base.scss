@@ -83,7 +83,8 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 }
 
 .header-title-tf{
-  background-color: rgb(255, 255, 255) !important;
+  // background-color: rgb(255, 255, 255) !important;
+  background-color: #812248 !important;
   border-bottom: solid 1px rgb(211 207 207 / 95%) !important;
 }
 
@@ -93,4 +94,20 @@ font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 
 .success-gral{
   color: $success
+}
+
+.btn-outline-primary{
+  border-color: $primary-btn!important;
+  color: $primary-btn!important;
+}
+
+.btn-outline-primary:hover{
+  background-color: $primary-btn!important;
+  color: $primary-color-btn!important;
+}
+
+
+.btn-login {
+  background-color: $primary-btn!important;
+  color: $primary-color-btn!important;
 }

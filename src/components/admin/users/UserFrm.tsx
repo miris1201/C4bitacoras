@@ -38,14 +38,14 @@ export const UserFrm: FC = () => {
     const { formValues, handleInputChange, setValues } = useForm({
         id_update: idActive,
         nombre: dNombre,
-        apepa: dApepa,
+        apepa: dApepa || '',
         apema: dApema || '',
         usuario: dUsuario,
         no_empleado: dNo_empleado,
         clave: "",
         id_rol: dId_rol || '',
         id_zona: dId_zona || '',
-        sexo: dSexo || '',
+        sexo: dSexo || 0,
         admin: dAdmin,
         menu: dataProfileId,
     });
@@ -171,7 +171,7 @@ export const UserFrm: FC = () => {
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                     <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-outline-primary"
                         onClick={() => {
                             dispatch(setShowList( true ));
                         }}
@@ -357,7 +357,7 @@ export const UserFrm: FC = () => {
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-success btn-sm"
+                                className="btn btn-outline-primary"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

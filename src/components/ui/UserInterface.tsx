@@ -36,7 +36,7 @@ interface HeaderValues {
 
 export const HeaderList = ({ title, totalRows = 0 }: HeaderValues) => {
     return (
-        <div className="card-header header-title-tf bg-danger">
+        <div className="card-header header-title-tf">
             <h4 className='text-white' >{ title } { ' ' }
             {
                 ( totalRows > 0) && 

@@ -64,6 +64,7 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                                 className="form-control"
                                 name="usuario"
                                 id="usuario"
+                                autoComplete='off'
                                 value={ usuario }
                                 onChange={ handleInputChange }
                             />
@@ -77,6 +78,7 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                                 className="form-control"
                                 name="nombre"
                                 id="nombre"
+                                autoComplete='off'
                                 value={ nombre }
                                 onChange={ handleInputChange }
                             />
@@ -92,7 +94,7 @@ export const UserFrmSearch = ({ showModal, setShowModal  }: ModalSearchList ) =>
                     <button
                         type="submit" 
                         disabled={ loadingBtn }
-                        className="btn btn-outline-info btn-sm">
+                        className="btn btn-outline-primary btn-sm">
                         Realizar Búsqueda
                     </button>
                 </CModalFooter>

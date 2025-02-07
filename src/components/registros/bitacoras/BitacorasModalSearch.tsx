@@ -53,12 +53,12 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
             <form className="row g-3" onSubmit={ handleSubmitSearch }>
                 <CModalBody>
                     <div className="row g-3">                        
-                        <div className="col-4">
+                        <div className="col-7">
                             <label htmlFor="folio">
                                 Folio
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 name="folio"
                                 id="folio"
@@ -66,7 +66,7 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 onChange={ handleInputChange }
                             />
                         </div>
-                        <div className="col-4">
+                        <div className="col-6">
                             <label htmlFor="fecha_inicial">
 								Fecha Inicial
                             </label>
@@ -79,7 +79,7 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 onChange={ handleInputChange }
                             />
                         </div>
-						<div className="col-4">
+						<div className="col-6">
                             <label htmlFor="fecha_final">
 								Fecha Final
                             </label>

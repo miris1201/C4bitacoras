@@ -80,7 +80,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                             {
                                 ( nuevo ) && 
                                 <button 
-                                    className="btn btn-outline-success btn-sm me-2"
+                                    className="btn btn-outline-primary me-2"
                                     onClick={ () => { setChangeWindow() }  }
                                 >
                                 <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -93,7 +93,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn btn-outline-success btn-sm me-2 float-end"
+                                className="btn btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setSearchEmpty();
                                 }}
@@ -102,7 +102,7 @@ export const ColoniasList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn btn-outline-success btn-sm me-2 float-end"
+                                className="btn btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}

@@ -100,7 +100,6 @@ export const startInsertServicios = ( data: any, setLoadingBtn: React.Dispatch<R
         else console.error(error);
 
     }
-
 } 
 
 export const startServiciosActive = ( idShow: number ) => async( dispatch: AppDispatch ) => {
@@ -112,8 +111,8 @@ export const startServiciosActive = ( idShow: number ) => async( dispatch: AppDi
 
         if( done ){
 
-            dispatch( setServiciosActive( rows) );
-            dispatch( setIdServicioActive( idShow ) ) ;
+            dispatch( setServiciosActive( rows ));
+            dispatch( setIdServicioActive( idShow ));
             dispatch( setShowList( false ));
             dispatch( setLoadingState( false ) ) ;
 
@@ -130,9 +129,6 @@ export const startServiciosActive = ( idShow: number ) => async( dispatch: AppDi
 export const startInsertAsignacion = (  data: any, setLoadingBtn: React.Dispatch<React.SetStateAction<boolean>>  ) => async( dispatch: AppDispatch ) => {
     try {
 
-        debugger;
-        console.log(data);
-       
         const body = await serviciosApi.post(`/insertAsignacion`, data );
         
         const { done, msg, rows, id } = body.data;

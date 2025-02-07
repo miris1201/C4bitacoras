@@ -246,14 +246,14 @@ export const RespuestaModalFrm = ({ showModal, setShowModal }: iModalRespuesta) 
                 </CModalBody>
                 <CModalFooter>
                     <CButton
-                        color="outline-danger btn-sm"
+                        color="outline-danger"
                         onClick={() => setShowModal(false)}>
                         Cerrar
                     </CButton>
                     <button
                         type="submit"
                         disabled={loadingBtnDtl}
-                        className="btn btn-outline-info btn-sm">
+                        className="btn btn-outline-info">
                         Guardar
                     </button>
                 </CModalFooter>

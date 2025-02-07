@@ -51,6 +51,7 @@ export const ProcedenciaModalSearch = ({ showModal, setShowModal  }: ModalSearch
                                 className="form-control"
                                 name="descripcion"
                                 id="descripcion"
+                                autoComplete='off'
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

@@ -13,13 +13,9 @@ import { startInsertServicios } from '../../../store/slices/registros';
 import { startComboCuadrantes, startGetComboColonias, startGetComboEmergencias, startGetComboOperativos, startGetComboProcedencia } from '../../../store/slices/catalogos';
 import { setShowList } from '../../../store/slices/transaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faShareFromSquare, faSquareArrowUpRight, faStepBackward, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faShareFromSquare, faStepBackward, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { AsignarModalFrm } from './AsignarModalFrm';
 import { RespuestaModalFrm } from './RespuestaModalFrm';
-import { title } from 'process';
-import { NotasDtlInterface } from '../../../interfaces';
-import { Console } from 'console';
-import { CFormLabel } from '@coreui/react';
 
 export const ServiciosFrm: FC = () => {
 
@@ -123,7 +119,7 @@ export const ServiciosFrm: FC = () => {
         otros_operativos: (dOtroOperativo == null || dOtroOperativo == "") ? 'Sin datos' : dOtroOperativo,
         nombre: dNombre,
         telefono: dTelefono, 
-        id_colonia: dId_colonia,
+        id_colonia:  (dId_colonia == null ) ? 0 : dId_colonia,
         colonia: dColonia,
         calle: dCalle,
         calle1: dCalle1,
@@ -307,7 +303,7 @@ export const ServiciosFrm: FC = () => {
                 <ul className="nav nav-pills mb-4">
                     <li className="nav-item">
                         <button
-                            className="btn btn-outline-success btn-sm me-2 float-end"
+                            className="btn btn-outline-primary me-2 float-end"
                             onClick={() => {
                                 dispatch(setShowList( true ));
                             }}
@@ -320,7 +316,7 @@ export const ServiciosFrm: FC = () => {
                         (id_status == 1) &&
                         <li className="nav-item">
                             <button
-                                className="btn btn-outline-danger me-2 btn-sm float-end"
+                                className="btn btn-outline-danger me-2 float-end"
                                 title='Asignar servicio'
                                 onClick={ ()=> {
                                     setShowModalAsignar( true );
@@ -334,7 +330,7 @@ export const ServiciosFrm: FC = () => {
                         (id_status == 2) &&
                         <li className="nav-item">
                             <button
-                                className="btn btn-outline-danger me-2 btn-sm float-end"
+                                className="btn btn-outline-danger me-2 float-end"
                                 title='Respuesta servicio'
                                 onClick={ ()=> {
                                     setShowModalRespuesta( true );
@@ -730,170 +726,58 @@ export const ServiciosFrm: FC = () => {
                         </div>
                     </div>
                     {
-                    (id_status >= 2) &&
-                    <div className="row mt-3">
-                        <div className="col-12 me-2">
-                            <h5>Detalle de Asignación</h5>
-                            <i className='me-2 list-group-item'>Usuario Captura: <strong> { usuario_dtl } </strong> </i>
-                            <i className='me-2  list-group-item'>Fecha captura: <strong> { fecha_captura_dtl } </strong></i>
-                            <br />
+                    (id_status >= 2) &&                        
+                        <div className='col-md-12'>
+                            <div className="card mt-3 ">
+                                <div className="card-body">
+                                    <div className="col-12 me-2">
+                                        <h5 className='text-center'>Detalle de Asignación</h5>
+                                        <i className='me-2 list-group-item'>Usuario Captura: <strong> { usuario_dtl } </strong> </i>
+                                        <i className='me-2  list-group-item'>Fecha captura: <strong> { fecha_captura_dtl } </strong></i>
+                                        <br />
+                                    </div>
+                                    {/* <div className="row"> */}
+                                        <div className="col-xs-6">
+                                            <p>Hr. Asignación: <strong> { hasignacion }</strong> <br />
+                                                Unidad: <strong> { unidad }</strong><br />
+                                                Sector: <strong> { sector }</strong><br />                                                
+                                                Cuadrante: <strong> { cuadrante }</strong><br />                                                
+                                                Región: <strong> { region }</strong><br />                                                
+                                            </p>
+                                        </div>
+                                    {/* </div> */}
+                                </div>
+                            </div>
                         </div>
-                        <div className="col-6 col-lg-3 col-xl-2">
-                            <label htmlFor="hasignacion">
-                                Hr. Asignación
-                            </label>
-                            <input
-                                type="text"
-                                id="hasignacion"
-                                name="hasignacion"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ hasignacion }
-                            />
-                        </div>
-                        <div className="col-6 col-lg-3 col-xl-2">
-                            <label htmlFor="unidad">
-                                Unidad
-                            </label>
-                            <input
-                                type="text"
-                                id="unidad"
-                                name="unidad"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ unidad }
-                            />
-                        </div>
-                        <div className="col-6 col-md-3 col-xl-2">
-                            <label htmlFor="sector">
-                                Sector 
-                            </label>
-                            <input
-                                type="text"
-                                name="sector"
-                                id="sector"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ sector }
-                            />
-                        </div>
-                        <div className="col-6 col-md-3 col-xl-2">
-                            <label htmlFor="cuadrante">
-                                Cuadrante
-                            </label>
-                            <input
-                                type="text"
-                                name="cuadrante"
-                                id="cuadrante"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ cuadrante }
-                            />                           
-                        </div>
-                        <div className="col-6 col-md-3 col-xl-2">
-                            <label htmlFor="region">
-                                Región
-                            </label>
-                            <input
-                                type="text"
-                                name="region"
-                                id="region"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ region }
-                            />                           
+                    }
+                    {
+                    (id_status == 3) &&      
+                    <div className='col-12'>
+                        <div className="card mt-3">
+                            <div className="card-body">
+                                <div className="col-12 me-2">
+                                    <h5 className='text-center'>Detalle del cierre de servicio</h5>
+                                    <i className='me-2 list-group-item'>Usuario Cierre: <strong> { usuario_cierre } </strong> </i>
+                                    <i className='me-2  list-group-item'>Fecha Cierre: <strong> { fecha_cierre } </strong></i>
+                                    <br />
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-6">
+                                        <p>Hr. Arribo: <strong> { harribo }</strong> <br />
+                                            Hr. Termino: <strong> { hrecibe }</strong><br />
+                                            Tipo de emergencia: <strong> { tipo_emergencia }</strong><br />                                                
+                                            Emergencia Cierre: <strong> { emergencia_cierre }</strong><br />                                                
+                                            Tipo de cierre: <strong> { tipo_cierre }</strong><br />
+                                            Reporte: <strong> { resultado }</strong><br />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     }
-                    {                    
-                    (id_status == 3) &&                    
-                    <div className="row mt-3">
-                        <div className="col-12 mt-2">
-                            <h5>Detalle del cierre de servicio</h5>
-                            <i className='me-2 list-group-item'>Usuario Cierre: <strong> { usuario_cierre } </strong> </i>
-                            <i className='m2-2  list-group-item'>Fecha Cierre: <strong> { fecha_cierre } </strong></i>
-                            <br />
-                        </div>
-                        <div className="col-6 col-lg-2 col-xl-1">
-                            <label htmlFor="harribo">
-                                Hr. Arribo
-                            </label>
-                            <input
-                                type="text"
-                                name='harribo'
-                                id='harribo'
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ harribo }
-                            />
-                        </div>
-                        <div className="col-6 col-lg-2 col-xl-2">
-                            <label htmlFor='hrecibe'>
-                                Hr. Termino
-                            </label>
-                            <input
-                                type="text"
-                                name='hrecibe'
-                                id='hrecibe'
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ hrecibe }
-                            />
-                        </div>
-                        <div className="col-6 col-lg-3 col-xl-3">
-                            <label htmlFor="tipo_emergencia">
-                                Tipo de emergencia
-                            </label>
-                            <input
-                                type="text"
-                                name='tipo_emergencia'
-                                id='tipo_emergencia'
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ tipo_emergencia }
-                            />
-                        </div>
-                        <div className="col-6 col-lg-3 col-xl-3">
-                            <label htmlFor="emergencia_cierre"> Emergencia Cierre </label>
-                            <input
-                                type="text"
-                                name="emergencia_cierre"
-                                id="emergencia_cierre"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ emergencia_cierre }
-                            />
-                        </div>
-                        <div className="col-6 col-lg-3 col-xl-3">
-                            <label htmlFor="tipo_cierre">
-                                Tipo de Cierre
-                            </label>
-                            <input
-                                type="text"
-                                name="tipo_cierre"
-                                id="tipo_cierre"
-                                className={inputClass}
-                                disabled={ readOnly }
-                                value={ tipo_cierre }
-                            />
-                        </div>
-                        <div className="col-12">
-                            <label htmlFor="resultado">
-                                Reporte <span className="text-danger">*</span>
-                            </label>                          
-                            <textarea
-                                rows={7} 
-                                id="resultado"
-                                name="resultado"
-                                disabled={ readOnly }
-                                className={inputClass}
-                                value={ resultado } ></textarea><br />
-                        </div><br />
-                    </div>
-                    }
-                    <div className="row">
-                        <br />
-                        <label htmlFor="">Notas</label>
+                    <div className="row mt-2">
+                        <i>Notas</i>
                         {
                             (notasDtl.length > 0) &&
                             notasDtl.map((item: any) => (
@@ -901,7 +785,7 @@ export const ServiciosFrm: FC = () => {
                                     <div className='fw-bolder'>
                                         <li>{item.descripcion}</li></div>
                                 </div>
-                            ))                            
+                            ))
                         }
                         {
                             (notasDtl.length == 0) &&
@@ -918,7 +802,7 @@ export const ServiciosFrm: FC = () => {
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-success btn-sm"
+                                className="btn btn-outline-primary"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

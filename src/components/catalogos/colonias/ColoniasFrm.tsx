@@ -55,13 +55,13 @@ export const ColoniasFrm: FC = () => {
 
     return(
         <>
-            <div className="card mb-4">
+        <div className="card mb-4">
             <HeaderList title={ titleMain }/>
             <div className="card-body">
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                     <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-outline-primary"
                         onClick={() => {
                             dispatch(setShowList( true ));
                         }}
@@ -152,13 +152,13 @@ export const ColoniasFrm: FC = () => {
                             </select>
                         </div>
                     </div>                    
-                    <div className="ro">
+                    <div className="row mt-4">
                         <div className="col-6 d-grid gap-2 mx-auto">
                             {readOnly || (
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-success btn-sm"
+                                className="btn btn-outline-primary"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

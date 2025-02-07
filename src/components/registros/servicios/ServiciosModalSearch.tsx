@@ -86,7 +86,7 @@ export const ServiciosModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 onChange={ handleInputChange }
                             />
                         </div>
-                        <div className="col-8">
+                        <div className="col-12">
                            <label htmlFor="id_emergencia">
                                 Emergencias <span className="text-danger">*</span>
                             </label>

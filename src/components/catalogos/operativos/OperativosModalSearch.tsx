@@ -51,6 +51,7 @@ export const OperativosModalSearch = ({ showModal, setShowModal  }: ModalSearchL
                                 className="form-control"
                                 name="descripcion"
                                 id="descripcion"
+                                autoComplete='off'
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

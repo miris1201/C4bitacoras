@@ -51,6 +51,7 @@ export const DepartamentosModalSearch = ({ showModal, setShowModal  }: ModalSear
                                 className="form-control"
                                 name="departamento"
                                 id="departamento"
+                                autoComplete='off'
                                 value={ departamento }
                                 onChange={ handleInputChange }
                             />

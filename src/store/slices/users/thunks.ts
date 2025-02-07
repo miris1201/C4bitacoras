@@ -103,9 +103,6 @@ export const startGetProfilebyId = ( id_rol: string, setValues:  React.SetStateA
         const resp = await loginApi.post(`menu/listGeneric`, { id_rol } );
 
         const { done, menu } = resp.data;
-
-        console.log(resp.data)
-
         if( done ){
             dispatch( setDataProfileById( menu) );
             setValues({

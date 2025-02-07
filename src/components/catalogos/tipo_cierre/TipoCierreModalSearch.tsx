@@ -44,13 +44,14 @@ export const TipoCierreModalSearch = ({ showModal, setShowModal  }: ModalSearchL
                     <div className="row g-3">                        
                         <div className="col-12">
                             <label htmlFor="descripcion">
-                                Tipo de cierre
+                                Tipo de cierre de emergencia
                             </label>
                             <input
                                 type="text"
                                 className="form-control"
                                 name="descripcion"
                                 id="descripcion"
+                                autoComplete='off'
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

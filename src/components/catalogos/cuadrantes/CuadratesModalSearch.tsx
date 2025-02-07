@@ -79,7 +79,7 @@ export const CuadrantesModalSearch = ({ showModal, setShowModal  }: ModalSearchL
                                 placeholder={ 'Selecciona la zona' }
                                 onChange={ handleChangeZona }
                                 defaultValue={
-                                    { 'value': '', 'label': 'Selecciona proveedor' }
+                                    { 'value': '', 'label': 'Selecciona zona' }
                                   }
                                 options={ 
                                     comboZona.map(reg => ({ 

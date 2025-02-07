@@ -133,13 +133,13 @@ export const BitacorasList: FC = (): JSX.Element => {
             />
             <div className='card-body '>
                 <div className='row'>
-                    <div className="col-2">
+                    <div className="col-2 col-lg-4">
                         <ul className="nav nav-pills">
                             <li className="nav-item">
                                 {
                                     ( nuevo ) && 
                                     <button 
-                                        className="btn btn-outline-success btn-sm me-2"
+                                        className="btn btn-outline-primary me-2"
                                         onClick={ () => { setChangeWindow() }  }
                                     >
                                     <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -150,7 +150,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                                 {
                                     ( exportar ) && 
                                     <button 
-                                        className="btn btn-outline-success btn-sm me-2"
+                                        className="btn btn-outline-primary me-2"
                                         disabled={ loadingExport }
                                         onClick={() => {
                                             dispatch( exportDataBitacoras(id_zona, id_rol, setLoadingExport ) );
@@ -162,7 +162,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                             </li>
                         </ul>
                     </div>            
-                    <div className="col-6">
+                    <div className="col-6 col-lg-4">
                         <div className="btn-group" role="group" aria-label="Departamentos">
                             {
                                 (comboDepartamentos !== undefined) &&
@@ -192,11 +192,11 @@ export const BitacorasList: FC = (): JSX.Element => {
                             }
                         </div>
                     </div>        
-                    <div className="col-4">
+                    <div className="col-4 col-lg-4">
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn  btn-outline-success btn-sm me-2 float-end"
+                                className="btn  btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setSearchEmpty();
                                 }}
@@ -205,7 +205,7 @@ export const BitacorasList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn  btn-outline-success btn-sm me-2 float-end"
+                                className="btn  btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}
@@ -219,16 +219,16 @@ export const BitacorasList: FC = (): JSX.Element => {
                     <div 
                         className="table-responsive" 
                         role="tabpanel">
-                        <table className="table table-hover ">
+                        <table className="table table-hover">
                             <thead className="table-light">
                                 <tr>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Zona</th>
                                     <th scope="col">Departamento</th>
-                                    <th scope="col">Usuario</th>
                                     <th scope="col">Unidad</th>
-                                    <th scope="col">Reporte</th>                                    
+                                    <th scope="col">Reporte</th>     
+                                    <th scope="col">Función</th>                               
                                 </tr>
                             </thead>
                             <tbody>

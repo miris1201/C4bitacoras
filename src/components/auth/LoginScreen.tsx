@@ -1,5 +1,5 @@
 
-import imgLogo from '../../assets/brand/logo.jpg';
+import imgLogo from '../../assets/brand/logo.png';
 import { useForm } from '../../hooks/useForm';
 import { FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -78,10 +78,10 @@ export const LoginScreen = () => {
                                     placeholder="Ingresa tu password"
                                 />
                             </div>
-                            <div className="text-center text-lg-start mt-4 pt-2">
+                            <div className="text-center text-lg-start ">
                                 <button 
                                     type="submit" 
-                                    className="btn btn-danger btn-lg"
+                                    className="btn btn-login btn-lg"
                                     disabled={ checking }>
                                     Ingresar
                                 </button>

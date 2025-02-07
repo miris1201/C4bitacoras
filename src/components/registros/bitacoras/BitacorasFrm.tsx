@@ -102,7 +102,7 @@ export const BitacorasFrm: FC = () => {
                 <ul className="nav nav-pills mb-2">
                     <li className="nav-item">
                     <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-outline-primary"
                         onClick={() => {
                             dispatch(setShowList( true ));
                         }}
@@ -198,8 +198,7 @@ export const BitacorasFrm: FC = () => {
                                 >
                                 <option value="">Selecciona</option>
                                 <option value="1">Poniente</option>
-                                <option value="2">Oriente</option>
-                                
+                                <option value="2">Oriente</option>                                
                             </select>
                         </div>
                     </div>    
@@ -220,7 +219,7 @@ export const BitacorasFrm: FC = () => {
                             <button
                                 type="submit"
                                 disabled={loadingBtn}
-                                className="btn btn-outline-success btn-sm"
+                                className="btn btn-outline-primary"
                                 id="btn_guardar"
                             >
                                 <FontAwesomeIcon icon={faSave} /> Guardar

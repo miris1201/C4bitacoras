@@ -11,6 +11,7 @@ import { startServiciosActive, unSetActiveServicios } from '../../../store/slice
 import { setReadOnly, setShowList } from '../../../store/slices/transaction';
 import { useState } from 'react';
 import { NotasModal } from './NotasModal';
+import { ServiciosSeguimiento } from './ServiciosSeguimiento';
 
 export const ServiciosListItem = ({ item, edit, elim, index }: dataItemServicio) => {
 
@@ -39,16 +40,10 @@ export const ServiciosListItem = ({ item, edit, elim, index }: dataItemServicio)
     let zona = (id_zona == 1) ? 'PONIENTE' : 'ORIENTE';
 
     const handleSetWindow = ( id : number, readOnly = false ) => { 
+
         dispatch( startServiciosActive( id ) );
         dispatch( setReadOnly( readOnly ) );
     }    
-
-    const setChangeWindow = ( ) => {
-        
-        dispatch( unSetActiveServicios() );
-        dispatch( setShowList( false ) );
-        dispatch( setReadOnly( false ) );
-    }
 
 
     let iconStatus = faPersonMilitaryPointing,

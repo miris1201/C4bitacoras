@@ -185,13 +185,13 @@ export const ServiciosList: FC = (): JSX.Element => {
             />
             <div className='card-body '>
                 <div className='row'>
-                    <div className="col-2">
+                    <div className="col-4 col-lg-3 col-xl-2">
                         <ul className="nav nav-pills">
                             <li className="nav-item">
                                 {
                                     ( nuevo ) && 
                                     <button 
-                                        className="btn btn-outline-success btn-sm me-2"
+                                        className="btn btn-outline-primary me-2"
                                         onClick={ () => { setChangeWindow() }  }
                                     >
                                     <FontAwesomeIcon icon={ faPlusCircle } /> Agregar
@@ -202,7 +202,7 @@ export const ServiciosList: FC = (): JSX.Element => {
                                 {
                                     ( exportar ) && 
                                     <button 
-                                        className="btn btn-outline-success btn-sm me-2"
+                                        className="btn btn-outline-primary me-2"
                                         disabled={ loadingExport }
                                         onClick={() => {
                                             dispatch( exportDataServicios(id_zona, id_rol, setLoadingExport ) );
@@ -214,7 +214,7 @@ export const ServiciosList: FC = (): JSX.Element => {
                             </li>
                         </ul>
                     </div>  
-                    <div className="col-4">
+                    <div className="col-6 col-lg-4 col-xl-4">
                         <div className="btn-group" role="group" aria-label="Departamentos">
                             {
                                 (comboDepartamentos !== undefined) &&
@@ -244,7 +244,7 @@ export const ServiciosList: FC = (): JSX.Element => {
                             }
                         </div>
                     </div>          
-                    <div className="col-3">
+                    <div className="col-6 col-lg-4 col-xl-3">
                         <div className="btn-group" role="group" aria-label="Estatus">
                             {
                                 (comboStatus !== undefined) &&
@@ -274,11 +274,11 @@ export const ServiciosList: FC = (): JSX.Element => {
                             }
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-6 col-lg-4 col-xl-3">
                         {
                             ( Object.keys(filterSearch).length > 0) ?
                             <button
-                                className="btn btn-outline-success btn-sm me-2 float-end"
+                                className="btn btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setSearchEmpty();
                                 }}
@@ -287,7 +287,7 @@ export const ServiciosList: FC = (): JSX.Element => {
                             </button>
                             :
                             <button
-                                className="btn btn-outline-success btn-sm me-2 float-end"
+                                className="btn btn-outline-primary me-2 float-end"
                                 onClick={() => {
                                     setShowModalFilter( true );
                                 }}
@@ -358,9 +358,6 @@ export const ServiciosList: FC = (): JSX.Element => {
             showModal={ showModalFilter }
             setShowModal={ setShowModalFilter }
         />
-        }
-        {
-            
         }
     </>
     )

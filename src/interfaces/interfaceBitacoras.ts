@@ -37,3 +37,12 @@ export interface FilterBitacora {
 export interface dataItemBitacora {
     item: BitacoraInterface;
 }
+
+export interface iModalDetalle {
+    folio: number;
+    user: string;
+    fecha: string;
+    detalle: string;
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}

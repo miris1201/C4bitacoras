@@ -51,6 +51,7 @@ export const TipoEmergenciaModalSearch = ({ showModal, setShowModal  }: ModalSea
                                 className="form-control"
                                 name="descripcion"
                                 id="descripcion"
+                                autoComplete='off'
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

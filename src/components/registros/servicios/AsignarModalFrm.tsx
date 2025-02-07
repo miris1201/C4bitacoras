@@ -44,9 +44,6 @@ export const AsignarModalFrm = ({ showModal, setShowModal }: iModalAsignar) => {
         id_cuadrante: 0
     });
 
-
-
-
     const { hasignacion, unidad, sector, id_cuadrante  } = frmAsignarValues;
 
     useEffect(() => {
@@ -95,14 +92,14 @@ export const AsignarModalFrm = ({ showModal, setShowModal }: iModalAsignar) => {
 
     return (
         <CModal 
-          backdrop="static"
-          alignment='center'
-          visible={showModal}
-          onClose={() => setShowModal(false)}>
-          <CModalHeader>
-            <CModalTitle>Asignar servicio</CModalTitle>
-          </CModalHeader>
-          <form className='row g-3' onSubmit={ handleSubmitAddAsignar }>
+            backdrop="static"
+            alignment='center'
+            visible={showModal}
+            onClose={() => setShowModal(false)}>
+            <CModalHeader>
+                <CModalTitle>Asignar servicio</CModalTitle>
+            </CModalHeader>
+            <form className='row g-3' onSubmit={ handleSubmitAddAsignar }>
             <CModalBody>
                 <div className="row">                
                     <div className="col-6 col-xl-6">
@@ -167,8 +164,7 @@ export const AsignarModalFrm = ({ showModal, setShowModal }: iModalAsignar) => {
                             value={id_cuadrante}
                             onChange={handleInputAsignarChange}
                             className="form-select"
-                            required
-                        >
+                            required >
                             <option value="">Selecciona</option>
                             {
                                 (comboCuadrantes !== undefined) &&
@@ -195,12 +191,11 @@ export const AsignarModalFrm = ({ showModal, setShowModal }: iModalAsignar) => {
                     <button
                         type="submit"
                         disabled={loadingBtnDtl}
-                        className="btn btn-outline-info btn-sm">
+                        className="btn btn-outline-primary">
                         Guardar
                     </button>
                 </CModalFooter>
           </form>
         </CModal>
-
     )
 }
