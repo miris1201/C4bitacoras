@@ -1,3 +1,5 @@
+const baseName = import.meta.env.VITE_BASE_NAME;
+
 import { useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
@@ -28,7 +30,7 @@ export const AppRouter = () => {
     }
 
     return (
-        <Router>
+        <Router basename={baseName}>
             <div>
                 <Routes>
                     <Route
