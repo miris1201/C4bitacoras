@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly } from '../../../store/slices/transaction';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startProcedenciaActive, startProcedenciaDelete } from '../../../store/slices/catalogos';
 import { dataItemProcedencia } from '../../../interfaces';
@@ -11,6 +11,9 @@ import { dataItemProcedencia } from '../../../interfaces';
 export const ProcedenciaListItem = ({ item, edit, elim }: dataItemProcedencia) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_procedencia,
@@ -100,6 +103,7 @@ export const ProcedenciaListItem = ({ item, edit, elim }: dataItemProcedencia) =
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

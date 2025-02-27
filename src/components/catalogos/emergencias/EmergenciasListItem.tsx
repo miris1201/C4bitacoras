@@ -2,7 +2,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 
 import { setReadOnly } from '../../../store/slices/transaction';
@@ -12,6 +12,9 @@ import { startCuadranteDelete, startEmergenciasActive, startEmergenciasDelete } 
 export const EmergenciasListItem = ({ item, edit, elim }: dataItemEmergencias) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_emergencia,
@@ -106,6 +109,7 @@ export const EmergenciasListItem = ({ item, edit, elim }: dataItemEmergencias) =
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

@@ -62,6 +62,7 @@ export const BitacorasModalSearch = ({ showModal, setShowModal }: ModalSearchLis
                                 className="form-control"
                                 name="folio"
                                 id="folio"
+                                autoFocus={true}
                                 value={ folio }
                                 onChange={ handleInputChange }
                             />

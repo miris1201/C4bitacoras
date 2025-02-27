@@ -52,6 +52,7 @@ export const TipoEmergenciaModalSearch = ({ showModal, setShowModal  }: ModalSea
                                 name="descripcion"
                                 id="descripcion"
                                 autoComplete='off'
+                                autoFocus={true}
                                 value={ descripcion }
                                 onChange={ handleInputChange }
                             />

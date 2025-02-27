@@ -28,7 +28,6 @@ export const BitacorasListItem = ({ item }: dataItemBitacora) => {
 
     let contenido = (detalle.length > 150) ? `${detalle.substring(0, 200) + '...'}` : detalle;
 
-
     return (
         <>
         <th scope="row">

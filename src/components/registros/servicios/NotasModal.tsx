@@ -39,7 +39,6 @@ export const NotasModal = ({showModal, setShowModal}: iModalNotas) => {
         
         if( descripcion != null ){
 
-            console.log(frmNotesVal);
             dispatch(startInsertNotes(frmNotesVal, setLoadingBtnNotas));
             setShowModal(false);
 

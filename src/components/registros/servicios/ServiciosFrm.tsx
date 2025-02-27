@@ -1,12 +1,14 @@
 
 
-import React, { FC, FormEvent, useEffect, useState } from 'react'
+import { FC, FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { usePermission } from '../../../hooks/usePermission';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import Select from 'react-select';
 import moment from 'moment';
+import Swal from "sweetalert2";
+
 import { HeaderList, NoAccess } from '../../ui/UserInterface';
 import { useForm } from '../../../hooks/useForm';
 import { startInsertServicios } from '../../../store/slices/registros';
@@ -236,7 +238,29 @@ export const ServiciosFrm: FC = () => {
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoadingBtn(true);
-        dispatch( startInsertServicios( formValues,  setLoadingBtn));
+
+
+        if (observaciones != null && observaciones != "" 
+            && id_colonia != 0 
+            && nombre != "" 
+            && calle != "" 
+            && telefono != "" 
+            && id_emergencia != 0 
+            && id_operativo != 0 
+            && id_llamada != 0
+            && id_zona != 0)  {
+
+                dispatch( startInsertServicios( formValues,  setLoadingBtn));
+
+        } else {
+            Swal.fire({
+                title: 'Validación de campos',
+                text: "Debes de ingresar los campos requeridos.",
+                icon: 'error',
+            }).then((result) => {
+                setLoadingBtn(false);
+            })
+        }        
     }
     
     const handleChangeEmergencia = (opcion : any) => {
@@ -504,7 +528,7 @@ export const ServiciosFrm: FC = () => {
                         (!showOtros) && 
                         (otros_operativos !== null) || (
                         <div className="col-12 col-lg-6 col-xl-4 col-xxl-3">
-                            <label htmlFor="nombre">
+                            <label htmlFor="otro_operativo">
                                 Especifica el operativo<span className="text-danger">*</span>
                             </label>
                             <input
@@ -552,6 +576,7 @@ export const ServiciosFrm: FC = () => {
                                 autoFocus={false}
                                 value={ telefono }
                                 disabled={ readOnly }
+                                maxLength={10}
                                 required
                             />
                         </div>

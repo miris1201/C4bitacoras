@@ -1,6 +1,8 @@
 
 
-import React, { FC, useState, FormEvent, useEffect } from 'react'
+import { FC, useState, FormEvent, useEffect } from 'react'
+import Swal from "sweetalert2";
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useForm } from '../../../hooks/useForm';
 
@@ -73,7 +75,22 @@ export const BitacorasFrm: FC = () => {
     const handleSubmitForm = ( e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoadingBtn(true);
-        dispatch( startInsertBitacora( formValues,  setLoadingBtn));
+
+        if (detalle != null && detalle != "" 
+                && id_departamento != 0 
+                && unidad != "" && id_zona != 0)  {
+            dispatch( startInsertBitacora( formValues,  setLoadingBtn));
+
+        } else {
+            Swal.fire({
+                title: 'Validación de campos',
+                text: "Debes de ingresar los campos requeridos.",
+                icon: 'error',
+            }).then((result) => {
+                setLoadingBtn(false);
+            })
+        }
+       
     }
 
     useEffect(() => {
@@ -208,8 +225,9 @@ export const BitacorasFrm: FC = () => {
                                 Reporte <span className="text-danger">*</span>
                             </label>
                             <textarea name="detalle" id="detalle" 
-                            rows={3} 
+                                rows={5} 
                                 className="form-control" 
+                                required
                                 onChange={  handleInputChange } ></textarea>
                         </div>
                     </div>                

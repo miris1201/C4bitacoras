@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly } from '../../../store/slices/transaction';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startDepartamentosActive, startDepartamentosDelete } from '../../../store/slices/catalogos';
 import { dataItemDepartamentos } from '../../../interfaces';
@@ -11,6 +11,9 @@ import { dataItemDepartamentos } from '../../../interfaces';
 export const DepartamentosListItem = ({ item, edit, elim }: dataItemDepartamentos) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_departamento,
@@ -100,8 +103,9 @@ export const DepartamentosListItem = ({ item, edit, elim }: dataItemDepartamento
                         <FontAwesomeIcon icon={ icoba } />
                     </button>
                 }
-                { 
+                {
                     ( elim ) &&
+                    ( id_rol == 1) &&
                     <button 
                         type="button"
                         className={ classBa }

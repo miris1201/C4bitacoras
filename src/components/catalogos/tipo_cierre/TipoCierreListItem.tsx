@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly } from '../../../store/slices/transaction';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startTipoCierreActive, startTipoCierreDelete } from '../../../store/slices/catalogos';
 import { dataItemTipoCierre } from '../../../interfaces';
@@ -11,6 +11,9 @@ import { dataItemTipoCierre } from '../../../interfaces';
 export const TipoCierreListItem = ({ item, edit, elim }: dataItemTipoCierre) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_tipo_cierre,
@@ -100,6 +103,7 @@ export const TipoCierreListItem = ({ item, edit, elim }: dataItemTipoCierre) => 
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

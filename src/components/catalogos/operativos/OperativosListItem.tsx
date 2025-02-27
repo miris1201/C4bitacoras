@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly } from '../../../store/slices/transaction';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startOperativoDelete, startOperativosActive } from '../../../store/slices/catalogos';
 import { dataItemOperativos } from '../../../interfaces';
@@ -11,6 +11,9 @@ import { dataItemOperativos } from '../../../interfaces';
 export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+        const { id_rol } = systemOptions;
     
     const { 
 		id_operativo,
@@ -100,6 +103,7 @@ export const OperativosListItem = ({ item, edit, elim }: dataItemOperativos) => 
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { setReadOnly } from '../../../store/slices/transaction';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startTipoEmergenciaActive, startTipoEmergenciaDelete } from '../../../store/slices/catalogos';
 import { dataItemTipoEmergencia } from '../../../interfaces';
@@ -11,6 +11,9 @@ import { dataItemTipoEmergencia } from '../../../interfaces';
 export const TipoEmergenciaListItem = ({ item, edit, elim }: dataItemTipoEmergencia) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_tipo_emergencia,
@@ -100,6 +103,7 @@ export const TipoEmergenciaListItem = ({ item, edit, elim }: dataItemTipoEmergen
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

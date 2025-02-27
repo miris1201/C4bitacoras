@@ -2,7 +2,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faBan, faCheckSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import { startColoniaDelete, startColoniasActive } from '../../../store/slices/catalogos/';
 
@@ -12,6 +12,9 @@ import { dataItemColonias } from '../../../interfaces';
 export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
 
     const dispatch = useAppDispatch();
+
+    const { systemOptions } = useAppSelector(state => state.login);
+    const { id_rol } = systemOptions;
     
     const { 
 		id_colonia,
@@ -105,6 +108,7 @@ export const ColoniasListItem = ({ item, edit, elim }: dataItemColonias) => {
                 }
                 { 
                     ( elim ) &&
+                    ( id_rol == 1) && 
                     <button 
                         type="button"
                         className={ classBa }

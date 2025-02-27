@@ -100,7 +100,8 @@ export const RespuestaModalFrm = ({ showModal, setShowModal }: iModalRespuesta) 
     
             setLoadingBtnDtl(true);
 
-        if( id_tipo_emergencia > 0 && id_emergencia_cierre > 0 && id_tipo_cierre > 0){
+        if( id_tipo_emergencia > 0 && id_emergencia_cierre > 0 && id_tipo_cierre > 0
+           && resultado != "" && resultado != null ){
 
             dispatch(startInsertResultado(frmRespValues, setLoadingBtnDtl));
             setShowModal(false);

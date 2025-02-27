@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import imgLogo from '../../assets/brand/logo.png';
+import imgLogo from '../../assets/images/logo.png';
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react';
 import { AppSidebarNav } from './AppSidebarNav';
@@ -36,13 +36,12 @@ const AppSidebar = () => {
 			}}
 		>
 			<CSidebarBrand className="d-none d-md-flex bg-white">
-			{/* <h2 className="base__logo">C4</h2> */}
-			<img src={imgLogo}
-            	width="50%" alt="LOGO"/>
+				<img src={imgLogo}
+					width="50%" alt="LOGO"/>
 			</CSidebarBrand>
 			<CSidebarNav>
 				<SimpleBar>
-				<AppSidebarNav items={_navval} />
+					<AppSidebarNav items={_navval} />
 				</SimpleBar>
 			</CSidebarNav>
 			<CSidebarToggler />
