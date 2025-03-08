@@ -58,5 +58,5 @@ export const {
 	setDataName,
 	setUserName,
 	setDataSystemOptions,
-	startLogout
+	startLogout,
 } = loginSlice.actions;
